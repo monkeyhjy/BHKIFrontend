@@ -6,6 +6,9 @@ import axios from "axios";
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/all.css'
 import './assets/css/style.css'
+import './assets/css/demo.css'
+import './assets/css/normalize.css'
+import './assets/css/style-salal.css'
 import Clipboard from 'clipboard';
 import qs from 'qs';
 
