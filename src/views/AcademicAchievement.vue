@@ -34,7 +34,11 @@
 													style="margin-left: 1rem; display: inline; text-align: center"
 													v-for="(item, index) in achievement.author"
 													:key="index">
-										<el-link slot="reference" href="" target="_blank">{{item.name}}</el-link>
+										<el-link
+														slot="reference"
+														href=""
+														@click="jumpToPortal(item.p_id)"
+										style="font-size: 1.2rem">{{item.name}}</el-link>
 									</el-popover>
 								</div>
 								<!--						机构-->
@@ -84,7 +88,10 @@
 							<el-col :span="20">
 								<el-card shadow="hover" style="text-align: left">
 									<div>
-										<el-link href="" style="font-size: 1.5rem">{{item.name}}</el-link>
+										<el-link
+														href=""
+														style="font-size: 1.5rem"
+														@click="jumpToPortal(item.p_id)">{{item.name}}</el-link>
 									</div>
 									<el-col :span="3">
 										<p>作者简介：</p>
@@ -108,26 +115,29 @@
 
 <script>
 	export default {
-		name: "AcadamicAchievement",
+		name: "AcademicAchievement",
 		data() {
 			return {
+				a_id: 0,
 				achievement: {
 					title: '软件系统分析与设计',
 					author: [
 						{
+							p_id: 1,
 							name: '111',
 							introduction: '作者简介1',
 						},
 						{
+							p_id: 2,
 							name: '222',
 							introduction: '作者简介2',
 						},
 						{
+							p_id: 3,
 							name: '333',
 							introduction: '作者简介3',
 						},
 					],
-					company: 'BUAA',
 					source: '北京航空航天大学学报',
 					abstract: '123123123',
 					keyword: [
@@ -142,12 +152,27 @@
 				}
 			}
 		},
+		mounted() {
+			this.getAid();
+		},
 		methods: {
+			getAid() {
+				this.aid = JSON.parse(this.$Base64.decode(this.$route.query.aid))
+				//console.log(this.pid);
+			},
 			collectSuccess() {
 				this.achievement.isCollected = !this.achievement.isCollected;
 			},
 			collectFail() {
 				this.achievement.isCollected = !this.achievement.isCollected;
+			},
+			jumpToPortal(p_id) {
+				this.$router.push({
+					path: '/portal',
+					query: {
+						pid: this.$Base64.encode(JSON.stringify(p_id)),
+					}
+				})
 			}
 		}
 	}

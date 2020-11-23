@@ -29,29 +29,41 @@
 
 									<el-button size="mini"
 														 style="vertical-align: bottom; margin-left: 0.5rem"
-														 v-if="information.isOwn===0"
+														 v-if="information.isOwn===0&&information.isReported===0"
 														 type="danger"
 														 @click="reportDisplay">举报冒领门户</el-button>
 
 									<el-button size="mini"
 														 style="vertical-align: bottom; margin-left: 0.5rem"
-														 v-if="information.isFollow"
+														 v-if="information.isOwn===0&&information.isReported===1"
+														 type="danger"
+															disabled>冒领门户已被举报</el-button>
+
+									<el-button size="mini"
+														 style="vertical-align: bottom; margin-left: 0.5rem"
+														 v-if="information.isFollowed&&information.isClaimed!==2"
 														 type="primary"
 														 @click="follow">关注</el-button>
 
 									<el-button size="mini"
 														 style="vertical-align: bottom; margin-left: 0.5rem"
-														 v-else
+														 v-if="!information.isFollowed&&information.isClaimed!==2"
 														 type="info"
 														 @click="disFollow">取消关注</el-button>
 
 									<el-button size="mini"
 														 style="vertical-align: bottom; margin-left: 0.5rem"
-														 type="warning">私信TA</el-button>
+														 v-if="information.isClaimed!==2"
+														 type="warning"
+															@click="privateMessageDisplay">私信TA</el-button>
 								</el-col>
 							</el-col>
 							<el-col :span="24" style="margin-bottom: 1rem; margin-left: 0;">{{information.company}}</el-col>
-							<el-col :span="24" style="margin-bottom: 1rem">{{information.field}}</el-col>
+							<el-col :span="24" style="margin-bottom: 1rem">
+								<span style="margin-right: 0.5rem" v-for="(item, index) in information.field" :key="index">
+									{{item.name}}
+								</span>
+							</el-col>
 							<el-col :span="24" style="margin-bottom: 1rem">{{information.email}}</el-col>
 <!--							<el-col :span="24">-->
 <!--								<el-col :span="4"><strong>代表作：</strong></el-col>-->
@@ -68,26 +80,22 @@
 								<el-col :span="20">{{information.introduction}}</el-col>
 							</el-col>
 							<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-top: 1.5rem">
-								<el-col :span="6">
+								<el-col :span="8">
 									<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
 									<el-col :span="24">{{information.paperNum}}</el-col>
 								</el-col>
-								<el-col :span="6">
-									<el-col :span="24" style="margin-bottom: 1rem">发表项目数</el-col>
-									<el-col :span="24">{{information.projectNum}}</el-col>
+								<el-col :span="8">
+									<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
+									<el-col :span="24">{{information.h_index}}</el-col>
 								</el-col>
-								<el-col :span="6">
-									<el-col :span="24" style="margin-bottom: 1rem">发表专利数</el-col>
-									<el-col :span="24">{{information.patentNum}}</el-col>
-								</el-col>
-								<el-col :span="6">
+								<el-col :span="8">
 									<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
 									<el-col :span="24">{{information.citeNum}}</el-col>
 								</el-col>
 							</el-col>
 						</el-col>
 
-						<el-col :span="9"
+						<el-col :span="9" :offset="2"
 										style="margin-right: 1rem;">
 							<div class="grid-content">
 								<span style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem">相关专家网络</span>
@@ -98,14 +106,14 @@
 							</div>
 						</el-col>
 
-						<!--					搜索框与排序按钮（搜索本人发表的所有论文）-->
+						<!--					排序按钮-->
 						<el-col :span="24" style="margin-top: 1rem">
-							<el-col :span="6">
-								<el-input v-model="searchInput" placeholder="请输入内容"></el-input>
-							</el-col>
-							<el-col :span="3" style="text-align: left; margin-left: 0.5rem">
-								<el-button type="primary" icon="el-icon-search">搜索</el-button>
-							</el-col>
+<!--							<el-col :span="6">-->
+<!--								<el-input v-model="searchInput" placeholder="请输入内容"></el-input>-->
+<!--							</el-col>-->
+<!--							<el-col :span="3" style="text-align: left; margin-left: 0.5rem">-->
+<!--								<el-button type="primary" icon="el-icon-search">搜索</el-button>-->
+<!--							</el-col>-->
 							<el-col :span="9" style="text-align: left; margin-left: 1rem">
 								<el-button type="primary" icon="el-icon-key" @click="allSort('citeNum')">按被引量排序</el-button>
 								<el-button type="primary" icon="el-icon-time" @click="allSort('declareTime')">按发表时间排序</el-button>
@@ -114,31 +122,23 @@
 						</el-col>
 						<!--					学术成果展示-->
 						<el-col :span="24"
-										style="margin-top: 1rem"
+										style="margin-top: 1rem; text-align: left"
 										v-for="(item, index) in information.work.slice((currentPage-1)*pageSize, currentPage*pageSize)"
 										:key="index">
 							<el-col :span="21" style="border: 1px solid">
 								<el-col :span="24" style="margin-bottom: 1rem">
-									<el-col :span="24" style="margin-bottom: 0.5rem">
-										<el-col :span="12" style="text-align: left">
-											{{item.title}}
-										</el-col>
-										<el-col :span="12" style="text-align: left">
-											作者：{{item.author}}
-										</el-col>
-									</el-col>
-									<el-col :span="24">
-										<el-col :span="4">
-											发表时间：{{item.declareTime}}
-										</el-col>
-										<el-col :span="4">
-											来源：{{item.source}}
-										</el-col>
-										<el-col :span="4">
-											被引量：{{item.citeNum}}
-										</el-col>
-									</el-col>
-
+									<el-link @click="jumpToAchievement(item.id)">{{item.title}}</el-link>
+								</el-col>
+								<el-col :span="24"
+												style="margin-bottom: 1rem">
+									<el-link v-for="(author, index2) in item.author" :key="index2" style="margin-right: 0.5rem"
+									@click="jumpToPortal(author.p_id)">{{author.name}}</el-link>
+								</el-col>
+								<el-col :span="24" style="margin-bottom: 1rem">
+									{{item.source}}({{item.declareTime}})
+								</el-col>
+								<el-col :span="24">
+									<span>{{item.citeNum}}</span>
 								</el-col>
 							</el-col>
 						</el-col>
@@ -207,6 +207,27 @@
 								 @click="submitReport(reportText)">提交举报
 			</el-button>
 		</el-dialog>
+
+<!--私信输入框-->
+		<el-dialog
+						title="请填写私信内容"
+						:visible.sync="privateMessageVisible"
+						center
+						:append-to-body='true'
+						:lock-scroll="false"
+						width="50%"
+						:before-close="privateMessageClose">
+			<el-input
+							type="textarea"
+							:rows="5"
+							autosize
+							placeholder="请输入内容"
+							v-model="privateMessageText">
+			</el-input>
+			<el-button class="medium" style="margin-left:40%;position:relative;margin-top:30px" plain
+								 @click="submitPrivateMessage(information.u_id, privateMessageText)">发送私信
+			</el-button>
+		</el-dialog>
 	</div>
 </template>
 
@@ -216,74 +237,165 @@
 		name: "Portal",
 		data() {
 			return {
+				/*按钮的逻辑：
+				1.认领：isClaimed
+					0 -> 未被认领
+					1 -> 已被他人认领
+					2 -> 已被自己认领
+				2.举报：isReported
+					0 -> 未被举报，显示举报冒领门户的按钮
+					1 -> 已被举报（自己或他人），显示不能点击的按钮
+				3.关注：isFollowed
+					0 -> 未关注
+					1 -> 已关注
+				*/
 				information: {
+					portalId: "",
+					u_id: 1,
 					name: "tony",
 					company: "BUAA",
-					field: "SE",
-					email: "12345@qq.com",
+					h_index: 100,
+					field: [
+						{
+							name: '计算机网络',
+							num: 2,
+						},
+						{
+							name: '生物科学',
+							num: 1,
+						},
+						{
+							name: '软件工程',
+							num: 5,
+						},
+						{
+							name: '人工智能',
+							num: 3,
+						},
+					],
 					introduction: '作者简介',
 					work: [
 						{
+							id: 0,
 							title: "编译原理与技术",
 							author: [
-									"111",
-									"222",
-									"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2018-07-02",
 							source: "BUAA",
 							citeNum: 20,
 						},
 						{
+							id: 0,
 							title: "软件系统分析与设计",
 							author: [
-								"111",
-								"222",
-								"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2018-08-16",
 							source: "BUAA",
 							citeNum: 30,
 						},
 						{
+							id: 0,
 							title: "计算机网络",
 							author: [
-								"111",
-								"222",
-								"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2019-02-16",
 							source: "BUAA",
 							citeNum: 15,
 						},
 						{
+							id: 0,
 							title: "计算机组成",
 							author: [
-								"111",
-								"222",
-								"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2019-07-25",
 							source: "BUAA",
 							citeNum: 40,
 						},
 						{
+							id: 0,
 							title: "算法导论",
 							author: [
-								"111",
-								"222",
-								"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2020-01-11",
 							source: "BUAA",
 							citeNum: 10,
 						},
 						{
+							id: 0,
 							title: "数字电路分析设计",
 							author: [
-								"111",
-								"222",
-								"333",
+								{
+									p_id: 1,
+									name: '111',
+								},
+								{
+									p_id: 2,
+									name: '222',
+								},
+								{
+									p_id: 3,
+									name: '333',
+								},
 							],
 							declareTime: "2017-05-19",
 							source: "BUAA",
@@ -291,26 +403,27 @@
 						},
 					],
 					paperNum: 10,
-					projectNum: 5,
-					patentNum: 2,
 					citeNum: 366,
 					isClaimed: 1,
+					isReported: 0,
 					isOwn: 0,
 					relativePerson: [
 						{
 							name: '111',
-							id: '1',
+							id: 1,
 						},
 						{
 							name: '222',
-							id: '2',
+							id: 2,
 						},
 						{
 							name: '333',
-							id: '3',
+							id: 3,
 						},
-					]
+					],
+					isFollowed: false,
 				},
+				pid: 0,
 				pageSize: 2,
 				currentPage: 1,
 				searchResult: [
@@ -321,7 +434,8 @@
 				reportText: '',
 				claimVisible: false,
 				claimText: '',
-				isFollow: false,
+				privateMessageVisible: false,
+				privateMessageText: '',
 				myChart: null,
 				chartData:[],
 				chartLink:[],
@@ -332,9 +446,18 @@
 			}
 		},
 		mounted () {
+			// this.$axios.get('http://182.92.239.145/apis/')
+			// 		.then(res => {
+			// 			this.information = res.data.list;
+			// 		})
+			this.getPortalId();
 			this.graph();
 		},
 		methods: {
+			getPortalId() {
+				this.pid = JSON.parse(this.$Base64.decode(this.$route.query.pid))
+				//console.log(this.pid);
+			},
 			graph() {
 				let dom = document.getElementById('myNetwork');
 				this.myChart = echarts.init(dom);
@@ -403,7 +526,7 @@
 			},
 			linkEChart(){
 				let dataLink = [];
-				for(let i = 1;i < this.information.relativePerson.length; i++){
+				for(let i = 0;i < this.information.relativePerson.length; i++){
 					dataLink.push({
 						value: "",
 						source: "1",
@@ -413,6 +536,7 @@
 				return dataLink;
 			},
 
+			//按钮：认领、举报、私信、关注
 			claimDisplay() {
 				this.claimVisible = true;
 			},
@@ -426,21 +550,115 @@
 				this.reportVisible = true;
 			},
 			submitReport(text) {
-
+				if(this.reportText === '')
+					this.$alert('举报内容不能为空', '系统提示', {
+						confirmButtonText: '确定',
+				})
+				else{
+					this.$axios.post('http://182.92.239.145/apis/',
+					this.qs.stringify({reportText: text}),
+							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+					.then(res => {
+						if(res.data.status === 0)
+							this.$message({
+								type: 'success',
+								message: '举报成功，请等待管理员处理',
+							})
+					})
+				}
 			},
 			reportClose(done) {
 				this.reportVisible = false;
+			},
+			privateMessageDisplay() {
+				if(this.information.isClaimed === 0){
+					this.$alert('该门户未被认领！', '系统提示', {
+						confirmButtonText: '确定'
+					})
+				}
+				else
+					this.privateMessageVisible = true;
+			},
+			submitPrivateMessage(id, text) {
+				if(this.privateMessageText === '')
+					this.$alert('私信内容不能为空', '系统提示', {
+						confirmButtonText: '确定',
+					})
+				else{
+					this.$axios.post('http://182.92.239.145/apis/',
+							this.qs.stringify({
+								u_id: id,
+								privateMessageText: text
+							}),
+							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+							.then(res => {
+								if(res.data.status === 0)
+									this.$message({
+										type: 'success',
+										message: '私信发送成功',
+									})
+							})
+				}
+			},
+			privateMessageClose(done) {
+				this.privateMessageVisible = false;
 			},
 			handleCurrentChange(val) {
 				this.currentPage = val
 			},
 			follow() {
+				if(this.information.isClaimed === 0){
+					this.$alert('该门户未被认领！', '系统提示', {
+						confirmButtonText: '确定'
+					})
+				}
+				else{
+					this.$axios.post('http://182.92.239.145/apis/',
+							this.qs.stringify({u_id: this.u_id}),
+							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+					.then(res => {
+						if(res.data.status === 0){
+							this.$message({
+								type: "success",
+								message: "关注成功",
+							})
+						}
+					})
 
+				}
 			},
 			disFollow() {
-
+				this.$axios.post('http://182.92.239.145/apis/',
+						this.qs.stringify({u_id: this.u_id}),
+						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+						.then(res => {
+							if(res.data.status === 0){
+								this.$message({
+									type: "success",
+									message: "取消关注成功",
+								})
+							}
+						})
 			},
 
+			//跳转对应学术成果
+			jumpToAchievement(a_id){
+				this.$router.push({
+					path: '/achievement',
+					query: {
+						aid: this.$Base64.encode(JSON.stringify(a_id)),
+					}
+				})
+			},
+			//跳转对应专家门户
+			jumpToPortal(p_id) {
+				this.$router.push({
+					path: '/portal',
+					query: {
+						pid: this.$Base64.encode(JSON.stringify(p_id)),
+					}
+				})
+			},
 
 			//排序需要的函数
 			allSort(type) {
