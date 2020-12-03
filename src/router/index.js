@@ -1,15 +1,47 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Search from "../views/Search";
+import Navigation from "../views/Navigation";
+import Header from "../components/Header";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {path:'/', redirect:'/Navigation'},
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path:'/Navigation',
+    name:'Navigation',
+    component:Navigation,
+    children:[
+      {
+        path: '/',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path:'/Search',
+        name:'Search',
+        component:Search
+      },
+    ]
   },
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home
+  // },
+  // {
+  //   path:'/Search',
+  //   name:'Search',
+  //   component:Search
+  // },
+  //
+  // {
+  //   path:'/Header',
+  //   name:'/Header',
+  //   component:Header
+  // },
   {
     path: '/about',
     name: 'About',
