@@ -1,8 +1,8 @@
-a{
+/* a{
     text-decoration:none
 }
 a:link{color:#aa67aa;}
-a:visited{color:#1682dc;}
+a:visited{color:#1682dc;} */
 .profile{
     margin-top:100px
 }
@@ -35,3 +35,4 @@ a:visited{color:#1682dc;}
 
 }
 ul li{ list-style: none; }
+

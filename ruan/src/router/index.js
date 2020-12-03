@@ -9,7 +9,23 @@ const routes = [
     name: 'BlogDesktop',
     component: () => import("../views/blogDesktop.vue")
   },
+  {
+    path: '/blogreported',
+    name: 'BlogReported',
+    component: () => import("../views/manage/articleReported.vue")
+  },
+  {
+    path: '/commentreported',
+    name: 'CommentReported',
+    component: () => import("../views/manage/commentReported.vue")
+  },
+  {
+    path: '/gwreported',
+    name: 'GWReported',
+    component: () => import("../views/manage/gwReported.vue")
+  }
 ];
+
 
 const router = new VueRouter({
   mode: "history",
