@@ -53,41 +53,12 @@ export default {
 </script>
 
 <style scoped>
-@import "../css/button_tabnav.css";
 .nav-icon{
     color:white
 }
-
-.el-button--primary {
-    color: #FFF;
-    background-color:#df5747;
-    border-color: #f9ae8f;
+.personInfo{
+    margin-left:3%
 }
-.el-button--primary:hover {
-    background-color: #e07a6e;
-    border-color: #f9ae8f;
-}
-.el-button--default:hover {
-    color: #df5747;
-    border-color: #df5747;
-    background-color: #f8e2d7
-}
-.el-button--primary:active{
-    background:#e24533;
-}
-.el-button--primary:focus{
-    background:#e24533;
-    border-color: #f9ae8f;
-}
-.el-button--default:active{
-    background:#f7ceb9;
-}
-.el-button--default:focus{
-    color: #df5747;
-    border-color: #f3ccba;
-    background-color: #f7eee9
-}
-
 </style>
 
 <!--<script src="//unpkg.com/vue/dist/vue.js"></script>

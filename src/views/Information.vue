@@ -1,5 +1,5 @@
 <template>
-    <div class="personInfo">
+    <div class="information">
         <el-card class="info" style="padding-top:20px">
             <el-row :gutter="20">
                 <el-col :span="6">
@@ -36,7 +36,10 @@
                     </el-form>
                     <el-divider></el-divider>
                     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" :label-position="labelPosition" label-width="80px" style="text-align:left;">
-                        <el-form-item label="密码" prop="pass">
+                        <el-form-item label="原密码" prop="oldPass">
+                            <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="新密码" prop="pass">
                             <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="确认密码" prop="checkPass">
@@ -59,25 +62,19 @@
 <script>
 export default {
     data() {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
+      var validateOldPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入旧密码'));
+        } else {
+          if (this.ruleForm.checkPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
           }
-        }, 1000);
+          callback();
+        }
       };
       var validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error('请输入新密码'));
         } else {
           if (this.ruleForm.checkPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
@@ -106,6 +103,7 @@ export default {
         ruleForm: {
           pass: '',
           checkPass: '',
+          oldPass: '',
         },
         rules: {
           pass: [
@@ -113,6 +111,9 @@ export default {
           ],
           checkPass: [
             { validator: validatePass2, trigger: 'blur' }
+          ],
+          oldPass: [
+            { validator: validateOldPass, trigger: 'blur' }
           ],
         },
       };
@@ -139,44 +140,14 @@ export default {
 </script>
 
 <style>
-@import "../css/button_tabnav.css";
 .personInfo{
-    margin-right: 20px;
+    margin-right: 3%;
 }
 .el-form{
     margin-right: 100px;
 }
 .personPage{
     margin-top: 30px;
-}
-.el-button--primary {
-    color: #FFF;
-    background-color:#df5747;
-    border-color: #f9ae8f;
-}
-.el-button--primary:hover {
-    background-color: #e07a6e;
-    border-color: #f9ae8f;
-}
-.el-button--default:hover {
-    color: #df5747;
-    border-color: #df5747;
-    background-color: #f8e2d7
-}
-.el-button--primary:active{
-    background:#e24533;
-}
-.el-button--primary:focus{
-    background:#e24533;
-    border-color: #f9ae8f;
-}
-.el-button--default:active{
-    background:#f7ceb9;
-}
-.el-button--default:focus{
-    color: #df5747;
-    border-color: #f3ccba;
-    background-color: #f7eee9
 }
 .avatar-img{
   height:150px;

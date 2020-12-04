@@ -3,7 +3,7 @@
         <el-card class="followList">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="关注用户" name="user">
-                <div class="following_user" v-for="item in u_following" :key="item.author_id">
+                <div class="following-main" v-for="item in u_following" :key="item.author_id">
                   <div class="following-block">
                     <el-row>
                       <el-col :span="3">
@@ -24,7 +24,7 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="关注机构" name="institution">
-                <div class="following_inst" v-for="item in i_following" :key="item.institution_id">
+                <div class="following-main" v-for="item in i_following" :key="item.institution_id">
                   <div class="following-block">
                     <el-row>
                       <el-col :span="3">
@@ -98,19 +98,8 @@ export default {
 </script>
 
 <style>
-@import "../css/button_tabnav.css";
-.el-tabs__active-bar{
-  background-color:#df5747;
-}
-.el-tabs__item.is-active {
-    color: #df5747;
-}
-.el-tabs__item:hover {
-    color: #df5747;
-    cursor: pointer;
-}
 .following{
-    margin-right: 20px;
+    margin-right: 3%;
 }
 .el-form{
     margin-right: 100px;
@@ -123,10 +112,12 @@ export default {
   padding-right: 20px;
   padding-bottom: 50px;
 }
+.following-main{
+  margin-top:10px;
+}
 
 .following-block{
-  padding-top:15px;
-  padding-bottom: 15px;
+  padding-top:0px;
 }
 .following-content{
   text-align: left;

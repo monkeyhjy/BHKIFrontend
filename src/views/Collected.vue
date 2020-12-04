@@ -3,7 +3,7 @@
         <el-card class="collectedList">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="学术成果" name="paper">
-                <div class="collected-paper" v-for="item in p_collected" :key="item.paper_id">
+                <div class="collected-main" v-for="item in p_collected" :key="item.paper_id">
                   <div class="collected-block">
                     <el-row>
                       <el-col :span="21">
@@ -21,7 +21,7 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="博客帖文" name="blog">
-                <div class="following_inst" v-for="item in b_collected" :key="item.blog_id">
+                <div class="collected-main" v-for="item in b_collected" :key="item.blog_id">
                   <div class="collected-block">
                     <el-row>
                       <el-col :span="21">
@@ -109,7 +109,7 @@ export default {
   padding-bottom: 50px;
 }
 .collected{
-    margin-right: 20px;
+    margin-right: 3%;
 }
 .el-form{
     margin-right: 100px;
