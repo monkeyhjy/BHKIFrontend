@@ -2,6 +2,13 @@ body{
     background-color: rgb(240, 241, 244);
 }
 
+.el-link.el-link--default{
+    color:#303133;
+}
+.el-link.el-link--default:hover {
+    color: #ce3524;
+}
+
 .el-tabs__active-bar{
   background-color:#df5747;
 }

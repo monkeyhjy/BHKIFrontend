@@ -9,7 +9,7 @@
                       <el-col :span="21">
                         <div class="following-content">
                           <el-link class="blog-title" :underline="false"><h2>{{item.title}}</h2></el-link>
-                          <p class="limit-text-length blog-info-p">{{item.author[0].name}}, {{item.author[1].name}} | {{item.source}}</p>
+                          <p class="limit-text-length blog-info-p"><el-link :underline="false">{{item.author[0].name}}</el-link>, <el-link :underline="false">{{item.author[1].name}}</el-link> | {{item.source}}</p>
                         </div>
                       </el-col>
                       <el-col :span="3" style="padding-top:20px">
@@ -32,7 +32,7 @@
                                   <img :src="item.avatar" class="inline-avatar">
                               </el-col>
                               <el-row :span="23">
-                                  <div class="bloginfo-block limit-text-length blog-info-p">{{item.author}} | {{item.intro}}</div>
+                                  <div class="bloginfo-block limit-text-length blog-info-p"><el-link :underline="false">{{item.author}}</el-link> | {{item.intro}}</div>
                               </el-row>
                           </el-row>
                         </div>
