@@ -153,6 +153,10 @@ p {
     margin-inline-start: 0em;
     margin-inline-end: 0em;
 }
+.info {
+    margin: 0;
+    color: var(--color-link-hover);
+}
 .personInfo{
     margin-right: 3%;
 }
