@@ -29,7 +29,7 @@
       </nav>
     </aside>
     <section class="p-4 md:p-8 text-indigo-100" style="width:500px">
-      <h2 class="ml-1 mt-6 mb-2 text-lg font-semibold ">被举报帖子</h2>
+      <div style="text-align:center"><h2 class="ml-1 mt-6 mb-2 text-lg font-semibold ">被举报帖子</h2></div>
       <div class="flex flex-col space-y-6 inbox">
         <ul  >
           <li v-for="(item,index) in list" :key="index" style="margin:10px;width:300px">
@@ -175,5 +175,8 @@ export default {
 <style type="text/css">
   img{
     height: 25px;
+  }
+  #app{
+    text-align: left;
   }
 </style>

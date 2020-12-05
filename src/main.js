@@ -16,6 +16,11 @@ import './assets/css/blog/style.css'
 import './assets/css/blog/demo.css'
 import './assets/css/blog/normalize.css'
 import './assets/css/blog/style-salal.css'
+import './assets/css/manage/all.css'
+import './assets/css/manage/button_tabnav.css'
+import './assets/css/manage/style.css'
+import './assets/css/manage/style1.css'
+import './assets/css/manage/tailwind.min.css'
 import Base64 from './assets/js/base64.js'
 
 
