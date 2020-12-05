@@ -12,6 +12,11 @@ const routes = [
     redirect: "/personinfo/information"
   },
   {
+    path:'/login',
+    name: 'Login',
+    component: () => import('../views/user/Login.vue'),
+  },
+  {
     path: '/personinfo',
     name: 'PersonInfo',
     component: () => import('../views/user/PersonInfo.vue'),

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-card class="login-card">
-      <img class="login-logo" src="../image/logoT.png">
+      <img class="login-logo" src="../../assets/image/user/image/logoT.png">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="登录" name="login">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm login-form">
@@ -112,7 +112,7 @@ export default {
 
 <style>
 body{
-  background-image: url('../image/login-back.png');
+  background-image: url('../../assets/image/user/image/login-back.png');
 }
 .login{
   height:100%
