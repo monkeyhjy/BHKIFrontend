@@ -1,8 +1,7 @@
 <template>
   <div class="login">
     <el-card class="login-card">
-      <img class="avatar-img" src="../image/avatar.jpg">
-      <h1>Logo</h1>
+      <img class="login-logo" src="../image/logoT.png">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="登录" name="login">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm login-form">
@@ -148,8 +147,7 @@ element.style {
 .right-button{
   text-align:right;
 }
-.avatar-img{
-  height:150px;
-  border-radius:75px;
+.login-logo{
+  height:250px;
 }
 </style>
