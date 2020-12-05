@@ -8,8 +8,8 @@
                     <el-row>
                       <el-col :span="21">
                         <div class="following-content">
-                          <h3>{{item.title}}</h3>
-                          <p>{{item.author[0].name}}, {{item.author[1].name}} | {{item.source}}</p>
+                          <el-link class="blog-title" :underline="false"><h2>{{item.title}}</h2></el-link>
+                          <p class="limit-text-length blog-info-p">{{item.author[0].name}}, {{item.author[1].name}} | {{item.source}}</p>
                         </div>
                       </el-col>
                       <el-col :span="3" style="padding-top:20px">
@@ -26,13 +26,13 @@
                     <el-row>
                       <el-col :span="21">
                         <div class="following-content">
-                          <h3>{{item.title}}</h3>
+                          <el-link class="blog-title" :underline="false"><h2>{{item.title}}</h2></el-link>
                           <el-row>
                               <el-col :span="1">
                                   <img :src="item.avatar" class="inline-avatar">
                               </el-col>
                               <el-row :span="23">
-                                  <div class="bloginfo-block">{{item.author}} | {{item.intro}}</div>
+                                  <div class="bloginfo-block limit-text-length blog-info-p">{{item.author}} | {{item.intro}}</div>
                               </el-row>
                           </el-row>
                         </div>
@@ -58,7 +58,7 @@ export default {
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         p_collected:[
             {
-                paper_id:0,
+                paper_id:1,
                 title:"Paper1",
                 author:[
                     {id:0, name:"Zhang Manwei"},
@@ -67,7 +67,7 @@ export default {
                 source:"Journal1",
             },
             {
-                paper_id:1,
+                paper_id:2,
                 title:"Paper2",
                 author:[
                     {id:0, name:"Zhang Manwei"},
@@ -78,14 +78,14 @@ export default {
         ],
         b_collected:[
             {
-                blog_id:0,
+                blog_id:1,
                 title:"Blog1 : Today's weather : snow storm",
                 author:"Zhang Manwei",
                 avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
                 intro:"This is a very rough blog.",
             },
             {
-                blog_id:0,
+                blog_id:2,
                 title:"Blog2",
                 author:"Another author",
                 avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -103,6 +103,17 @@ export default {
 </script>
 
 <style>
+h2{
+  margin-top:10px;
+  margin-bottom: 8px;
+}
+p {
+    display: block;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0em;
+    margin-inline-end: 0em;
+}
 .collectedList{
   padding-left: 20px;
   padding-right: 20px;
@@ -123,6 +134,14 @@ export default {
 .inline-avatar{
     margin-right:10px;
     height:30px;
+}
+.blog-info-p{
+  font-size: 0.9em;
+}
+.limit-text-length{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 </style>

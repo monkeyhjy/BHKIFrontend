@@ -130,6 +130,21 @@ export default {
 </script>
 
 <style scoped>
+h2{
+  margin-top:10px;
+  margin-bottom: 8px;
+}
+h3{
+  margin-top:10px;
+  margin-bottom: 8px;
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0em;
+    margin-inline-end: 0em;
+}
 .limit-text-length{
   overflow: hidden;
   text-overflow: ellipsis;
