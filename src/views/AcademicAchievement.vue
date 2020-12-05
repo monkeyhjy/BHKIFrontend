@@ -5,108 +5,78 @@
 			<el-main>
 				<el-col :span="24">
 					<el-col :span="4"><div class="grid-content"></div></el-col>
-					<el-col :span="16" style="background-color: #98f1ee;">
+					<el-col :span="16" style="background-color: #fbede4;">
 						<!--					标题-->
 						<el-col :span="24" style="text-align: center">
 							<div>
 								<div style="text-align: right">
-									<el-button size="small"
+									<el-button
 														 type="primary"
 														 icon="el-icon-star-on"
-														 v-if="achievement.isCollected"
+														 v-if="paper.is_star===0"
 														 circle
-														 @click="collectFail"></el-button>
-									<el-button size="small"
+														 @click="star(1)"></el-button>
+									<el-button
 														 type="info"
 														 icon="el-icon-star-off"
 														 v-else
 														 circle
-														 @click="collectSuccess"></el-button>
+														 @click="star(0)"></el-button>
 								</div>
-								<strong style="font-size: 1.5rem">{{achievement.title}}</strong>
-								<!--						作者，点击可跳转到该学者的门户页面-->
-								<div style="margin-top: 1rem">
-									<el-popover
-													placement="top-start"
-													width="240"
-													trigger="hover"
-													content="点击可跳转到该学者的门户页面"
-													style="margin-left: 1rem; display: inline; text-align: center"
-													v-for="(item, index) in achievement.author"
-													:key="index">
-										<el-link
-														slot="reference"
-														href=""
-														@click="jumpToPortal(item.p_id)"
-										style="font-size: 1.2rem">{{item.name}}</el-link>
-									</el-popover>
-								</div>
-								<!--						机构-->
-								<div style="margin-top: 1rem">
-									<span>{{achievement.company}}</span>
+								<div><strong style="font-size: 1.5rem">{{paper.title}}</strong>
+									<!--						作者，点击可跳转到该学者的门户页面--></div>
+								<div style="margin-top: 1rem" >
+									<span v-for="(item, index) in paper.authors" :key="index">
+										<el-link style="font-size: 1.2rem"  @click="jumpToPortal(item.author_id)">{{item.author_name}}</el-link>
+										<span style="font-size: 1.2rem"  v-if="index!==paper.authors.length-1">, </span>
+									</span>
 								</div>
 								<!--						来源-->
 								<div style="margin-top: 1rem">
-									<span>{{achievement.source}}</span>
+									<span>{{paper.venue_raw}}, </span>
+									<span v-if="paper.volumn!==''">Volumn {{paper.volumn}}, </span>
+									<span v-if="paper.issue!==''">Issue {{paper.issue}}, </span>
+									<span v-if="paper.year!==''">{{paper.year}}, </span>
+									<span v-if="paper.page_start!==''&&paper.page_end!==''">
+										Pages {{paper.page_start}}-{{paper.page_end}}
+									</span>
 								</div>
 							</div>
 						</el-col>
-
-						<el-col :span="24" style="text-align: left; margin-top: 4rem">
+<!--						摘要-->
+						<el-col :span="24" style="text-align: left; margin-top: 3rem">
 							<strong>摘要：</strong>
-							{{achievement.abstract}}
+							<p>{{paper.abstract}}</p>
 						</el-col>
-						<el-col :span="24" style="text-align: left; margin-top: 1rem">
+<!--						关键词-->
+						<el-col :span="24" style="text-align: left">
 							<strong>关键词：</strong>
-							<span v-for="(item, index) in achievement.keyword" :key="index">
+							<span v-for="(item, index) in paper.keywords" :key="index">
 								{{item}};
 							</span>
 						</el-col>
+<!--						原文链接-->
 						<el-col :span="24" style="text-align: left; margin-top: 1rem">
 							<strong>原文链接：</strong>
-							<el-link :href="'https://' + achievement.originLink" target="_blank">{{achievement.originLink}}</el-link>
+							<el-link :href="paper.url" target="_blank">{{paper.url}}</el-link>
 						</el-col>
+<!--						被引量-->
 						<el-col :span="24" style="text-align: left; margin-top: 1rem">
-							<strong>分类号：</strong>
-							{{achievement.ISBN}}
-						</el-col>
-						<el-col :span="24" style="text-align: left; margin: 1rem 0">
 							<strong>被引量：</strong>
-							{{achievement.citeNum}}
+							{{paper.n_citation}}
 						</el-col>
-
-						<el-col :span="24">
-							<div style="font-weight: 700; font-size: 1.5rem; margin-top: 5rem; margin-bottom: 1rem;text-align: left">
-								作者简介
-							</div>
+<!--						ISSN-->
+						<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
+							<strong>ISSN：</strong>
+							<span>{{paper.issn}}</span>
 						</el-col>
-						<el-col :span="24"
-										:gutter="20"
-										v-for="(item,index) in achievement.author"
-										:key="index">
-							<el-col :span="2"><div class="grid-content"></div></el-col>
-							<el-col :span="20">
-								<el-card shadow="hover" style="text-align: left">
-									<div>
-										<el-link
-														href=""
-														style="font-size: 1.5rem"
-														@click="jumpToPortal(item.p_id)">{{item.name}}</el-link>
-									</div>
-									<el-col :span="3">
-										<p>作者简介：</p>
-									</el-col>
-									<el-col :span="21">
-										<p style="color:gray">{{item.introduction}}</p>
-									</el-col>
-								</el-card>
-							</el-col>
-							<el-col :span="2"><div class="grid-content"></div></el-col>
+<!--							doi-->
+						<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
+							<strong>doi：</strong>
+							<span>{{paper.doi}}</span>
 						</el-col>
 					</el-col>
 					<el-col :span="4"><div class="grid-content"></div></el-col>
-
-
 				</el-col>
 			</el-main>
 		</el-container>
@@ -118,59 +88,81 @@
 		name: "AcademicAchievement",
 		data() {
 			return {
-				a_id: 0,
-				achievement: {
+				paper: {
+					paper_id: 0,
 					title: '软件系统分析与设计',
-					author: [
+					authors: [
 						{
-							p_id: 1,
-							name: '111',
-							introduction: '作者简介1',
+							author_id: 1,
+							author_name: '111',
 						},
 						{
-							p_id: 2,
-							name: '222',
-							introduction: '作者简介2',
+							author_id: 2,
+							author_name: '222',
 						},
 						{
-							p_id: 3,
-							name: '333',
-							introduction: '作者简介3',
+							author_id: 3,
+							author_name: '333',
 						},
 					],
-					source: '北京航空航天大学学报',
-					abstract: '123123123',
-					keyword: [
-							'22',
-							'33',
-							'44',
+					venue_raw: '北京航空航天大学学报',
+					year: 2018,
+					keywords: [
+						'22',
+						'33',
+						'44',
 					],
-					originLink: 'www.baidu.com',
-					ISBN: 'TF306.6',
-					citeNum: 200,
-					isCollected: true,
-				}
+					n_citation: 200,
+					page_start: '84',
+					page_end: '90',
+					volumn: '60',
+					issue: '25',
+					issn: '',
+					doi: '',
+					url: 'www.baidu.com',
+					abstract: '这是一篇文章的摘要',
+					is_star: 0,
+				},
 			}
 		},
 		mounted() {
-			this.getAid();
+			this.get_paper_id();
+			this.$axios.post('http://182.92.239.145/apis/',
+					this.qs.stringify({
+						paper_id: this.paper_id,
+					}),
+					{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+					.then(res => {
+						if(res.data.paper.status === 0){
+							this.paper = res.data.paper
+							console.log("进入学术成果详情页成功")
+						}
+					})
 		},
 		methods: {
-			getAid() {
-				this.aid = JSON.parse(this.$Base64.decode(this.$route.query.aid))
+			get_paper_id() {
+				this.paper_id = JSON.parse(this.$Base64.decode(this.$route.query.paper_id))
 				//console.log(this.pid);
 			},
-			collectSuccess() {
-				this.achievement.isCollected = !this.achievement.isCollected;
+			star(flag) {
+				this.paper.is_star = 1 - this.paper.is_star;
+				this.$axios.post('http://182.92.239.145/apis/',
+						this.qs.stringify({
+							paper_id: this.paper_id,
+							flag: flag,
+						}),
+						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+						.then(res => {
+							if(res.data.status === 0){
+								this.paper = res.data.paper
+							}
+						})
 			},
-			collectFail() {
-				this.achievement.isCollected = !this.achievement.isCollected;
-			},
-			jumpToPortal(p_id) {
+			jumpToPortal(author_id) {
 				this.$router.push({
 					path: '/portal',
 					query: {
-						pid: this.$Base64.encode(JSON.stringify(p_id)),
+						author_id: this.$Base64.encode(JSON.stringify(author_id)),
 					}
 				})
 			}
