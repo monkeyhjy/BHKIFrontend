@@ -1,6 +1,6 @@
 <template>
     <div class="information">
-        <el-card class="info" style="padding-top:20px">
+        <el-card class="info" style="padding-top:20px; text-align:center">
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-row>
@@ -53,7 +53,9 @@
                 </el-col>
             </el-row>
         </el-card>
-        <div style="text-align: right;margin-top:20px"><el-button type="primary">进入门户 -></el-button></div>
+        <el-card class="personPage">
+            门户界面
+        </el-card>
     </div>
 </template>
 
@@ -138,25 +140,6 @@ export default {
 </script>
 
 <style>
-h2{
-  margin-top:10px;
-  margin-bottom: 8px;
-}
-h3{
-  margin-top:10px;
-  margin-bottom: 8px;
-}
-p {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0em;
-    margin-inline-end: 0em;
-}
-.info {
-    margin: 0;
-    color: var(--color-link-hover);
-}
 .personInfo{
     margin-right: 3%;
 }
@@ -170,5 +153,4 @@ p {
   height:150px;
   border-radius:75px;
 }
-
 </style>

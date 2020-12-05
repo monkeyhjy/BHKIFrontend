@@ -8,21 +8,10 @@
 
 
 
-.menu--salal .menu__item:first-child {
-	--menu-item-color:#f85f83;
+.menu--salal .menu__item {
+	--menu-item-color:#df5746;
 }
 
-.menu--salal .menu__item:nth-child(2) {
-	--menu-item-color:#f7bd1f;
-}
-
-.menu--salal .menu__item:nth-child(3) {
-	--menu-item-color:#24d261;
-}
-
-.menu--salal .menu__item:nth-child(4) {
-	--menu-item-color:#6537f7;
-}
 
 .menu--salal .menu__item-name {
 	font-family: 'Lora', serif;

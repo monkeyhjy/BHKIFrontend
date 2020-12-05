@@ -6,9 +6,9 @@
           <el-col :span="16">
             <div class="grid-content">
                <div class="flex6">
-                <el-card shadow="hover" v-for="(item,index) in chose" :key="index" style="margin:10px">
-                <p @click="choseType(item.type)" style="margin:-10px -5px">{{ item.name }}</p>
-                </el-card>
+                <el-button v-for="(item,index) in chose" :type="item.type==type?'primary':''" :key="index" style="margin:10px">
+                <p @click="choseType(item.type)">{{ item.name }}</p>
+                </el-button>
             </div>
      
               <div>
@@ -17,17 +17,30 @@
                   <li style="margin-bottom:10px">
                     <el-card class="box-card">
                       <div slot="header" >
-                        <a :href="item.userid+item.blogid" style="width:70%">
-                            <h1 style="font-size:20px;margin-top:-6px;;margin-bottom:-6px">{{ item.blogname }}</h1>
-                        </a>  
+                        <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content:left">
+                            <h1 style="font-size:20px;margin-top:-6px;;margin-bottom:-6px;justify-content:left">{{ item.blogname }}</h1>
+                        </el-link>  
                           <p style="margin-top:10px;font-size:15px;width:90%;padding-left:15px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">{{ item.content }}</p>                            
                       </div>
                       <div class="flex6" style="font-size:12px;color:gray">
                         <span style="margin-right:20px">{{ item.date}}</span> 
-                        <span style="margin-right:20px"><a :href="item.userid" style="color:gray">{{ item.username}}</a></span>
-                         <i class="el-icon-place" style="margin-right:20px">阅读量{{ item.readnum }}</i>
-                          <i class="el-icon-place" style="margin-right:20px">评论量{{ item.tipnum }}</i>
-                          <i class="el-icon-place" style="margin-right:20px">点赞量{{ item.likenum}}</i>
+                        <span style="margin-right:20px;color:gray">作者 
+                          <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid">{{ item.username}}</el-link></span>
+                           <span class="flex6 iconsize">
+                                <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-yueduliang" ></use>
+                                </svg>
+                               <span class="iconcolor"> 阅读量{{ item.readnum }} |</span></span>
+                          <span class="flex6 iconsize ">
+                            <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-pinglun" ></use>
+                                </svg>
+                            <span class="iconcolor">评论量{{ item.tipnum }} |</span></span>
+                          <span class="flex6 iconsize ">
+                             <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-buoumaotubiao15" ></use>
+                              </svg>
+                           <span class="iconcolor"> 点赞量{{ item.likenum }} </span></span>
                       </div>
                     </el-card>
                   </li>
@@ -51,11 +64,12 @@ export default {
       return{
         search1:"",
         list:[
-          {blogname:"冲啊博客",blogid:12,content:"内容",date:"2020年1月1日",username:"作者名fhg字",userid:123,readnum:231,tipnum:342,likenum:34}
+          {blogname:"冲啊博客",blogid:12,content:"内容",date:"2020年1月1日",username:"hazhfudi",userid:123,readnum:231,tipnum:342,likenum:34}
         ],
         chose:[
           {name:"全部",type:0},{name:"计算机",type:1}
-        ]
+        ],
+        type:1,
       }
   },
   mounted(){
@@ -83,7 +97,8 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.list=res.data.list
+                this.list=res.data.list,
+                this.type=type
             })
     }
   }

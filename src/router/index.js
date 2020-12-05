@@ -12,9 +12,9 @@ const routes = [
     redirect: "/personinfo/information"
   },
   {
-    path:'/login',
+    path: '/login',
     name: 'Login',
-    component: () => import('../views/user/Login.vue'),
+    component: ()=> import('../views/user/Login.vue')
   },
   {
     path: '/personinfo',

@@ -1,23 +1,43 @@
 <template>
       <div style="width:80%">
-            <ul v-for="(item,index) in list" :key="index">
+            <ul>
                 <li style="margin-top:5px;margin-left:10px">
                    <el-card shadow="never">
-                     <div>
+                     <div  v-for="(item,index) in list" :key="index">
                         <div class="flex6">
-                            <a :href="item.id" style="max-width:80%;">
+                            <el-link class="blog-title" :underline="false" :href="'/BlogEdit/'+id+'/'+item.id" style="max-width:80%;">
                                 <h1 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.name }}</h1>
-                            </a>  
-                            <a :href="id+item.id"><i class="el-icon-place">查看</i></a>
+                            </el-link>  
+                            <el-link class="blog-title" :underline="false" style="margin-left:20px"  :href="'/BlogItem/'+id+'/'+item.id">
+                            <i class="flex6"> 
+                              <svg class="icon color_deep iconmargin"  style="font-size:20px" aria-hidden="true">
+                                 <use xlink:href="#icon-yueduliang" ></use>
+                                </svg>查看
+                            </i>
+                            </el-link>
                             
                         </div>
                         <p style="padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.content }}</p> 
                         <div class="flex6" style="color:gray;font-size:12px">
-                          <span >{{ item.date}}</span>
-                          <i class="el-icon-place">阅读量{{ item.readnum}}</i>
-                          <i class="el-icon-place">评论量{{ item.tipnum}}</i>
-                          <i class="el-icon-place">点赞量{{ item.likenum}}</i>
+                          <span style="margin-right:15px">{{ item.date}} |</span> 
+                            <span class="flex6 iconsize">
+                                <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-yueduliang" ></use>
+                                </svg>
+                               <span class="iconcolor"> 阅读量{{ item.readnum }} |</span></span>
+                          <span class="flex6 iconsize ">
+                            <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-pinglun" ></use>
+                                </svg>
+                            <span class="iconcolor">评论量{{ item.tipnum }} |</span></span>
+                          <span class="flex6 iconsize ">
+                             <svg class="icon color_deep iconmargin" aria-hidden="true">
+                                 <use xlink:href="#icon-buoumaotubiao15" ></use>
+                              </svg>
+                           <span class="iconcolor"> 点赞量{{ item.likenum }} </span></span>
                         </div>
+                       <el-divider class="inline-divider" style="margin-top:20px;margin-bottom:20px"></el-divider>
+                   
                     </div>
                    </el-card>
                     
@@ -48,6 +68,7 @@ export default {
               .then(res => {
                 console.log(res)
                 this.list=res.data.list
+                this.id=res.data.userid
               })
   },
 }

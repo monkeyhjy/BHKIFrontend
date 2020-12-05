@@ -176,7 +176,4 @@ export default {
   img{
     height: 25px;
   }
-  #app{
-    text-align: left;
-  }
 </style>

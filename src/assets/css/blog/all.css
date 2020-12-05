@@ -1,15 +1,40 @@
 a{
     text-decoration:none
 }
-a:link{color:#aa67aa;}
-a:visited{color:#1682dc;}
+.iconsize{
+    font-size: 13px;
+    margin-right:15px;
+}
+.iconcolor{
+    color: gray;
+    margin-left: 10px;
+}
+.iconmargin{
+  
+}
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .color_deep{
+      color: #df5746;
+  }
+  .color_middle{
+      color:#f9ae8f;
+  }
+  .color_simple{
+      color:#fbede4,
+  }
 .profile{
     margin-top:100px
 }
 .icon {
     width: 1em;
     height: 1em;
-    vertical-align: -0.15em;
+ 
     fill: currentColor;
     overflow: hidden;
   }

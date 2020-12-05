@@ -10,19 +10,21 @@ import qs from "qs";
 import echarts from 'echarts'
 import Clipboard from "clipboard";
 
-import './assets/css/user/general.css';
+//import './assets/css/user/general.css';
 import './assets/css/blog/all.css'
-import './assets/css/blog/style.css'
+import './assets/css/blog/blogstyle.css'
 import './assets/css/blog/demo.css'
 import './assets/css/blog/normalize.css'
 import './assets/css/blog/style-salal.css'
-import './assets/css/manage/all.css'
-import './assets/css/manage/button_tabnav.css'
+import './assets/iconfontBlog/iconfont.css'
+import './assets/iconfontBlog/iconfont.js'
+import Base64 from './assets/js/base64.js'
+//import './assets/css/manage/all.css'
+//import './assets/css/manage/button_tabnav.css'
 import './assets/css/manage/style.css'
 import './assets/css/manage/style1.css'
 import './assets/css/manage/tailwind.min.css'
-import Base64 from './assets/js/base64.js'
-
+import './assets/css/user/general.css'
 
 axios.defaults.baseURL='http://127.0.0.1:8000'
 axios.defaults.headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }

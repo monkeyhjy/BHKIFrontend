@@ -1,6 +1,6 @@
 <template>
   <div class="personInfo">
-    <el-row class="main" :gutter="20">
+    <el-row class="main" :gutter="20" style="text-align:center;">
       <el-col :span="3" >
           <el-menu
           router

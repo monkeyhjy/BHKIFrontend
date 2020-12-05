@@ -1,7 +1,7 @@
 <template>
   <div class='userInfo'>
     <el-row :gutter="20">
-      <el-col :span="4">
+      <el-col :span="4" style="text-align: center;">
         <img class="avatar-img" src="../../assets/image/user/image/avatar.jpg"><br/>
         <h2 class="profile-username">{{user_name}}</h2>
         <el-divider></el-divider>
@@ -16,7 +16,7 @@
               <div class="published-blogs" v-for="item in published" :key="item.id">
                 <div class="following-block">
                   <div class="following-content" style="text-align: left;">
-                    <el-link class="blog-title" :underline="false"><h2>{{item.name}}</h2></el-link>
+                    <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
                     <el-row>
                       <el-col :span="1">
                         <img :src="user_avatar" class="inline-avatar">
@@ -35,7 +35,7 @@
               <div class="collected-blogs" v-for="item in collected" :key="item.id">
                 <div class="collected-block">
                   <div class="following-content" style="text-align: left;">
-                    <el-link class="blog-title" :underline="false"><h2>{{item.name}}</h2></el-link>
+                    <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
                     <el-row>
                         <el-col :span="1">
                             <img :src="item.avatar" class="inline-avatar">
@@ -130,20 +130,16 @@ export default {
 </script>
 
 <style scoped>
-h2{
-  margin-top:10px;
-  margin-bottom: 8px;
-}
-h3{
-  margin-top:10px;
-  margin-bottom: 8px;
+h2,h3{
+  margin-top: 10px;
+  margin-bottom:8px;
 }
 p {
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0em;
-    margin-inline-end: 0em;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-end: 0em;
+  margin-inline-start: 0em;
 }
 .limit-text-length{
   overflow: hidden;

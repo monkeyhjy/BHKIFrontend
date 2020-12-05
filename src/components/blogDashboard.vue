@@ -9,7 +9,7 @@
                         <p style="margin-left:10px">{{name}}</p>    
                     </div>
                             <div class="flex6" style="margin-top:15px">
-                            <div v-for="(item,index) in list" :key="index" style="margin-right:4px">
+                            <div v-for="(item,index) in list" :key="index"  style="margin-right:13px">
                                 <p style="font-size:14px;text-align:center">{{ item.num }}</p>
                                 <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
                             </div>
@@ -83,7 +83,7 @@ export default {
       console.log(key, keyPath);
     },
     createblog(){
-      this.$router.push({path:"/BlogEdit/2"})
+      this.$router.push({path:"/BlogEdit/"+this.id+'/'+123})
       //获取用户的帖子论坛大致信息
      this.$axios.post('http://182.92.239.145/apis/blog/createblog',
               this.qs.stringify({
