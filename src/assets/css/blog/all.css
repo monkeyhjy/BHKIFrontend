@@ -1,0 +1,62 @@
+a{
+    text-decoration:none
+}
+.iconsize{
+    font-size: 13px;
+    margin-right:15px;
+}
+.iconcolor{
+    color: gray;
+    margin-left: 10px;
+}
+.iconmargin{
+  
+}
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .color_deep{
+      color: #df5746;
+  }
+  .color_middle{
+      color:#f9ae8f;
+  }
+  .color_simple{
+      color:#fbede4,
+  }
+.profile{
+    margin-top:100px
+}
+.icon {
+    width: 1em;
+    height: 1em;
+ 
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .flex7 {
+    display: flex;
+    flex-wrap: wrap;
+}
+.flex6 {
+    display: flex;
+    flex-wrap: wrap;
+      align-items: center;
+}
+.router{
+    left:-80px;
+    position:relative
+}
+.change-color{
+    　　text-color:#aa67aa  !important; 
+   background-image: linear-gradient(to right, #aa67aa, #1682dc) !important;
+        -webkit-background-clip: text !important;
+        color: transparent !important;
+
+
+}
+ul li{ list-style: none; }

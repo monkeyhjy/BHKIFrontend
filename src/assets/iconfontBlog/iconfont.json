@@ -1,0 +1,58 @@
+{
+  "id": "2249901",
+  "name": "BHKI",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14471311",
+      "name": "喜欢",
+      "font_class": "xihuan",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "13131390",
+      "name": "收 藏 (1)",
+      "font_class": "shoucang",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "3564594",
+      "name": "举报",
+      "font_class": "report",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "15342916",
+      "name": "发送",
+      "font_class": "fasong",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "1089295",
+      "name": "点赞",
+      "font_class": "buoumaotubiao15",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "827650",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "878356",
+      "name": "阅读量",
+      "font_class": "yueduliang",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    }
+  ]
+}

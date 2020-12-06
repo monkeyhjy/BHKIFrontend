@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<el-container>
-			<el-header>导航栏</el-header>
+			<el-header>
+				<navigation></navigation>
+			</el-header>
 			<el-main>
 				<el-col :span="24">
 					<el-col :span="4"><div class="grid-content"></div></el-col>
@@ -84,8 +86,10 @@
 </template>
 
 <script>
+	import Navigation from "../navigatorandsearch/Navigation";
+
 	export default {
-		name: "AcademicAchievement",
+		name: "Paper",
 		data() {
 			return {
 				paper: {
@@ -160,13 +164,16 @@
 			},
 			jumpToPortal(author_id) {
 				this.$router.push({
-					path: '/portal',
+					path: '/author',
 					query: {
 						author_id: this.$Base64.encode(JSON.stringify(author_id)),
 					}
 				})
 			}
-		}
+		},
+		components: {
+			Navigation,
+		},
 	}
 </script>
 
