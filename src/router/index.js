@@ -5,15 +5,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path:'/Navigation',
-    name:'Navigation',
-    component: () => import('../views/navigatorandsearch/Navigation'),
+    path:'/NewNavigation',
+    name:'NewNavigation',
+    component: () => import('../views/navigatorandsearch/NewNavigation'),
     children:[
-      // {
-      //   path: '/',
-      //   name: 'Home',
-      //   component: Home
-      // },
       {
         path:'/Search',
         name:'Search',

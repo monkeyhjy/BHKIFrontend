@@ -164,8 +164,10 @@
 </template>
 
 <script>
+    import NewNavigation from '../navigatorandsearch/NewNavigation';
     export default {
         name: "Search",
+        components: {NewNavigation},
         data() {
             return {
                 professor: '',
