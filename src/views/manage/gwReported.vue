@@ -1,94 +1,97 @@
 <template>
-  <el-header>
-    <navigation></navigation>
-  </el-header>
 
+  <div>
+    <div>
+      <navigation></navigation>
+    </div>
     <div class="flex bg-indigo-800 antialiased min-h-screen">
-  <aside class="flex flex-col text-indigo-100 bg-indigo-900 bg-opacity-50" style="width:100px">
-    <nav class="text-sm md:text-xs">
-      <a href="./blogreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider hover:bg-indigo-900" style="width:100px; color: white">
-        <img src="../../assets/image/manage/document.png" style="margin:10px">
-        违规帖子
-      </a>
-      <a href="./commentreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider hover:bg-indigo-900" style="color: white">
-        <img src="../../assets/image/manage/comment.png" style="margin:10px" >
-        违规评论
-      </a>
-      <a href="#" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider bg-indigo-800" style="color: white">
-        <img src="../../assets/image/manage/globe_3.png" style="margin:10px">
-        冒领门户
-      </a>
-      <!-- <a href="#" class="flex flex-col items-center p-4 md:p-6 font-semibold hover:bg-indigo-900">
-        <svg viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-indigo-300 mb-1">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-        </svg>
-        待开发
-      </a>
-      <a href="#" class="flex flex-col items-center p-4 md:p-6 font-semibold hover:bg-indigo-900">
-        <svg viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-indigo-300 mb-1">
-          <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-        </svg>
-        待开发
-      </a> -->
-    </nav>
-  </aside>
-  <section class="p-4 md:p-8 text-indigo-100" style="width:500px">
-    <h2 class="ml-1 mt-6 mb-2 text-lg font-semibold ">冒领门户</h2>
-    <div class="flex flex-col space-y-6 inbox">
-      <ul  >
-        <li v-for="(item,index) in list" :key="index" style="margin:10px;width:300px">
-            <a href="#" class="relative flex pl-5 pr-3 py-6 bg-indigo-900  rounded-lg"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
-              <div class="flex-grow mr-2" style="color: white;">
-                <header class="flex md:flex-col xl:flex-row justify-between mr-2 mb-2 leading-snug">
-                  <div>
-                    <h1 class="text-lg font-semibold">{{item.title}}</h1>
-                    <h2 class="flex flex-wrap">
-                    </h2>
-                  </div>
-                </header>
-                <p>{{item.reason}}</p>
-              </div>
-            </a>
-        </li>
-      </ul>
-    </div>
-  </section>
-  <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:white">
-    <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:rgba(251,231,220)">
-      <div class="flex mb-4">
-        <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-          <a href="#"><img :src="this.list[activeindex].icon" class="h-full w-full object-cover"></a>
+      <aside class="flex flex-col text-indigo-100 bg-indigo-900 bg-opacity-50" style="width:100px">
+        <nav class="text-sm md:text-xs">
+          <a href="./blogreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider hover:bg-indigo-900" style="width:100px; color: white">
+            <img src="../../assets/image/manage/document.png" style="margin:10px">
+            违规帖子
+          </a>
+          <a href="./commentreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider hover:bg-indigo-900" style="color: white">
+            <img src="../../assets/image/manage/comment.png" style="margin:10px" >
+            违规评论
+          </a>
+          <a href="#" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider bg-indigo-800" style="color: white">
+            <img src="../../assets/image/manage/globe_3.png" style="margin:10px">
+            冒领门户
+          </a>
+          <!-- <a href="#" class="flex flex-col items-center p-4 md:p-6 font-semibold hover:bg-indigo-900">
+						<svg viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-indigo-300 mb-1">
+							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+						</svg>
+						待开发
+					</a>
+					<a href="#" class="flex flex-col items-center p-4 md:p-6 font-semibold hover:bg-indigo-900">
+						<svg viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-indigo-300 mb-1">
+							<path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+						</svg>
+						待开发
+					</a> -->
+        </nav>
+      </aside>
+      <section class="p-4 md:p-8 text-indigo-100" style="width:500px">
+        <h2 class="ml-1 mt-6 mb-2 text-lg font-semibold ">冒领门户</h2>
+        <div class="flex flex-col space-y-6 inbox">
+          <ul  >
+            <li v-for="(item,index) in list" :key="index" style="margin:10px;width:300px">
+              <a href="#" class="relative flex pl-5 pr-3 py-6 bg-indigo-900  rounded-lg"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
+                <div class="flex-grow mr-2" style="color: white;">
+                  <header class="flex md:flex-col xl:flex-row justify-between mr-2 mb-2 leading-snug">
+                    <div>
+                      <h1 class="text-lg font-semibold">{{item.title}}</h1>
+                      <h2 class="flex flex-wrap">
+                      </h2>
+                    </div>
+                  </header>
+                  <p>{{item.reason}}</p>
+                </div>
+              </a>
+            </li>
+          </ul>
         </div>
-        <div class=" font-semibold" style="font-size:30px">
-          <a href="#">{{this.list[activeindex].title}}</a>
-        </div>
-      </div>
-      <div class="space-y-4">
-        {{this.list[activeindex].content}}
-      </div>
-    </div>
-    <div class="px-6 py-5 bg-white shadow-2xl rounded-lg mb-4 md:mb-8 " style="background:rgba(251,231,220)">
-        <div class="flex mb-4">
-          <div class="  font-semibold  italic" style="font-size:20px">
-            <a href="#">举报人：{{this.list[activeindex].user_name_r}}</a>
+      </section>
+      <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:white">
+        <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:rgba(251,231,220)">
+          <div class="flex mb-4">
+            <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
+              <a href="#"><img :src="this.list[activeindex].icon" class="h-full w-full object-cover"></a>
+            </div>
+            <div class=" font-semibold" style="font-size:30px">
+              <a href="#">{{this.list[activeindex].title}}</a>
+            </div>
+          </div>
+          <div class="space-y-4">
+            {{this.list[activeindex].content}}
           </div>
         </div>
-        <div class="space-y-4 italic">
-          举报时间：{{this.list[activeindex].time}}
+        <div class="px-6 py-5 bg-white shadow-2xl rounded-lg mb-4 md:mb-8 " style="background:rgba(251,231,220)">
+          <div class="flex mb-4">
+            <div class="  font-semibold  italic" style="font-size:20px">
+              <a href="#">举报人：{{this.list[activeindex].user_name_r}}</a>
+            </div>
+          </div>
+          <div class="space-y-4 italic">
+            举报时间：{{this.list[activeindex].time}}
+          </div>
         </div>
-      </div>
-      <div class="flex flex-wrap items-center -mb-4 pt-4 md:pt-8 justify-end ">
-        <!-- <a href="#" class="inline-flex items-center px-12 py-4 mb-4 mr-6 bg-indigo-900 hover:bg-indigo-800 text-indigo-100 text-lg font-semibold rounded-lg" @click="open">
-          删帖
-        </a> -->
-        <el-button type="primary" @click="open">解绑</el-button>
-        <el-button >忽略</el-button>
-        <!-- <a href="#" class="inline-flex px-12 py-4 mb-4 bg-indigo-400 bg-opacity-25 hover:bg-indigo-300 hover:bg-opacity-25 text-indigo-800 text-lg font-semibold rounded-lg">
-          忽略
-        </a> -->
-      </div>
-  </main>
-</div>
+        <div class="flex flex-wrap items-center -mb-4 pt-4 md:pt-8 justify-end ">
+          <!-- <a href="#" class="inline-flex items-center px-12 py-4 mb-4 mr-6 bg-indigo-900 hover:bg-indigo-800 text-indigo-100 text-lg font-semibold rounded-lg" @click="open">
+						删帖
+					</a> -->
+          <el-button type="primary" @click="open">解绑</el-button>
+          <el-button >忽略</el-button>
+          <!-- <a href="#" class="inline-flex px-12 py-4 mb-4 bg-indigo-400 bg-opacity-25 hover:bg-indigo-300 hover:bg-opacity-25 text-indigo-800 text-lg font-semibold rounded-lg">
+						忽略
+					</a> -->
+        </div>
+      </main>
+    </div>
+  </div>
+
 </template>
 
 <script>
