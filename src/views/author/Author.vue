@@ -1,10 +1,10 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
-	<div>
+	<div style="background-color: #f5e4e4;">
+		<div>
+			<new-navigation></new-navigation>
+		</div>
 		<el-container>
-			<el-header>
-				导航栏
-			</el-header>
-			<el-main style="padding: 0">
+			<el-main style="padding-left: 0; padding-right: 0">
 				<el-row>
 					<!--				基本信息-->
 					<el-col :span="4">
@@ -13,147 +13,156 @@
 						</div>
 					</el-col>
 
-					<el-col :span="16" style="margin: 0">
-						<el-col :span="12" class="profile">
-							<div class="grid-content">
+					<el-col :span="16">
+						<div style="margin: 0 1rem">
+							<el-col :span="12">
 								<div style="font-weight: 700;
-								font-size: 1.2rem;
-								margin-bottom: 0.5rem;
-								text-align: center">基本信息</div>
-								<div style="height: 25rem; margin-top: 1rem">
+								font-size: 1.5rem;
+								text-align: center; margin-bottom: 1rem">基本信息</div>
+								<div style="height: 25rem">
+									<el-col :span="24">
+										<el-col :span="24" style="margin-bottom: 1rem;">
+											<el-card style="background-color: #fabca2; border-radius: 10px">
+												<el-popover
+																placement="top-start"
+																width="240"
+																trigger="hover"
+																content="点击可跳转到该学者的个人信息页面" style="margin-right: 1rem">
+													<el-link
+																	slot="reference"
+																	style="font-size: 2rem"
+																	href=""
+																	@click="jump_to_info(author.user_id)">{{author.name}}</el-link>
+												</el-popover>
+												<!--											<el-button size="mini" style="vertical-align: bottom"-->
+												<!--																 v-if="author.is_claimed===0"-->
+												<!--																 type="success"-->
+												<!--																 @click="submitClaim">认领门户</el-button>-->
+												<!--											<el-button size="mini" style="vertical-align: bottom"-->
+												<!--																 v-else type="info" disabled>门户已被认领</el-button>-->
 
-									<el-col :span="24" style="margin-bottom: 1rem" >
-										<el-col :span="24">
-											<el-popover
-															placement="top-start"
-															width="240"
-															trigger="hover"
-															content="点击可跳转到该学者的个人信息页面" style="margin-right: 1rem">
-												<el-link
-																slot="reference"
-																style="font-size: 2rem"
-																href=""
-																@click="jump_to_info(author.user_id)">{{author.name}}</el-link>
-											</el-popover>
-											<el-button size="mini" style="vertical-align: bottom"
-																 v-if="author.is_claimed===0"
-																 type="success"
-																 @click="submitClaim">认领门户</el-button>
-<!--											<el-button size="mini" style="vertical-align: bottom"-->
-<!--																 v-else type="info" disabled>门户已被认领</el-button>-->
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_claimed===1&&author.is_reported===0"
+																	 type="danger"
+																	 @click="reportDisplay">举报冒领门户</el-button>
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_claimed===1&&author.is_reported===1"
+																	 type="danger"
+																	 disabled>冒领门户已被举报</el-button>
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_followed===1&&author.is_claimed!==2"
+																	 type="primary"
+																	 @click="follow(0)">关注</el-button>
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_followed===0&&author.is_claimed!==2"
+																	 type="info"
+																	 @click="follow(1)">取消关注</el-button>
 
-											<el-button size="mini"
-																 style="vertical-align: bottom; margin-left: 0.5rem"
-																 v-if="author.is_claimed===1&&author.is_reported===0"
-																 type="danger"
-																 @click="reportDisplay">举报冒领门户</el-button>
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_claimed!==2"
+																	 type="warning"
+																	 @click="privateMessageDisplay">私信TA</el-button>
+											</el-card>
 
-											<el-button size="mini"
-																 style="vertical-align: bottom; margin-left: 0.5rem"
-																 v-if="author.is_claimed===1&&author.is_reported===1"
-																 type="danger"
-																 disabled>冒领门户已被举报</el-button>
-
-											<el-button size="mini"
-																 style="vertical-align: bottom; margin-left: 0.5rem"
-																 v-if="author.is_followed===1&&author.is_claimed!==2"
-																 type="primary"
-																 @click="follow(0)">关注</el-button>
-
-											<el-button size="mini"
-																 style="vertical-align: bottom; margin-left: 0.5rem"
-																 v-if="author.is_followed===0&&author.is_claimed!==2"
-																 type="info"
-																 @click="follow(1)">取消关注</el-button>
-
-											<el-button size="mini"
-																 style="vertical-align: bottom; margin-left: 0.5rem"
-																 v-if="author.is_claimed!==2"
-																 type="warning"
-																 @click="privateMessageDisplay">私信TA</el-button>
 										</el-col>
 									</el-col>
-									<el-col :span="24" style="margin-bottom: 1rem; margin-left: 0;">
-										<i class="el-icon-office-building"></i>
-										{{author.orgs}}</el-col>
-									<el-col :span="24" style="margin-bottom: 1rem">
-								<div style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
-									<i class="el-icon-s-grid"></i>
-									{{item.t}}
+
+									<el-col :span="24" style="margin-left: 0">
+										<el-card style="margin-bottom: 1rem; background-color: #fabca2;  border-radius: 10px">
+											<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
+											<strong>工作单位：</strong>{{author.orgs}}
+										</el-card>
+										<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
+											<el-card style="background-color: #fabca2;  border-radius: 10px">
+												<div>
+													<i class="el-icon-s-grid" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
+													<strong>相关领域：</strong>
+												</div>
+												<el-col :span="8" style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
+													{{item.t}}
+												</el-col>
+											</el-card>
+
+										</el-col>
+										<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem">
+											<el-card style="background-color: #fabca2;  border-radius: 10px">
+												<el-col :span="8" style="margin-bottom: 1rem">
+													<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
+													<el-col :span="24">{{author.n_pubs}}</el-col>
+												</el-col>
+												<el-col :span="8" style="margin-bottom: 1rem">
+													<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
+													<el-col :span="24">{{author.h_index}}</el-col>
+												</el-col>
+												<el-col :span="8" style="margin-bottom: 1rem">
+													<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
+													<el-col :span="24">{{author.n_citation}}</el-col>
+												</el-col>
+											</el-card>
+										</el-col>
+									</el-col>
 								</div>
-									</el-col>
-									<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-top: 1.5rem">
-										<el-col :span="8">
-											<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
-											<el-col :span="24">{{author.n_pubs}}</el-col>
-										</el-col>
-										<el-col :span="8">
-											<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
-											<el-col :span="24">{{author.h_index}}</el-col>
-										</el-col>
-										<el-col :span="8">
-											<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
-											<el-col :span="24">{{author.n_citation}}</el-col>
-										</el-col>
-									</el-col>
-								</div>
-							</div>
+							</el-col>
 
-
-						</el-col>
-
-						<el-col :span="12">
-							<div class="grid-content">
-								<span style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem">相关专家网络</span>
+							<el-col :span="12">
+								<div class="grid-content" style="text-align: center">
+									<span style="font-weight: 700; font-size: 1.5rem; margin-bottom: 0.5rem">相关专家网络</span>
 									<div id="myNetwork"
 											 style="margin-top: 1rem;
 											 width: 100%; height: 25rem;
-											 overflow: hidden; border: 2px solid #1da8e8"/>
-							</div>
-						</el-col>
-
-						<!--					排序按钮-->
-						<el-col :span="24" style="margin-top: 1rem; text-align: right">
-								<el-button type="primary" icon="el-icon-key" @click="">按被引量排序</el-button>
-								<el-button type="primary" icon="el-icon-time" @click="">按发表时间排序</el-button>
-<!--								<el-button type="primary" icon="el-icon-s-fold" @click="allSort('title')">按名称排序</el-button>-->
-						</el-col>
-						<!--					学术成果展示-->
-						<el-col :span="24"
-										style="margin-top: 1rem; text-align: left"
-										v-for="(item, index) in author.pubs"
-										:key="index">
-							<el-card class="box-card">
-								<div class="text item">
-									<el-col :span="12" style="margin-bottom: 1rem">
-										<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
-											<i class="el-icon-document"></i>
-											{{item.title}}
-										</el-link>
-									</el-col>
-									<el-col :span="12" style="text-align: right">
-										<el-button v-if="item.is_display" @click="pub_display(index, 1)">展示给他人</el-button>
-										<el-button v-else @click="pub_display(index, 0)">不展示给他人</el-button>
-									</el-col>
-									<el-col :span="24"
-													style="margin-bottom: 1rem">
-										<el-link v-for="(author, index2) in item.author"
-														 :key="index2"
-														 style="margin-right: 0.5rem; font-size: 16px"
-														 @click="jumpToPortal(author.author_id)">
-											{{author.author_name}}
-											<span v-if="index2!==item.author.length-1">,</span>
-										</el-link>
-									</el-col>
-									<el-col :span="24" style="margin-bottom: 1rem">
-										{{item.venue_raw}}({{item.year}})
-									</el-col>
-									<el-col :span="24" style="margin-bottom: 1rem">
-										<span>被引量：{{item.n_citation}}</span>
-									</el-col>
+											 overflow: hidden"/>
 								</div>
-							</el-card>
-						</el-col>
+							</el-col>
+
+							<!--					排序按钮-->
+							<!--						<el-col :span="24" style="margin-top: 1rem; text-align: right">-->
+							<!--								<el-button type="primary" icon="el-icon-key" @click="">按被引量排序</el-button>-->
+							<!--								<el-button type="primary" icon="el-icon-time" @click="">按发表时间排序</el-button>-->
+							<!--&lt;!&ndash;								<el-button type="primary" icon="el-icon-s-fold" @click="allSort('title')">按名称排序</el-button>&ndash;&gt;-->
+							<!--						</el-col>-->
+							<!--					学术成果展示-->
+							<el-col :span="24"
+											style="margin-top: 1rem; text-align: left"
+											v-for="(item, index) in author.pubs"
+											:key="index">
+								<el-card class="box-card" style="background-color: #fbede4; border-radius: 15px" shadow="hover">
+									<div class="text item">
+										<el-col :span="12" style="margin-bottom: 1rem">
+											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
+												<i class="el-icon-document"></i>
+												{{item.title}}
+											</el-link>
+										</el-col>
+										<el-col :span="12" style="text-align: right">
+											<el-button v-if="item.is_display" @click="pub_display(index, 1)">展示给他人</el-button>
+											<el-button v-else @click="pub_display(index, 0)">不展示给他人</el-button>
+										</el-col>
+										<el-col :span="24"
+														style="margin-bottom: 1rem">
+											<el-link v-for="(author, index2) in item.author"
+															 :key="index2"
+															 style="margin-right: 0.5rem; font-size: 16px"
+															 @click="jumpToPortal(author.author_id)">
+												{{author.author_name}}
+												<span v-if="index2!==item.author.length-1">,</span>
+											</el-link>
+										</el-col>
+										<el-col :span="24" style="margin-bottom: 1rem">
+											{{item.venue_raw}}({{item.year}})
+										</el-col>
+										<el-col :span="24" style="margin-bottom: 1rem">
+											<span>被引量：{{item.n_citation}}</span>
+										</el-col>
+									</div>
+								</el-card>
+							</el-col>
+						</div>
+
 					</el-col>
 					<el-col :span="4">
 						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-left: 0.5rem">
@@ -162,11 +171,10 @@
 					</el-col>
 				</el-row>
 			</el-main>
-
 			<el-footer>
 				<el-col :span="4"><div class="grid-content"></div></el-col>
 				<el-col :span="16">
-					<div>
+					<div style="text-align: center;">
 							<el-pagination
 											background
 											layout="prev, pager, next"
@@ -227,6 +235,7 @@
 
 <script>
 	import echarts from 'echarts'
+	import NewNavigation from "../navigatorandsearch/NewNavigation";
 	export default {
 		name: "Author",
 		data() {
@@ -770,6 +779,9 @@
 		computed: {
 
 		},
+		components: {
+			NewNavigation,
+		}
 	}
 </script>
 

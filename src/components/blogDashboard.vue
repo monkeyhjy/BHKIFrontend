@@ -1,57 +1,65 @@
 <template>
-    <div class="router" style="left:0px;background-color:#f6f8fa">
-        <blog-search></blog-search>
-        <el-row style="margin-top:50px" :gutter="20">
-            <el-col :span="4">
-                <el-card shadow="never">
-                    <div class="flex6">
-                        <el-image style="width:40px;height:40px;border-radius:40px" :src="img" fit="fill"></el-image>
-                        <p style="margin-left:10px">{{name}}</p>    
-                    </div>
-                            <div class="flex6" style="margin-top:15px">
-                            <div v-for="(item,index) in list" :key="index"  style="margin-right:13px">
-                                <p style="font-size:14px;text-align:center">{{ item.num }}</p>
-                                <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
-                            </div>
-                            </div>
-                </el-card>
-                <div>
-    </div>
-    <div >
-		<main>
-			<section >
-				<div class="menu menu--salal">
-					<router-link to="/BlogDashboard/BlogDesktop" class="menu__item" active-class="">
-						<span class="menu__item-name" >帖子广场</span>
-					</router-link>
-          	<router-link to="/BlogDashboard/BlogMyBlog" class="menu__item"  active-class="">
-						<span class="menu__item-name" >我的帖子</span>
-					</router-link>
-          <router-link to="/BlogDashboard/BlogMyTips" class="menu__item"  active-class="">
-						<span class="menu__item-name" >我的评论</span>
-					</router-link>
-          <a class="menu__item"  active-class="">
-						<span class="menu__item-name"  @click="createblog()">发布帖子</span>
-					</a>
-				</div>
-			</section>
-		</main>
+	<div>
+		<div>
+			<new-navigation></new-navigation>
+		</div>
+		<div class="router" style="left:0px;background-color:#f6f8fa">
+			<blog-search></blog-search>
+			<el-row style="margin-top:50px" :gutter="20">
+				<el-col :span="4">
+					<el-card shadow="never">
+						<div class="flex6">
+							<el-image style="width:40px;height:40px;border-radius:40px" :src="img" fit="fill"></el-image>
+							<p style="margin-left:10px">{{name}}</p>
+						</div>
+						<div class="flex6" style="margin-top:15px">
+							<div v-for="(item,index) in list" :key="index"  style="margin-right:13px">
+								<p style="font-size:14px;text-align:center">{{ item.num }}</p>
+								<p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
+							</div>
+						</div>
+					</el-card>
+					<div>
+					</div>
+					<div >
+						<main>
+							<section >
+								<div class="menu menu--salal">
+									<router-link to="/BlogDashboard/BlogDesktop" class="menu__item" active-class="">
+										<span class="menu__item-name" >帖子广场</span>
+									</router-link>
+									<router-link to="/BlogDashboard/BlogMyBlog" class="menu__item"  active-class="">
+										<span class="menu__item-name" >我的帖子</span>
+									</router-link>
+									<router-link to="/BlogDashboard/BlogMyTips" class="menu__item"  active-class="">
+										<span class="menu__item-name" >我的评论</span>
+									</router-link>
+									<a class="menu__item"  active-class="">
+										<span class="menu__item-name"  @click="createblog()">发布帖子</span>
+									</a>
+								</div>
+							</section>
+						</main>
+					</div>
+				</el-col>
+				<el-col :span="20">
+					<router-view></router-view>
+				</el-col>
+			</el-row>
+		</div>
 	</div>
-            </el-col>
-            <el-col :span="20">
-                <router-view></router-view>
-            </el-col>
-        </el-row>
-    </div>
+
 </template>
 
 
 <script>
+	import NewNavigation from "../views/navigatorandsearch/NewNavigation";
 import blogSearch from '@/components/blogSearch'
 export default {
   name: "BlogDashboard",
     components: {
-      blogSearch
+      blogSearch,
+			NewNavigation,
   },
   data(){
       return{

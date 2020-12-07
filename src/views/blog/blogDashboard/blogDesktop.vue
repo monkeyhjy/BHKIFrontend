@@ -1,73 +1,82 @@
 <template>
-        <div>
-          <el-row>
-  <el-col :span="18">
-     <ul>
-                <li style="margin-top:5px;margin-left:10px"  >
-                     <el-card shadow="never">
-    <div v-for="(item,index) in list" :key="index">
-                        <div class="flex6" style="margin:left:0">
-                            <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content: left">
-                                <h2  style="font-size:20px;margin:left:0">{{ item.blogname }}</h2>
-                            </el-link>  
+  <div>
+<!--    <div>-->
+<!--      <new-navigation></new-navigation>-->
+<!--    </div>-->
+    <div>
+      <el-row>
+        <el-col :span="18">
+          <ul>
+            <li style="margin-top:5px;margin-left:10px"  >
+              <el-card shadow="never">
+                <div v-for="(item,index) in list" :key="index">
+                  <div class="flex6" style="margin:left:0">
+                    <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content: left">
+                      <h2  style="font-size:20px;margin:left:0">{{ item.blogname }}</h2>
+                    </el-link>
+                  </div>
+                  <div style=";justify-content: left">
+                    <p style="#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.content }}</p>
+                  </div>
+                  <el-row :gutter="20" style="margin-top:15px">
+                    <el-col :span="14">
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" >
+                        <div class="flex6">
+                          <el-image style="width:30px;height:30px;border-radius:30px" :src="item.img" fit="fill"></el-image>
+                          <el-link class="blog-title " :underline="false"  style="padding-left:15px">{{ item.username }}</el-link>
                         </div>
-                        <div style=";justify-content: left">
-                           <p style="#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.content }}</p>
-                        </div>
-                        <el-row :gutter="20" style="margin-top:15px">
-                            <el-col :span="14"> 
-                                <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" >
-                                <div class="flex6">
-                                <el-image style="width:30px;height:30px;border-radius:30px" :src="item.img" fit="fill"></el-image>
-                                 <el-link class="blog-title " :underline="false"  style="padding-left:15px">{{ item.username }}</el-link>
-                                </div>
-                               </el-link>  
-                            </el-col>
-                           
-                           <el-col :span="10" class="flex6"> 
+                      </el-link>
+                    </el-col>
+
+                    <el-col :span="10" class="flex6">
                              <span class="flex6 iconsize">
                                 <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-yueduliang" ></use>
                                 </svg>
                                <span class="iconcolor"> 阅读量{{ item.readnum }} |</span></span>
-                          <span class="flex6 iconsize ">
+                      <span class="flex6 iconsize ">
                             <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-pinglun" ></use>
                                 </svg>
                             <span class="iconcolor">评论量{{ item.tipnum }} |</span></span>
-                          <span class="flex6 iconsize ">
+                      <span class="flex6 iconsize ">
                              <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-buoumaotubiao15" ></use>
                               </svg>
                            <span class="iconcolor"> 点赞量{{ item.likenum }} </span></span>
-                           </el-col>
-                        </el-row>
-                          <el-divider class="inline-divider" style="margin-top:20px;margin-bottom:20px"></el-divider>
-                    </div>
-                </el-card>
-                    
-                </li>
-            </ul>
-  </el-col>
-  <el-col :span="6">
-    <div class="flex6">
-      <el-button :type="item.type==type?'primary':''" v-for="(item,index) in types" :key="index" style="margin:10px"> 
-        <span style="padding-top:-10px;font-size:13px" @click="changeType(item)"> {{ item.name }}</span>
-      </el-button>
+                    </el-col>
+                  </el-row>
+                  <el-divider class="inline-divider" style="margin-top:20px;margin-bottom:20px"></el-divider>
+                </div>
+              </el-card>
+
+            </li>
+          </ul>
+        </el-col>
+        <el-col :span="6">
+          <div class="flex6">
+            <el-button :type="item.type==type?'primary':''" v-for="(item,index) in types" :key="index" style="margin:10px">
+              <span style="padding-top:-10px;font-size:13px" @click="changeType(item)"> {{ item.name }}</span>
+            </el-button>
+          </div>
+
+        </el-col>
+      </el-row>
+
     </div>
-     
-    </el-col>
-</el-row>
-           
-        </div>
+  </div>
+
 </template>
 
 
 <script>
-
+  import NewNavigation from "../../navigatorandsearch/NewNavigation";
 // @ is an alias to /src
 export default {
   name: "BlogDesktop",
+  components: {
+    NewNavigation,
+  },
   data(){
       return{
           list:[

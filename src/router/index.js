@@ -4,6 +4,18 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/NewNavigation',
+    name:'NewNavigation',
+    component: () => import('../views/navigatorandsearch/NewNavigation'),
+    children:[
+      {
+        path:'/search',
+        name:'Search',
+        component: () => import('../views/navigatorandsearch/Search')
+      },
+    ]
+  },
     //用户相关
   {
     path: '/',
@@ -118,7 +130,15 @@ const routes = [
     path: "/BlogEdit/:userid/:blogid",
     name: "BlogEdit",
     component: () => import("../views/blog/blogEdit.vue")
-  }
+  },
+  {
+    path: '/Searching',
+    name: 'Searching',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/navigatorandsearch/Searching.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -1,15 +1,25 @@
 <template>
     <div>
-    <h1>{{ name }}</h1>
-    <p>{{ content }}</p>
-    <p>选择类型</p>
-    <el-button @click="submit()">提交</el-button> 
+        <div>
+            <new-navigation></new-navigation>
+        </div>
+        <div>
+            <h1>{{ name }}</h1>
+            <p>{{ content }}</p>
+            <p>选择类型</p>
+            <el-button @click="submit()">提交</el-button>
+        </div>
     </div>
+
 </template>
 <script>
+    import NewNavigation from "../navigatorandsearch/NewNavigation";
 // @ is an alias to /src
 export default {
   name: "BlogEdit",
+    components: {
+      NewNavigation,
+    },
   data(){
       return{
           name:"博客名字",

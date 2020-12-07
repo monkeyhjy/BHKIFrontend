@@ -26,6 +26,11 @@ import './assets/css/manage/style1.css'
 import './assets/css/manage/tailwind.min.css'
 import './assets/css/user/general.css'
 
+import './assets/css/navigatorAndSearch/animate.min.css';
+//import './assets/css/navigatorAndSearch/style.css';
+import './assets/css/navigatorAndSearch/forSearch/iconfont.css';
+// import './assets/css/navigatorAndSearch/forSearch/demo.css';
+
 axios.defaults.baseURL='http://127.0.0.1:8000'
 axios.defaults.headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 Vue.use(Element);

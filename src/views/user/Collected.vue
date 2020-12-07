@@ -1,57 +1,69 @@
 <template>
+  <div>
+<!--    <div>-->
+<!--      <new-navigation></new-navigation>-->
+<!--    </div>-->
     <div class="collected">
-        <el-card class="collectedList">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="学术成果" name="paper">
-                <div class="collected-main" v-for="item in p_collected" :key="item.paper_id">
-                  <div class="collected-block">
-                    <el-row>
-                      <el-col :span="21">
-                        <div class="following-content">
-                          <h3>{{item.title}}</h3>
-                          <p>{{item.author[0].name}}, {{item.author[1].name}} | {{item.source}}</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="3" style="padding-top:20px">
-                        <el-button type="primary" @click="onsubmit()">取消收藏</el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <el-divider></el-divider>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="博客帖文" name="blog">
-                <div class="collected-main" v-for="item in b_collected" :key="item.blog_id">
-                  <div class="collected-block">
-                    <el-row>
-                      <el-col :span="21">
-                        <div class="following-content">
-                          <h3>{{item.title}}</h3>
-                          <el-row>
-                              <el-col :span="1">
-                                  <img :src="item.avatar" class="inline-avatar">
-                              </el-col>
-                              <el-row :span="23">
-                                  <div class="bloginfo-block">{{item.author}} | {{item.intro}}</div>
-                              </el-row>
-                          </el-row>
-                        </div>
-                      </el-col>
-                      <el-col :span="3" style="padding-top:20px">
-                        <el-button type="primary" @click="onsubmit()">取消收藏</el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <el-divider></el-divider>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
-        </el-card>
+      <el-card class="collectedList">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="学术成果" name="paper">
+            <div class="collected-main" v-for="item in p_collected" :key="item.paper_id">
+              <div class="collected-block">
+                <el-row>
+                  <el-col :span="21">
+                    <div class="following-content">
+                      <h3>{{item.title}}</h3>
+                      <p>{{item.author[0].name}}, {{item.author[1].name}} | {{item.source}}</p>
+                    </div>
+                  </el-col>
+                  <el-col :span="3" style="padding-top:20px">
+                    <el-button type="primary" @click="onsubmit()">取消收藏</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-divider></el-divider>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="博客帖文" name="blog">
+            <div class="collected-main" v-for="item in b_collected" :key="item.blog_id">
+              <div class="collected-block">
+                <el-row>
+                  <el-col :span="21">
+                    <div class="following-content">
+                      <h3>{{item.title}}</h3>
+                      <el-row>
+                        <el-col :span="1">
+                          <img :src="item.avatar" class="inline-avatar">
+                        </el-col>
+                        <el-row :span="23">
+                          <div class="bloginfo-block">{{item.author}} | {{item.intro}}</div>
+                        </el-row>
+                      </el-row>
+                    </div>
+                  </el-col>
+                  <el-col :span="3" style="padding-top:20px">
+                    <el-button type="primary" @click="onsubmit()">取消收藏</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-divider></el-divider>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
     </div>
+  </div>
+
 </template>
 
 <script>
+  import NewNavigation from "../navigatorandsearch/NewNavigation";
+
 export default {
+  name: 'Collected',
+  components: {
+    NewNavigation,
+  },
     data() {
       return {
         activeName: 'paper',

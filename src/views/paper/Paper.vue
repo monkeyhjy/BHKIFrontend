@@ -1,82 +1,102 @@
 <template>
 	<div>
-		<el-container>
-			<el-header>导航栏</el-header>
-			<el-main>
+		<div>
+			<new-navigation></new-navigation>
+		</div>
+		<el-container style="background-color: #fbede4;">
+			<el-main style="padding-left: 0; padding-right: 0">
 				<el-col :span="24">
-					<el-col :span="4"><div class="grid-content"></div></el-col>
-					<el-col :span="16" style="background-color: #fbede4;">
+					<el-col :span="4">
+						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-right: 0.5rem">
+							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">
+						</div>
+					</el-col>
+					<el-col :span="16">
 						<!--					标题-->
-						<el-col :span="24" style="text-align: center">
-							<div>
-								<div style="text-align: right">
-									<el-button
-														 type="primary"
-														 icon="el-icon-star-on"
-														 v-if="paper.is_star===0"
-														 circle
-														 @click="star(1)"></el-button>
-									<el-button
-														 type="info"
-														 icon="el-icon-star-off"
-														 v-else
-														 circle
-														 @click="star(0)"></el-button>
-								</div>
-								<div><strong style="font-size: 1.5rem">{{paper.title}}</strong>
-									<!--						作者，点击可跳转到该学者的门户页面--></div>
-								<div style="margin-top: 1rem" >
+						<div style="margin: 0 1rem">
+							<el-col :span="24" style="text-align: center">
+								<div>
+									<div style="text-align: right">
+										<el-button
+														type="primary"
+														icon="el-icon-star-on"
+														v-if="paper.is_star===0"
+														circle
+														@click="star(1)"></el-button>
+										<el-button
+														type="info"
+														icon="el-icon-star-off"
+														v-else
+														circle
+														@click="star(0)"></el-button>
+									</div>
+									<div><strong style="font-size: 1.5rem">{{paper.title}}</strong>
+										<!--						作者，点击可跳转到该学者的门户页面--></div>
+									<div style="margin-top: 1rem" >
 									<span v-for="(item, index) in paper.authors" :key="index">
 										<el-link style="font-size: 1.2rem"  @click="jumpToPortal(item.author_id)">{{item.author_name}}</el-link>
 										<span style="font-size: 1.2rem"  v-if="index!==paper.authors.length-1">, </span>
 									</span>
-								</div>
-								<!--						来源-->
-								<div style="margin-top: 1rem">
-									<span>{{paper.venue_raw}}, </span>
-									<span v-if="paper.volumn!==''">Volumn {{paper.volumn}}, </span>
-									<span v-if="paper.issue!==''">Issue {{paper.issue}}, </span>
-									<span v-if="paper.year!==''">{{paper.year}}, </span>
-									<span v-if="paper.page_start!==''&&paper.page_end!==''">
+									</div>
+									<!--						来源-->
+									<div style="margin-top: 1rem">
+										<span>{{paper.venue_raw}}, </span>
+										<span v-if="paper.volumn!==''">Volumn {{paper.volumn}}, </span>
+										<span v-if="paper.issue!==''">Issue {{paper.issue}}, </span>
+										<span v-if="paper.year!==''">{{paper.year}}, </span>
+										<span v-if="paper.page_start!==''&&paper.page_end!==''">
 										Pages {{paper.page_start}}-{{paper.page_end}}
 									</span>
+									</div>
 								</div>
-							</div>
-						</el-col>
-<!--						摘要-->
-						<el-col :span="24" style="text-align: left; margin-top: 3rem">
-							<strong>摘要：</strong>
-							<p>{{paper.abstract}}</p>
-						</el-col>
-<!--						关键词-->
-						<el-col :span="24" style="text-align: left">
-							<strong>关键词：</strong>
-							<span v-for="(item, index) in paper.keywords" :key="index">
+							</el-col>
+							<!--						摘要-->
+							<el-col :span="24" style="text-align: left; margin-top: 3rem">
+								<el-divider></el-divider>
+								<strong style="font-size: 1.5rem">摘要：</strong>
+								<p style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
+							</el-col>
+							<!--						关键词-->
+							<el-col :span="24" style="text-align: left; font-size: 1.5rem; margin-top: 3rem">
+								<strong>关键词：</strong>
+								<span v-for="(item, index) in paper.keywords" :key="index">
 								{{item}};
 							</span>
-						</el-col>
-<!--						原文链接-->
-						<el-col :span="24" style="text-align: left; margin-top: 1rem">
-							<strong>原文链接：</strong>
-							<el-link :href="paper.url" target="_blank">{{paper.url}}</el-link>
-						</el-col>
-<!--						被引量-->
-						<el-col :span="24" style="text-align: left; margin-top: 1rem">
-							<strong>被引量：</strong>
-							{{paper.n_citation}}
-						</el-col>
-<!--						ISSN-->
-						<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
-							<strong>ISSN：</strong>
-							<span>{{paper.issn}}</span>
-						</el-col>
-<!--							doi-->
-						<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
-							<strong>doi：</strong>
-							<span>{{paper.doi}}</span>
-						</el-col>
+							</el-col>
+							<!--						原文链接-->
+							<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
+								<strong>原文链接：</strong>
+								<el-link :href="paper.url" target="_blank" style="font-size: 1.5rem">{{paper.url}}</el-link>
+							</el-col>
+							<!--						被引量-->
+							<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
+								<strong>被引量：</strong>
+								{{paper.n_citation}}
+							</el-col>
+							<!--						ISSN-->
+							<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
+								<strong>ISSN：</strong>
+								<span>{{paper.issn}}</span>
+							</el-col>
+							<!--							doi-->
+							<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
+								<strong>doi：</strong>
+								<span>{{paper.doi}}</span>
+							</el-col>
+							<!--						图片-->
+							<!--						<el-col :span="24">-->
+							<!--							<div style="height: 30rem; margin-top: 5rem">-->
+							<!--								-->
+							<!--							</div>-->
+							<!--						</el-col>-->
+
+						</div>
 					</el-col>
-					<el-col :span="4"><div class="grid-content"></div></el-col>
+					<el-col :span="4">
+						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-left: 0.5rem">
+							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">
+						</div>
+					</el-col>
 				</el-col>
 			</el-main>
 		</el-container>
@@ -84,8 +104,13 @@
 </template>
 
 <script>
+	import NewNavigation from "../navigatorandsearch/NewNavigation";
+
 	export default {
 		name: "Paper",
+		components: {
+			NewNavigation,
+		},
 		data() {
 			return {
 				paper: {
@@ -123,6 +148,9 @@
 					abstract: '这是一篇文章的摘要',
 					is_star: 0,
 				},
+				imgUrl_left: require('../../assets/image/paper/flower-left.jpg'),
+				imgUrl_right: require('../../assets/image/paper/flower-right.jpg'),
+				imgUrl_footer: require('../../assets/image/paper/flower2.jpg'),
 			}
 		},
 		mounted() {
@@ -166,7 +194,7 @@
 					}
 				})
 			}
-		}
+		},
 	}
 </script>
 

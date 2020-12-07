@@ -1,4 +1,8 @@
 <template>
+<div>
+  <div>
+    <new-navigation></new-navigation>
+  </div>
   <div class="flex bg-indigo-800 antialiased min-h-screen">
     <aside class="flex flex-col text-indigo-100 bg-indigo-900 bg-opacity-50" style="width:100px">
       <nav class="text-sm md:text-xs">
@@ -33,18 +37,18 @@
       <div class="flex flex-col space-y-6 inbox">
         <ul  >
           <li v-for="(item,index) in list" :key="index" style="margin:10px;width:300px">
-              <a href="#" class="relative flex pl-5 pr-3 py-6 bg-indigo-900  rounded-lg"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
-                <div class="flex-grow mr-2" style="color: white;">
-                  <header class="flex md:flex-col xl:flex-row justify-between mr-2 mb-2 leading-snug">
-                    <div> 
-                      <h1 class="text-lg font-semibold">{{item.title}}</h1>
-                      <h2 class="flex flex-wrap">
-                      </h2>
-                    </div>
-                  </header>
-                  <p>{{item.reason}}</p>
-                </div>
-              </a>
+            <a href="#" class="relative flex pl-5 pr-3 py-6 bg-indigo-900  rounded-lg"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
+              <div class="flex-grow mr-2" style="color: white;">
+                <header class="flex md:flex-col xl:flex-row justify-between mr-2 mb-2 leading-snug">
+                  <div>
+                    <h1 class="text-lg font-semibold">{{item.title}}</h1>
+                    <h2 class="flex flex-wrap">
+                    </h2>
+                  </div>
+                </header>
+                <p>{{item.reason}}</p>
+              </div>
+            </a>
           </li>
         </ul>
       </div>
@@ -84,15 +88,20 @@
         </a> -->
       </div>
     </main>
+  </div>
 </div>
+
 </template>
 
 <script>
 // @ is an alias to /src
-
+import NewNavigation from "../navigatorandsearch/NewNavigation";
 
 export default {
   name: "ArticleReported",
+  components: {
+    NewNavigation,
+  },
   data(){
       // let flag
       return{
@@ -168,7 +177,8 @@ export default {
         });
       }
     
-  }
+  },
+
 }
 </script>
 

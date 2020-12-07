@@ -1,56 +1,68 @@
 <template>
+  <div>
+<!--    <div>-->
+<!--      <new-navigation></new-navigation>-->
+<!--    </div>-->
     <div class="following">
-        <el-card class="followList">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="关注用户" name="user">
-                <div class="following-main" v-for="item in u_following" :key="item.author_id">
-                  <div class="following-block">
-                    <el-row>
-                      <el-col :span="3">
-                        <el-avatar :size="100" :src="circleUrl"></el-avatar>
-                      </el-col>
-                      <el-col :span="18">
-                        <div class="following-content">
-                          <h3>{{item.name}}</h3>
-                          <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="3" style="padding-top:20px">
-                        <el-button type="primary" @click="onsubmit()">取消关注</el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <el-divider></el-divider>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="关注机构" name="institution">
-                <div class="following-main" v-for="item in i_following" :key="item.institution_id">
-                  <div class="following-block">
-                    <el-row>
-                      <el-col :span="3">
-                        <div class="following-icon-wrap"><i class="el-icon-office-building following-icon"></i></div>
-                      </el-col>
-                      <el-col :span="18">
-                        <div class="following-content">
-                          <h3>{{item.name}}</h3>
-                          <p>{{item.addr}}</p>
-                        </div>
-                      </el-col>
-                      <el-col :span="3" style="padding-top:20px">
-                        <el-button type="primary" @click="onsubmit()">取消关注</el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <el-divider></el-divider>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
-        </el-card>
+      <el-card class="followList">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="关注用户" name="user">
+            <div class="following-main" v-for="item in u_following" :key="item.author_id">
+              <div class="following-block">
+                <el-row>
+                  <el-col :span="3">
+                    <el-avatar :size="100" :src="circleUrl"></el-avatar>
+                  </el-col>
+                  <el-col :span="18">
+                    <div class="following-content">
+                      <h3>{{item.name}}</h3>
+                      <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
+                    </div>
+                  </el-col>
+                  <el-col :span="3" style="padding-top:20px">
+                    <el-button type="primary" @click="onsubmit()">取消关注</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-divider></el-divider>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="关注机构" name="institution">
+            <div class="following-main" v-for="item in i_following" :key="item.institution_id">
+              <div class="following-block">
+                <el-row>
+                  <el-col :span="3">
+                    <div class="following-icon-wrap"><i class="el-icon-office-building following-icon"></i></div>
+                  </el-col>
+                  <el-col :span="18">
+                    <div class="following-content">
+                      <h3>{{item.name}}</h3>
+                      <p>{{item.addr}}</p>
+                    </div>
+                  </el-col>
+                  <el-col :span="3" style="padding-top:20px">
+                    <el-button type="primary" @click="onsubmit()">取消关注</el-button>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-divider></el-divider>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
     </div>
+  </div>
+
 </template>
 
 <script>
+  import NewNavigation from "../navigatorandsearch/NewNavigation";
+
 export default {
+  name: 'Following',
+  components: {
+    NewNavigation,
+  },
     data() {
       return {
         activeName: 'user',
