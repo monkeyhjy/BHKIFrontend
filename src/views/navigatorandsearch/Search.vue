@@ -19,35 +19,35 @@
                         <el-button slot="append" icon="el-icon-search"></el-button>
                     </el-input>
                 </div>
-                <div style="margin-top: 50px; margin-bottom: 80px">
-                    <el-carousel :interval="4000" type="card" height="200px" style="width: 80%; margin-left: 11%">
-                        <el-carousel-item class="slide" v-for="item in lights"
-                                          :key="item.value"
-                                          :title="item.title"
-                                          :content="item.content">
-                            <div style="width: 80%;">
-                                <h1 class="medium" style="vertical-align: top; float: left; margin: 10px 0px 0px 10px; font-size: 30px">
-                                    <i class="el-icon-s-promotion" ></i>
-                                    {{ item.title }}
-                                </h1>
-                            </div>
-                            <div style="margin-top: 8%">
-                                <el-divider></el-divider>
-                            </div>
-                            <div style="margin-top: 8%;">
-                                <h4 style="float: left; margin: -30px 20px 0px 20px;">{{item.content}}</h4>
-                            </div>
-                            <div  style="margin-top: 22%;">
-                                <h2 v-bind:href="item.url" style="float: right; margin: -50px 10px 0px 0px;vertical-align: bottom;">
-                                    更多
-                                    <el-link :underline="false" v-bind:href="item.url">
-                                        <i class="el-icon-right" style="font-size: 50px; color: white"></i>
-                                    </el-link>
-                                </h2>
-                            </div>
-                        </el-carousel-item>
-                    </el-carousel>
-                </div>
+<!--                <div style="margin-top: 50px; margin-bottom: 80px">-->
+<!--                    <el-carousel :interval="4000" type="card" height="200px" style="width: 80%; margin-left: 11%">-->
+<!--                        <el-carousel-item class="slide" v-for="item in lights"-->
+<!--                                          :key="item.value"-->
+<!--                                          :title="item.title"-->
+<!--                                          :content="item.content">-->
+<!--                            <div style="width: 80%;">-->
+<!--                                <h1 class="medium" style="vertical-align: top; float: left; margin: 10px 0px 0px 10px; font-size: 30px">-->
+<!--                                    <i class="el-icon-s-promotion" ></i>-->
+<!--                                    {{ item.title }}-->
+<!--                                </h1>-->
+<!--                            </div>-->
+<!--                            <div style="margin-top: 8%">-->
+<!--                                <el-divider></el-divider>-->
+<!--                            </div>-->
+<!--                            <div style="margin-top: 8%;">-->
+<!--                                <h4 style="float: left; margin: -30px 20px 0px 20px;">{{item.content}}</h4>-->
+<!--                            </div>-->
+<!--                            <div  style="margin-top: 22%;">-->
+<!--                                <h2 v-bind:href="item.url" style="float: right; margin: -50px 10px 0px 0px;vertical-align: bottom;">-->
+<!--                                    更多-->
+<!--                                    <el-link :underline="false" v-bind:href="item.url">-->
+<!--                                        <i class="el-icon-right" style="font-size: 50px; color: white"></i>-->
+<!--                                    </el-link>-->
+<!--                                </h2>-->
+<!--                            </div>-->
+<!--                        </el-carousel-item>-->
+<!--                    </el-carousel>-->
+<!--                </div>-->
                 <el-row style="margin-bottom: 60px">
                     <!--                卡片-1-左-->
                     <el-col :span="6" :offset="2">
@@ -318,6 +318,11 @@
     }
 </script>
 
+<style>
+    body{
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
+</style>
 <style scoped>
 
     /deep/.el-carousel__item[data-v-1a1d373c]:nth-child(2n+1) {

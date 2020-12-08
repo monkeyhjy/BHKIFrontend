@@ -50,6 +50,28 @@ const routes = [
     ],
   },
   {
+    path: '/messageNav',
+    name: 'messageNav',
+    component: () => import('../views/message/messageNav'),
+    children: [
+      {
+        path: 'commentMsg',
+        name: 'commentMsg',
+        component: ()=> import('../views/message/commentMsg'),
+      },
+      {
+        path: 'likeMsg',
+        name: 'likeMsg',
+        component: ()=> import('../views/message/likeMsg'),
+      },
+      {
+        path: 'reportedMsg',
+        name: 'reportedMsg',
+        component: ()=> import('../views/message/reportedMsg'),
+      },
+    ],
+  },
+  {
     path:'/userinfo/:userId',
     name:'UserId',
     component: ()=> import('../views/user/UserInfo.vue'),

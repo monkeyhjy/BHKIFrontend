@@ -15,14 +15,14 @@
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" >查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
-            <el-menu-item index="4" style="margin-left: 2rem; font-size: large">消息中心</el-menu-item>
+            <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心</el-menu-item>
             <el-submenu index="5" style="margin-left: 2rem;">
                 <template slot="title" style="font-size: large">更新数据</template>
                 <el-menu-item index="5-1" >文件夹1</el-menu-item>
                 <el-menu-item index="5-2" >文件夹2</el-menu-item>
                 <el-menu-item index="5-3" >文件夹3</el-menu-item>
             </el-submenu>
-            <el-menu-item style="margin-left: 16rem" @click="gotoLogin">
+            <el-menu-item style="margin-left: 35rem" @click="gotoLogin">
                     <span style="font-size: large">登录</span>
             </el-menu-item>
             <el-menu-item>
@@ -30,7 +30,7 @@
                         placement="top-start"
                         width="200"
                         trigger="hover"
-                        style="margin-left: 20px">
+                        style="margin-left: 10px">
                     <div class="text item">
                         <div style="width: 200px; height: 50px; margin-top: -10px">
                             <el-row class="demo-avatar demo-basic">
@@ -80,6 +80,9 @@
             this.getData()
         },
         methods: {
+            gotoMsgCollection(){
+              this.$router.push('/messageNav/likeMsg')
+            },
             gotoMyinfo(){
               this.$router.push('/personinfo/information')
             },
@@ -115,6 +118,12 @@
         }
     }
 </script>
+
+<style>
+    body{
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
+</style>
 
 <style scoped>
     .navigationlogo {
