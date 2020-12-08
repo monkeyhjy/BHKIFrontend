@@ -160,6 +160,11 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import('../views/navigatorandsearch/Searching.vue')
   },
+  {
+    path:"/changefile/:userid/:blogid",
+    name: "ChangeFile",
+    component: () => import("../views/blog/changeFile.vue")
+  },
 ]
 
 const router = new VueRouter({
