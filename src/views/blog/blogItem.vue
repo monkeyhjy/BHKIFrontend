@@ -3,7 +3,7 @@
     <div>
       <new-navigation></new-navigation>
     </div>
-    <div style="left:0px;background-color:#f6f8fa">
+    <div>
       <el-dialog
               title="举报"
               :visible.sync="dialogVisible"
@@ -37,7 +37,7 @@
     <el-button type="primary" @click="jutip(jubaotip)">确 定</el-button>
   </span>
       </el-dialog>
-      <el-row :gutter="20">
+      <el-row>
         <el-col :span="4">
           <el-card shadow="never">
             <div class="flex6">
@@ -71,7 +71,8 @@
             </ul>
           </el-card>
         </el-col>
-        <el-col :span="18">
+        <el-col :span="1" class="grid-content"></el-col>
+        <el-col :span="17">
           <div style="background:white;padding:20px">
             <h1>{{ blogname }}</h1>
             <div class="flex6">
@@ -440,7 +441,10 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
+body{
+  background-image: url('../../assets/image/user/image/login-back.png');
+}
   .grid-content {
     border-radius: 4px;
     min-height: 36px;

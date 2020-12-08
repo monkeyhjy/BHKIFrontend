@@ -3,7 +3,7 @@
     <div>
       <new-navigation></new-navigation>
     </div>
-    <div class="router" style="left:0px;background-color:#f6f8fa">
+    <div class="router">
       <blog-search :search="search1"></blog-search>
       <el-row :gutter="20">
         <el-col :span="4"><div class="grid-content"></div></el-col>

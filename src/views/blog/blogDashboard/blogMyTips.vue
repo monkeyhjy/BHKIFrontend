@@ -78,7 +78,10 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style>
+body{
+  background-image: url('../../../assets/image/user/image/login-back.png');
+}
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
