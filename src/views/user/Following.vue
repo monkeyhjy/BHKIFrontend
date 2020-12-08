@@ -15,7 +15,7 @@
                   </el-col>
                   <el-col :span="18">
                     <div class="following-content">
-                      <el-link class="blog-title" :underline="false"><h2>{{item.name}}</h2></el-link>
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.author_id"><h2>{{item.name}}</h2></el-link>
                       <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
                     </div>
                   </el-col>
@@ -27,7 +27,7 @@
               <el-divider></el-divider>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="关注机构" name="institution">
+          <!-- <el-tab-pane label="关注机构" name="institution">
             <div class="following-main" v-for="item in i_following" :key="item.institution_id">
               <div class="following-block">
                 <el-row>
@@ -36,7 +36,7 @@
                   </el-col>
                   <el-col :span="18">
                     <div class="following-content">
-                      <el-link class="blog-title" :underline="false"><h2>{{item.name}}</h2></el-link>
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.institution_id"><h2>{{item.name}}</h2></el-link>
                       <p>{{item.addr}}</p>
                     </div>
                   </el-col>
@@ -47,7 +47,7 @@
               </div>
               <el-divider></el-divider>
             </div>
-          </el-tab-pane>
+          </el-tab-pane> -->
         </el-tabs>
       </el-card>
     </div>

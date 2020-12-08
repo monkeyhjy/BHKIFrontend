@@ -12,7 +12,7 @@
                 <el-row>
                   <el-col :span="21">
                     <div class="following-content">
-                      <el-link class="blog-title" :underline="false"><h2>{{item.title}}</h2></el-link>
+                      <el-link class="blog-title" :underline="false" @click="jump_to_paper(item.paper_id)"><h2>{{item.title}}</h2></el-link>
                       <p class="limit-text-length blog-info-p"><el-link :underline="false">{{item.author[0].name}}</el-link>, <el-link :underline="false">{{item.author[1].name}}</el-link> | {{item.source}}</p>
                     </div>
                   </el-col>
@@ -30,7 +30,7 @@
                 <el-row>
                   <el-col :span="21">
                     <div class="following-content">
-                      <el-link class="blog-title" :underline="false"><h2>{{item.title}}</h2></el-link>
+                      <el-link class="blog-title" :underline="false"  :href="'/BlogItem/'+item.author_id+'/'+item.blog_id"><h2>{{item.title}}</h2></el-link>
                       <el-row>
                         <el-col :span="1">
                           <img :src="item.avatar" class="inline-avatar">
@@ -93,6 +93,7 @@ export default {
                 blog_id:1,
                 title:"Blog1 : Today's weather : snow storm",
                 author:"Zhang Manwei",
+                author_id:1,
                 avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
                 intro:"This is a very rough blog.",
             },
@@ -100,6 +101,7 @@ export default {
                 blog_id:2,
                 title:"Blog2",
                 author:"Another author",
+                author_id:2,
                 avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
                 intro:"This is an another very rough blog.",
             }
@@ -109,7 +111,15 @@ export default {
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
-      }
+      },
+      jump_to_paper(paper_id){
+				this.$router.push({
+					path: '/paper',
+					query: {
+						paper_id: this.$Base64.encode(JSON.stringify(paper_id)),
+					}
+				})
+			},
     }
 }
 </script>
