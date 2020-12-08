@@ -12,9 +12,9 @@
             <div style="float: left">
                 <img class="navigationlogo" src="../../assets/logoT02.png" height="60" width="160"/>
             </div>
-            <el-menu-item index="1" style="margin-left: 6rem; font-size: large">首页</el-menu-item>
-            <el-menu-item index="2" style="margin-left: 2rem; font-size: large">查看门户</el-menu-item>
-            <el-menu-item index="3" style="margin-left: 2rem; font-size: large">帖子广场</el-menu-item>
+            <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
+            <el-menu-item index="2" style="margin-left: 2rem; font-size: large" >查看门户</el-menu-item>
+            <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large">消息中心</el-menu-item>
             <el-submenu index="5" style="margin-left: 2rem;">
                 <template slot="title" style="font-size: large">更新数据</template>
@@ -22,15 +22,8 @@
                 <el-menu-item index="5-2" >文件夹2</el-menu-item>
                 <el-menu-item index="5-3" >文件夹3</el-menu-item>
             </el-submenu>
-            <el-menu-item style="margin-left: 16rem">
-                <a href="#">
+            <el-menu-item style="margin-left: 16rem" @click="gotoLogin">
                     <span style="font-size: large">登录</span>
-                </a>
-            </el-menu-item>
-            <el-menu-item>
-                <a href="#">
-                    <span style="font-size: large">注册</span>
-                </a>
             </el-menu-item>
             <el-menu-item>
                 <el-popover
@@ -55,14 +48,14 @@
                         </div>
                         <el-divider></el-divider>
                         <div style="margin-top: 8px; margin-bottom:0px; margin-left: 12px">
-                            <el-link :underline="false">个人信息</el-link>
+                            <el-link :underline="false" @click="gotoMyinfo">个人信息</el-link>
                         </div>
                         <!--                                        <el-divider></el-divider>-->
                         <div style="margin-top: 16px; margin-left: 12px">
-                            <el-link :underline="false">我的关注</el-link>
+                            <el-link :underline="false" @click="gotoMyLike">我的关注</el-link>
                         </div>
                         <div style="margin-top: 16px; margin-left: 12px">
-                            <el-link :underline="false">个人收藏</el-link>
+                            <el-link :underline="false" @click="gotoMyCollection">个人收藏</el-link>
                         </div>
                     </div>
                     <el-button slot="reference" type="warning" class="el-icon-user" style="border-color: #f9ae8f;background-color: #fbede4;"></el-button>
@@ -87,6 +80,24 @@
             this.getData()
         },
         methods: {
+            gotoMyinfo(){
+              this.$router.push('/personinfo/information')
+            },
+            gotoMyLike(){
+                this.$router.push('/personinfo/following')
+            },
+            gotoMyCollection(){
+                this.$router.push('/personinfo/collected')
+            },
+            gotoLogin(){
+              this.$router.push('/login')
+            },
+            gotoMain(){
+              this.$router.push('/Search')
+            },
+            gotoBlog(){
+                this.$router.push('/BlogDashboard/BlogDesktop')
+            },
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },

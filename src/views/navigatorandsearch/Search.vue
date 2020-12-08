@@ -1,5 +1,7 @@
 <template>
+
     <div>
+        <new-navigation></new-navigation>
         <el-container>
             <el-main style="text-align: center;">
                 <div style="height: 280px;">

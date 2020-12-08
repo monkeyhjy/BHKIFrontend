@@ -8,13 +8,12 @@ const routes = [
     path:'/NewNavigation',
     name:'NewNavigation',
     component: () => import('../views/navigatorandsearch/NewNavigation'),
-    children:[
-      {
-        path:'/search',
-        name:'Search',
-        component: () => import('../views/navigatorandsearch/Search')
-      },
-    ]
+  },
+    //主页
+  {
+    path:'/search',
+    name:'Search',
+    component: () => import('../views/navigatorandsearch/Search')
   },
     //用户相关
   {
