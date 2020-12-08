@@ -15,7 +15,7 @@
                   </el-col>
                   <el-col :span="18">
                     <div class="following-content">
-                      <h3>{{item.name}}</h3>
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.author_id"><h2>{{item.name}}</h2></el-link>
                       <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
                     </div>
                   </el-col>
@@ -27,7 +27,7 @@
               <el-divider></el-divider>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="关注机构" name="institution">
+          <!-- <el-tab-pane label="关注机构" name="institution">
             <div class="following-main" v-for="item in i_following" :key="item.institution_id">
               <div class="following-block">
                 <el-row>
@@ -36,7 +36,7 @@
                   </el-col>
                   <el-col :span="18">
                     <div class="following-content">
-                      <h3>{{item.name}}</h3>
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.institution_id"><h2>{{item.name}}</h2></el-link>
                       <p>{{item.addr}}</p>
                     </div>
                   </el-col>
@@ -47,7 +47,7 @@
               </div>
               <el-divider></el-divider>
             </div>
-          </el-tab-pane>
+          </el-tab-pane> -->
         </el-tabs>
       </el-card>
     </div>
@@ -110,16 +110,16 @@ export default {
 </script>
 
 <style>
-h2,h3{
-  margin-top: 10px;
-  margin-bottom:8px;
+h2{
+  margin-top:10px;
+  margin-bottom: 8px;
 }
 p {
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
-  margin-inline-end: 0em;
   margin-inline-start: 0em;
+  margin-inline-end: 0em;
 }
 .following{
     margin-right: 3%;
@@ -162,5 +162,13 @@ p {
 .following-icon-wrap{
   font-size:100px;
   height: 104px;
+}
+.blog-info-p{
+  font-size: 0.9em;
+}
+.limit-text-length{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
