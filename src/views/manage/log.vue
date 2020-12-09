@@ -24,7 +24,7 @@
                     </a>
                 </div>
             </aside>
-            <main style="background:background:rgba(240,241,244);padding:2% 6%;width:100%">
+            <main style="background:background:rgba(240,241,244);padding:2% 6%;width:100%" class="grey-bgcolor">
                 <el-table
                     :data="tableData"
                     stripe
@@ -137,7 +137,7 @@ export default {
     height: 25px;
   }
   .grey-bgcolor {
-    background-color: rbga(240,241,244,var(--bg-opacity));
+    background-color: #f0f1f4;
   }
   .middle-nav {
     background-color: white;

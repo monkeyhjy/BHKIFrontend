@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="flex flex-wrap items-center -mb-4 pt-4 md:pt-8 justify-end ">
-        <el-button type="primary" @click="open(this.list[activeindex].id,1)">删帖</el-button>
+        <el-button type="primary" @click="open(this.list[activeindex].id,1)">删帖</el-button>
         <el-button @click="open(this.list[activeindex].id,0)">忽略</el-button>
       </div>
     </main>
@@ -173,7 +173,7 @@ export default {
     height: 25px;
   }
   .grey-bgcolor {
-    background-color: rbga(240,241,244,var(--bg-opacity));
+    background-color: #f0f1f4;
   }
   .middle-nav {
     background-color: white;
