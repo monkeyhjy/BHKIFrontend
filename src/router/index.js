@@ -113,7 +113,12 @@ const routes = [
     name: 'GWReported',
     component: () => import("../views/manage/gwReported.vue")
   },
-
+    //查看日志
+  {
+    path: '/log',
+    name: 'Log',
+    component: () => import("../views/manage/log.vue")
+  },
     //帖子相关
   {
     path: "/BlogDashboard",
