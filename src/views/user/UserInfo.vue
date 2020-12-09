@@ -163,6 +163,7 @@ p {
 .userInfo{
     margin-left:5%;
     margin-right:5%;
+    margin-top:1%;
 }
 .avatar-img{
   height:150px;

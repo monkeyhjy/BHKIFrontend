@@ -57,9 +57,7 @@
                     </el-col>
                 </el-row>
             </el-card>
-            <el-card class="personPage">
-                门户界面
-            </el-card>
+            <div style="text-align:right;margin-top:1%"><el-button type="primary">进入门户 →</el-button></div>
         </div>
     </div>
 

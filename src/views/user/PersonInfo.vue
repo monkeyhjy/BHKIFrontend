@@ -65,7 +65,8 @@ export default {
     color:white
 }
 .personInfo{
-    margin-left:3%
+    margin-left:3%;
+    margin-top:1%;
 }
 </style>
 
