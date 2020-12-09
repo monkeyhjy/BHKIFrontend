@@ -3,60 +3,60 @@
     <div>
       <new-navigation></new-navigation>
       <div class='userInfo'>
-        <el-row :gutter="20">
-          <el-col :span="4" style="text-align: center;">
-            <img class="avatar-img" src="../../assets/image/user/image/avatar.jpg"><br/>
-            <h2 class="profile-username">{{user_name}}</h2>
-            <el-divider></el-divider>
-            <p>{{user_email}}</p>
-            <p>{{user_title}} | {{user_institution}}</p>
-            <p><el-button type="primary">关注</el-button></p>
-          </el-col>
-          <el-col :span="20">
-            <el-card class="user-blogs">
-              <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="ta发布的帖子" name="publish" class="blog-pane">
-                  <div class="published-blogs" v-for="item in published" :key="item.id">
-                    <div class="following-block">
-                      <div class="following-content" style="text-align: left;">
-                        <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
-                        <el-row>
-                          <el-col :span="1">
-                            <img :src="user_avatar" class="inline-avatar">
-                          </el-col>
-                          <el-col :span="23" class="bloginfo-block">
-                            <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false">{{user_name}}</el-link> | {{item.date}} | {{item.content}}</el-col>
-                            <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
-                          </el-col>
-                        </el-row>
+        <el-card class="user-blogs">
+          <el-row :gutter="40">
+            <el-col :span="4" style="text-align: center;">
+              <img class="avatar-img" src="../../assets/image/user/image/avatar.jpg"><br/>
+              <h2 class="profile-username">{{user_name}}</h2>
+              <el-divider class="black-divider"></el-divider>
+              <p>{{user_email}}</p>
+              <p>{{user_title}} | {{user_institution}}</p>
+              <p><el-button type="primary">关注</el-button></p>
+            </el-col>
+            <el-col :span="20">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                  <el-tab-pane label="ta发布的帖子" name="publish" class="blog-pane">
+                    <div class="published-blogs" v-for="item in published" :key="item.id">
+                      <div class="following-block">
+                        <div class="following-content" style="text-align: left;">
+                          <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
+                          <el-row>
+                            <el-col :span="1">
+                              <img :src="user_avatar" class="inline-avatar">
+                            </el-col>
+                            <el-col :span="23" class="bloginfo-block">
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false">{{user_name}}</el-link> | {{item.date}} | {{item.content}}</el-col>
+                              <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
+                            </el-col>
+                          </el-row>
+                        </div>
                       </div>
+                      <el-divider class="inline-divider"></el-divider>
                     </div>
-                    <el-divider class="inline-divider"></el-divider>
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane label="ta收藏的帖子" name="collect" class="blog-pane">
-                  <div class="collected-blogs" v-for="item in collected" :key="item.id">
-                    <div class="collected-block">
-                      <div class="following-content" style="text-align: left;">
-                        <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
-                        <el-row>
-                          <el-col :span="1">
-                            <img :src="item.avatar" class="inline-avatar">
-                          </el-col>
-                          <el-col :span="23" class="bloginfo-block">
-                            <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false">{{item.author}}</el-link> | {{item.date}} | {{item.content}}</el-col>
-                            <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
-                          </el-col>
-                        </el-row>
+                  </el-tab-pane>
+                  <el-tab-pane label="ta收藏的帖子" name="collect" class="blog-pane">
+                    <div class="collected-blogs" v-for="item in collected" :key="item.id">
+                      <div class="collected-block">
+                        <div class="following-content" style="text-align: left;">
+                          <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
+                          <el-row>
+                            <el-col :span="1">
+                              <img :src="item.avatar" class="inline-avatar">
+                            </el-col>
+                            <el-col :span="23" class="bloginfo-block">
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false">{{item.author}}</el-link> | {{item.date}} | {{item.content}}</el-col>
+                              <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
+                            </el-col>
+                          </el-row>
+                        </div>
                       </div>
+                      <el-divider class="inline-divider"></el-divider>
                     </div>
-                    <el-divider class="inline-divider"></el-divider>
-                  </div>
-                </el-tab-pane>
-              </el-tabs>
-            </el-card>
-          </el-col>
-        </el-row>
+                  </el-tab-pane>
+                </el-tabs>
+            </el-col>
+          </el-row>
+        </el-card>
       </div>
     </div>
   </div>
@@ -140,7 +140,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 h2,h3{
   margin-top: 10px;
   margin-bottom:8px;
