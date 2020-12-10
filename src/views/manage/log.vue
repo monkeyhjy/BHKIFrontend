@@ -24,7 +24,7 @@
                     </a>
                 </div>
             </aside>
-            <main style="background:background:rgba(240,241,244);padding:2% 6%;width:100%" class="grey-bgcolor">
+            <main style="background:background:rgba(240,241,244);padding:2% 6%;width:100%">
                 <el-table
                     :data="tableData"
                     stripe
@@ -100,9 +100,8 @@ export default {
   },
   mounted(){
     //接口文档27.3
-    this.$axios.post('/article_reported_list/',
+    this.$axios.post('/log_list/',
     this.qs.stringify({
-        type:2,
     }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
     .then(res => {
       //接收数据
@@ -114,20 +113,6 @@ export default {
     active:function(i){
       this.activeindex=i
     },
-    open(id,i) {
-      this.$axios.post('/app/process_report/',
-      this.qs.stringify({
-          id: id,
-          type:i,
-      }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-      .then(res => {
-      if (res.data.status === 0) {
-        this.$message.error("删除帖子失败！")
-      } else {
-        alert('删除帖子成功！')
-      }
-      })
-    }
   }
 };
 </script>
@@ -137,7 +122,7 @@ export default {
     height: 25px;
   }
   .grey-bgcolor {
-    background-color: #f0f1f4;
+    background-color: rbga(240,241,244,var(--bg-opacity));
   }
   .middle-nav {
     background-color: white;
@@ -157,7 +142,4 @@ export default {
   .left-nav:hover{
     background-color:#dc4a3a;
   }
-  /* .back{
-      background-image: url('../../assets/image/user/image/login-back.png');
-  } */
 </style>
