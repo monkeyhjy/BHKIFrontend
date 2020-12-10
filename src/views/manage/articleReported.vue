@@ -173,7 +173,11 @@ export default {
     height: 25px;
   }
   .grey-bgcolor {
+<<<<<<< Updated upstream
     background-color: #f0f1f4;
+=======
+    background-color:#f0f1f4;
+>>>>>>> Stashed changes
   }
   .middle-nav {
     background-color: white;
