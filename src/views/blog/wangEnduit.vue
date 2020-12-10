@@ -30,6 +30,7 @@
         editor: null,
         info_: null,
         v:null,
+        t:"",
       }
     },
     model: {
@@ -38,6 +39,10 @@
     },
     props: {
       value: {
+        type: String,
+        default: ''
+      },
+      txt:{
         type: String,
         default: ''
       },
@@ -57,7 +62,7 @@
       value: function(value) {
         if (value !== this.editor.txt.html()) {
           this.editor.txt.html(this.value)
-          this.v= this.editor.txt.html()
+          this.t=this.editor.txt.txt()
         }
       }
       //value为编辑框输入的内容，这里我监听了一下值，当父组件调用得时候，如果给value赋值了，子组件将会显示父组件赋给的值
@@ -142,12 +147,18 @@
             // }
           }
         }
+        var a=this.editor;
         this.editor.config.onchange = (html) => {
+          this.t=a.txt.text()
           this.info_ = html // 绑定当前逐渐地值
           this.$emit('change', this.info_) // 将内容同步到父组件中
+
         }
         // 创建富文本编辑器
         this.editor.create()
+      },
+      gettxt(){
+        return this.t;
       }
     }
   }

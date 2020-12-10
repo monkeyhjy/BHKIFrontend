@@ -4,23 +4,23 @@
             <new-navigation></new-navigation>
         </div>
         <el-row>
-          <el-col :span="24">
-             <div>
-               <el-col :span="11">
-                   <el-input
+          <el-col :span="11">
+          <el-input
   type="textarea"
   autosize
   placeholder="请输入内容"
   v-model="name"
-   style="font-size:30px;position:relative;top:20px">
-</el-input>
-               </el-col>
-               <el-col class="grid-content" :span="1"></el-col>
-          <el-col :span="12">
-            <h1>{{ name }}</h1>
-          </el-col>
-             <wang-enduit v-model="content"></wang-enduit>
-        </div>
+  style="font-size:30px;margin-top:20px"
+  >
+</el-input> 
+          
+              </el-col> 
+              <el-col :span="1" class="grid-content"></el-col>
+                <el-col :span="12">
+                  <h1>{{ name }}</h1>
+                  </el-col> 
+              <el-col  :span="24">
+             <wang-enduit v-model="content" ref="child"></wang-enduit>
           </el-col>
         </el-row>
         <el-row style="margin-top:16px">
@@ -56,6 +56,7 @@ export default {
     },
   data(){
       return{
+        text:"",
           name:"博客名字",
           content:"博客内容",
           type:1,
@@ -66,7 +67,7 @@ export default {
       }
   },
    mounted(){
-     this.$axios.post('http://182.92.239.145/apis/blog/getBlogInfo',
+     this.$axios.post('/apis/blog/getBlogInfo',
               this.qs.stringify({
                 id:this.$route.params.blogid
               }),
@@ -80,12 +81,13 @@ export default {
   },
   methods:{
       submit(){
-        alert(this.type);
-           this.$axios.post('http://182.92.239.145/apis/blog/editblog',
+          this.text=this.$refs.child.gettxt();
+           this.$axios.post('/apis/blog/createblog',
               this.qs.stringify({
                 id:this.$route.params.blogid,
                 name:this.name,
-                content:this.content,
+                htmlcontent:this.content,
+                textcontent:this.text,
                 type:this.type
               }),
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})

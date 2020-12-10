@@ -21,7 +21,7 @@
                 </el-link>
 
               </div>
-              <p style="padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.content }}</p>
+              <p style="padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
               <div class="flex6" style="color:gray;font-size:12px">
                 <span style="margin-right:15px">{{ item.date}} |</span>
                 <span class="flex6 iconsize">
@@ -62,14 +62,14 @@ export default {
   data(){
       return{
           list:[
-            {id:123,name:"标题",content:"content",date:"2020年1月1日",readnum:12,likenum:12,tipnum:12}
+            {id:123,name:"标题",textcontent:"content",date:"2020年1月1日",readnum:12,likenum:12,tipnum:12}
           ],
           id:2,
       }
   },
   mounted(){
     //获取我的帖子信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getpeopleblogs',
+     this.$axios.post('/apis/blog/getuserblogs',
               this.qs.stringify({
                 id:0
               }),

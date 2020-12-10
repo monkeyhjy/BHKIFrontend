@@ -131,7 +131,7 @@
                          </span>
               </el-button>
             </div>
-            <p>{{ blogcontent }}</p>
+            <p v-html="htmlcontent"></p>
           </div>
           <div style="background:white;padding:20px;margin-top:10px">
             <div class="flex6">
@@ -193,7 +193,7 @@
                     </div>
 
                     <div class="flex6">
-                      <p style="width:50%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.content}}</p>
+                      <p style="width:50%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
 
                     </div>
                   </div>
@@ -238,14 +238,14 @@ export default {
         blogid:2,
         type:1,
         blogname:"努力写编译无所畏惧",
-        blogcontent:"富文本编辑器还没弄",
+        htmlcontent:"<h2>富文本编辑器还没弄</h2>",
         readnum:23,
         tipnum:23,
         likenum:123,
         like:0,
         tiplist:[{id:213,userid:123,name:"423",img:"213",content:"324"}],
         hotbloglist:[
-            {blogname:"java冲啊",blogid:231,content:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
+            {blogname:"java冲啊",blogid:231,textcontent:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
         ],
         chose:[
           {name:"全部",type:0},{name:"计算机",type:1}
@@ -257,7 +257,7 @@ export default {
         this.userid=this.$route.params.userid;
         this.blogid=this.$route.params.blogid;
     //获取博客主信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getUserBlogInfo',
+     this.$axios.post('/apis/blog/getUserBlogInfo',
               this.qs.stringify({
                 id:this.id
               }),
@@ -270,7 +270,7 @@ export default {
                 this.type=res.data.type;
                 this.userlist=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
                 //获取这种类型的相关博客
-     this.$axios.post('http://182.92.239.145/apis/blog/gethotblogs',
+     this.$axios.post('/apis/blog/gethotblogs',
               this.qs.stringify({
                 type:this.type
               }),
@@ -292,7 +292,7 @@ export default {
                 this.follow=res.data.result
                 })
        //获取博客主热门帖子信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getUserHotBlog',
+     this.$axios.post('/apis/blog/getUserHotBlog',
               this.qs.stringify({
                 id:this.userid
               }),
@@ -302,7 +302,7 @@ export default {
                 this.userhotlist=res.data.list
             })
      //获取博客信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getUserHotBlog',
+     this.$axios.post('/apis/blog/getBlogInfo',
               this.qs.stringify({
                 id:this.blogid
               }),
@@ -310,7 +310,7 @@ export default {
               .then(res => {
                 console.log(res);
                 this.blogname=res.data.name;
-                this.blogcontent=res.data.content;
+                this.htmlcontent=res.data.htmlcontent;
                 this.readnum=res.data.readnum;
                 this.tipnum=res.data.tipnum;
                 this.likenum=res.data.likenum;
@@ -323,7 +323,7 @@ export default {
   methods:{
       checklike(type){
         //点赞 取消点赞
-     this.$axios.post('http://182.92.239.145/apis/blog/setbloglike',
+     this.$axios.post('/apis/blog/setbloglike',
               this.qs.stringify({
                 id:this.blogid,
                 type:type
@@ -338,7 +338,7 @@ export default {
       },
        checkstar(type){
         //收藏 取消收藏
-     this.$axios.post('',
+     this.$axios.post('/apis/blog/setblogcollect',
               this.qs.stringify({
                 id:this.blogid,
                 type:type
@@ -353,7 +353,7 @@ export default {
       },
       ju(text){
           //举报
-     this.$axios.post('http://182.92.239.145/apis/blog/jubaoblog',
+     this.$axios.post('/apis/blog/reportblog',
               this.qs.stringify({
                 id:this.blogid,
                 text:text
@@ -405,7 +405,7 @@ export default {
       },
       sendtip(text){
             //评论
-     this.$axios.post('http://182.92.239.145/apis/blog/pinglunblog',
+     this.$axios.post('http://182.92.239.145/apis/blog/comment',
               this.qs.stringify({
                 id:this.blogid,
                 text:text

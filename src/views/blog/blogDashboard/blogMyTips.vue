@@ -66,7 +66,7 @@ export default {
   },
     mounted(){
     //获取我的评论信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getmytips',
+     this.$axios.post('/apis/blog/getMyComment',
               this.qs.stringify({
                
               }),

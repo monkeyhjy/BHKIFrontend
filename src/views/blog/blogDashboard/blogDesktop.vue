@@ -14,7 +14,7 @@
                     </el-link>
                   </div>
                   <div style=";justify-content: left">
-                    <p style="#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.content }}</p>
+                    <p style="#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
                   </div>
                   <el-row :gutter="20" style="margin-top:15px">
                     <el-col :span="14">
@@ -77,9 +77,9 @@ export default {
   },
   data(){
       return{
-          list:[
-            {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,content:"内容"},
-               {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,content:"内容"}
+         list:[
+            {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"},
+               {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"}
           
           ], 
           types:[{name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2},],
@@ -88,8 +88,9 @@ export default {
       }
   },
     mounted(){
+
     //获取热门帖子信息
-     this.$axios.post('http://182.92.239.145/apis/blog/gethotblogs',
+     this.$axios.post('/apis/blog/gethotblogs',
               this.qs.stringify({
                 type:0
               }),
@@ -101,7 +102,7 @@ export default {
   },
   methods:{
     changeType(item){
-       this.$axios.post('http://182.92.239.145/apis/blog/gethotblogs',
+       this.$axios.post('/apis/blog/gethotblogs',
               this.qs.stringify({
                 type:item.type
               }),
@@ -111,13 +112,31 @@ export default {
                 this.list=res.data.list
                 this.type=item.type
               })
-    }
+              
+    },
+    removeHtmlStyle(html) {
+
+      var rel = /style\s*?=\s*?([‘"])[\s\S]*?\1/;
+
+      var newHtml = "";
+
+      if (html) {
+
+        newHtml = html.replace(rel, "");
+
+      }
+
+      return newHtml;
+
+    },
   }
 }
 </script>
 <style>
 body{
-  background-image: url('../../../assets/image/user/image/login-back.png');
+    background-color: rgb(240, 241, 244,100);
+    height:100%;
+    display:block;
 }
   .grid-content {
     border-radius: 4px;

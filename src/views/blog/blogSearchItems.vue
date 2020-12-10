@@ -24,7 +24,7 @@
                       <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content:left">
                         <h1 style="font-size:20px;margin-top:-6px;;margin-bottom:-6px;justify-content:left">{{ item.blogname }}</h1>
                       </el-link>
-                      <p style="margin-top:10px;font-size:15px;width:90%;padding-left:15px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">{{ item.content }}</p>
+                      <p style="margin-top:10px;font-size:15px;width:90%;padding-left:15px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">{{ item.textcontent }}</p>
                     </div>
                     <div class="flex6" style="font-size:12px;color:gray">
                       <span style="margin-right:20px">{{ item.date}}</span>
@@ -72,7 +72,7 @@ export default {
       return{
         search1:"",
         list:[
-          {blogname:"冲啊博客",blogid:12,content:"内容",date:"2020年1月1日",username:"hazhfudi",userid:123,readnum:231,tipnum:342,likenum:34}
+          {blogname:"冲啊博客",blogid:12,textcontent:"内容",date:"2020年1月1日",username:"hazhfudi",userid:123,readnum:231,tipnum:342,likenum:34}
         ],
         chose:[
           {name:"全部",type:0},{name:"计算机",type:1}
@@ -83,7 +83,7 @@ export default {
   mounted(){
     this.search1=this.$route.params.search;
         //搜索博客
-     this.$axios.post('http://182.92.239.145/apis/blog/SearchBlog',
+     this.$axios.post('/apis/blog/searchblog',
               this.qs.stringify({
                 text:this.search1,
                 type:0
@@ -97,7 +97,7 @@ export default {
   methods:{
     choseType(type){
         //搜索博客
-     this.$axios.post('http://182.92.239.145/apis/blog/SearchBlog',
+     this.$axios.post('/apis/blog/SearchBlog',
               this.qs.stringify({
                 text:this.$route.params.search,
                 type:type
