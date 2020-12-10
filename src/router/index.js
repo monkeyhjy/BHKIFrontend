@@ -69,6 +69,11 @@ const routes = [
         name: 'reportedMsg',
         component: ()=> import('../views/message/reportedMsg'),
       },
+      {
+        path: 'privacyMsg',
+        name: 'privacyMsg',
+        component: ()=> import('../views/message/privacyMsg'),
+      },
     ],
   },
   {

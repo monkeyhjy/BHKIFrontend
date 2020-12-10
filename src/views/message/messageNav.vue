@@ -15,6 +15,10 @@
                             text-color="#fff"
                             active-text-color="rgb(255,221,0)"
                             style="margin-top: 20px">
+                        <el-menu-item index="/messageNav/privacyMsg">
+                            <i class="el-icon-message-solid nav-icon"></i>
+                            <span slot="title">私信消息</span>
+                        </el-menu-item>
                         <el-menu-item index="/messageNav/likeMsg">
                             <!-- <img class="nav-icon" src="../icons/attribute.png"/> -->
                             <i class="el-icon-user-solid nav-icon"></i>

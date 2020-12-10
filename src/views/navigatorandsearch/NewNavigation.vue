@@ -13,10 +13,10 @@
                 <img class="navigationlogo" src="../../assets/logoT02.png" height="60" width="160"/>
             </div>
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
-            <el-menu-item index="2" style="margin-left: 2rem; font-size: large" >查看门户</el-menu-item>
+            <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心</el-menu-item>
-            <el-submenu index="5" style="margin-left: 2rem;">
+            <el-submenu index="5" style="margin-left: 2rem;font-size: large">
                 <template slot="title" style="font-size: large">更新数据</template>
                 <el-menu-item index="5-1" >文件夹1</el-menu-item>
                 <el-menu-item index="5-2" >文件夹2</el-menu-item>
@@ -58,7 +58,7 @@
                             <el-link :underline="false" @click="gotoMyCollection">个人收藏</el-link>
                         </div>
                     </div>
-                    <el-button slot="reference" type="warning" class="el-icon-user" style="border-color: #f9ae8f;background-color: #fbede4;"></el-button>
+                    <el-button slot="reference" type="warning" class="el-icon-user" style="border-color: #f9bb99;background-color: #f9bb99; border-radius: 50px"></el-button>
                 </el-popover>
             </el-menu-item>
         </el-menu>
@@ -80,6 +80,9 @@
             this.getData()
         },
         methods: {
+            gotoDoor(){
+                this.$router.push('/authoritem')
+            },
             gotoMsgCollection(){
               this.$router.push('/messageNav/likeMsg')
             },
@@ -106,13 +109,14 @@
             },
             getData() {
                 var that=this
+                console.log(res);
                 this.$axios({
-                    url:'/http://182.92.239.145/apis',
+                    url:'http://182.92.239.145/apis/personality/get',
                     method:"post",
                 }).then(res=>{
                     console.log(res);
-                    that.personName = res.data.personName
-                    that.picture = res.data.picture
+                    that.personName = res.username
+                    that.picture = res.data.avatar
                 })
             }
         }

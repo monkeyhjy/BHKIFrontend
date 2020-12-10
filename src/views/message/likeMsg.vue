@@ -41,9 +41,18 @@
             }
         },
         mounted() {
-            alert( activeIndex);
+            alert( activeIndex),
+            this.getLikeMsg()
         },
         methods: {
+            getLikeMsg() {
+                var that=this
+                this.$axios.post('/http://182.92.239.145/apis',
+                ).then(res=>{
+                    console.log(res);
+                    that.msgCollection = res.data.msgCollection
+                })
+            },
         }
     }
 </script>

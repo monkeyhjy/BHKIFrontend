@@ -4,7 +4,8 @@
             <div v-for="item in (index,msgCollection)" :key="index">
                 <el-card class="box-card" style="margin-bottom: 20px">
                     <div class="text item" style="margin-left: 20px">
-                        {{ item.name }} 评论了你的 {{item.paper}}
+                        <p>{{ item.name }} 给你发了一条私信: </p>
+                        {{item.content}}
                     </div>
                     <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" >
                         已阅
@@ -18,7 +19,7 @@
 <script>
     import NewNavigation from "../navigatorandsearch/NewNavigation";
     export default {
-        name: 'commentMsg',
+        name: 'reportedMsg',
         components: {
             NewNavigation,
         },
@@ -27,25 +28,25 @@
                 msgCollection:[
                     {
                         name: 'XXX',
-                        paper: 'YYY',
+                        content: 'YYY',
                     },
                     {
                         name: 'XXX',
-                        paper: 'YYY',
+                        content: 'YYY',
                     },
                     {
                         name: 'XXX',
-                        paper: 'YYY',
+                        content: 'YYY',
                     }
                 ]
             }
         },
         mounted() {
             alert( activeIndex),
-            this.getCommentMsg()
+            this.getPrivacyMsg()
         },
         methods: {
-            getCommentMsg() {
+            getPrivacyMsg() {
                 var that=this
                 this.$axios.post('/http://182.92.239.145/apis',
                 ).then(res=>{
