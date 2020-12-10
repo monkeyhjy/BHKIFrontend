@@ -10,16 +10,16 @@
             <div class="following-main" v-for="item in u_following" :key="item.author_id">
               <div class="following-block">
                 <el-row>
-                  <el-col :span="2">
-                    <el-avatar :size="80" :src="circleUrl"></el-avatar>
+                  <el-col :span="3">
+                    <el-avatar :size="100" :src="circleUrl"></el-avatar>
                   </el-col>
-                  <el-col :span="19">
+                  <el-col :span="18">
                     <div class="following-content">
                       <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.author_id"><h2>{{item.name}}</h2></el-link>
                       <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
                     </div>
                   </el-col>
-                  <el-col :span="3" style="padding-top:20px;text-align:left">
+                  <el-col :span="3" style="padding-top:20px">
                     <el-button type="primary" @click="onsubmit()">取消关注</el-button>
                   </el-col>
                 </el-row>
@@ -48,7 +48,6 @@
               <el-divider></el-divider>
             </div>
           </el-tab-pane> -->
-        
         </el-tabs>
       </el-card>
     </div>
@@ -111,17 +110,14 @@ export default {
 </script>
 
 <style>
-.el-divider{
- margin:10px 0px;
-}
 h2{
   margin-top:10px;
   margin-bottom: 8px;
 }
 p {
   display: block;
-  margin-block-start: 0.3em;
-  margin-block-end: 0.7em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
   margin-inline-start: 0em;
   margin-inline-end: 0em;
 }

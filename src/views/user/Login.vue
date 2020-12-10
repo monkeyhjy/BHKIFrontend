@@ -125,24 +125,7 @@ export default {
     loginSubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var result;
-          this.$axios.post('/apis/user/login/', {
-          params: {
-            u_email: this.loginRuleForm.email,
-            u_password: this.loginRuleForm.pass,
-          },
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          }).then(res => {
-            result = res.data.status
-          })
-          if(result == 0){
-            this.$router.push("/search");
-          }
-          else{
-            this.$alert('用户名或密码错误', '登录失败', {
-              confirmButtonText: '确定',
-            });
-          }
+          this.$router.push("/search");
         } else {
           console.log('error submit!!');
           return false;
