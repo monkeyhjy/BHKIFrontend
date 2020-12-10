@@ -198,6 +198,12 @@
 	}
 </script>
 
+<style>
+	body{
+		background-image: url('../../assets/image/user/image/login-back.png');
+	}
+</style>
+
 <style scoped>
 	.el-row {
 		margin-bottom: 20px;

@@ -34,10 +34,7 @@
 																	href=""
 																	@click="jump_to_info(author.user_id)">{{author.name}}</el-link>
 												</el-popover>
-												<!--											<el-button size="mini" style="vertical-align: bottom"-->
-												<!--																 v-if="author.is_claimed===0"-->
-												<!--																 type="success"-->
-												<!--																 @click="submitClaim">认领门户</el-button>-->
+
 												<!--											<el-button size="mini" style="vertical-align: bottom"-->
 												<!--																 v-else type="info" disabled>门户已被认领</el-button>-->
 
@@ -80,7 +77,7 @@
 										<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
 											<el-card style="background-color: #fabca2;  border-radius: 10px">
 												<div>
-													<i class="el-icon-s-grid" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
+													<i class="el-icon-s-opportunity" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
 													<strong>相关领域：</strong>
 												</div>
 												<el-col :span="8" style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
@@ -784,6 +781,12 @@
 		}
 	}
 </script>
+
+<style>
+	body{
+		background-image: url('../../assets/image/user/image/login-back.png');
+	}
+</style>
 
 <style scoped>
 	.el-row {
