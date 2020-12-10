@@ -38,7 +38,7 @@
                                 <el-button type="primary" @click="onSubmit">更新信息</el-button>
                             </el-form-item>
                         </el-form>
-                        <el-divider></el-divider>
+                        <el-divider style="margin:24px 0px;"></el-divider>
                         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" :label-position="labelPosition" label-width="80px" style="text-align:left;">
                             <el-form-item label="原密码" prop="oldPass">
                                 <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
