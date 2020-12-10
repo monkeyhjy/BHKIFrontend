@@ -1,5 +1,5 @@
 <template xmlns:el-col="http://www.w3.org/1999/html">
-	<div style="background-color: #f5e4e4;">
+	<div>
 		<div>
 			<new-navigation></new-navigation>
 		</div>
@@ -9,7 +9,7 @@
 					<!--				基本信息-->
 					<el-col :span="4">
 						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-right: 0.5rem">
-							<img :src="imgUrl_left" alt="" style="width: 100%; height: 100%">
+<!--							<img :src="imgUrl_left" alt="" style="width: 100%; height: 100%">-->
 						</div>
 					</el-col>
 
@@ -163,7 +163,7 @@
 					</el-col>
 					<el-col :span="4">
 						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-left: 0.5rem">
-							<img :src="imgUrl_right" alt="" style="width: 100%; height: 100%">
+<!--							<img :src="imgUrl_right" alt="" style="width: 100%; height: 100%">-->
 						</div>
 					</el-col>
 				</el-row>

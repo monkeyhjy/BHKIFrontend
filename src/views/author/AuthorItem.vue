@@ -217,6 +217,7 @@
 							alert('只有在个人信息页面填入合法姓名之后才能认领门户。\n' +
 									'合法姓名例如：Zhang SanSi\n' +
 									'（如果已完善姓名，请忽略本信息）')
+							this.author_item = res.data.author_item;
 						}
 					}
 				})
