@@ -7,7 +7,7 @@
                         <p>{{ item.name }} 给你发了一条私信: </p>
                         {{item.content}}
                     </div>
-                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" >
+                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
                         已阅
                     </el-button>
                 </el-card>
@@ -27,14 +27,17 @@
             return{
                 msgCollection:[
                     {
+                        id: 1,
                         name: 'XXX',
                         content: 'YYY',
                     },
                     {
+                        id: 2,
                         name: 'XXX',
                         content: 'YYY',
                     },
                     {
+                        id: 3,
                         name: 'XXX',
                         content: 'YYY',
                     }
@@ -54,6 +57,14 @@
                     that.msgCollection = res.data.msgCollection
                 })
             },
+            dele(id){
+                var index=this.msgCollection.findIndex(item => {
+                    if(item.id==id) {
+                        return true;
+                    }
+                })
+                this.msgCollection.splice(index,1)
+            }
         }
     }
 </script>

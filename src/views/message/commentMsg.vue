@@ -6,7 +6,7 @@
                     <div class="text item" style="margin-left: 20px">
                         {{ item.name }} 评论了你的 {{item.paper}}
                     </div>
-                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" >
+                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
                         已阅
                     </el-button>
                 </el-card>
@@ -26,14 +26,17 @@
             return{
                 msgCollection:[
                     {
+                        id: 1,
                         name: 'XXX',
                         paper: 'YYY',
                     },
                     {
+                        id: 2,
                         name: 'XXX',
                         paper: 'YYY',
                     },
                     {
+                        id: 3,
                         name: 'XXX',
                         paper: 'YYY',
                     }
@@ -53,6 +56,14 @@
                     that.msgCollection = res.data.msgCollection
                 })
             },
+            dele(id){
+                var index=this.msgCollection.findIndex(item => {
+                    if(item.id==id) {
+                        return true;
+                    }
+                })
+                this.msgCollection.splice(index,1)
+            }
         }
     }
 </script>
