@@ -125,16 +125,13 @@ export default {
     loginSubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var result;
-          this.$axios.post('/apis/user/login/', {
-          params: {
-            u_email: this.loginRuleForm.email,
-            u_password: this.loginRuleForm.pass,
-          },
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          let result;
+          this.$axios.post('/apis/user/login', {
+            username: this.loginRuleForm.email,
+            password: this.loginRuleForm.pass,
           }).then(res => {
             result = res.data.status
-            if(result == 0){
+            if(result === 0){
             this.$router.push("/search");
           }
             else{
