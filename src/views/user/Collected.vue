@@ -21,7 +21,7 @@
                   </el-col>
                 </el-row>
               </div>
-              <el-divider></el-divider>
+              <el-divider style="margin:10px 0px;"></el-divider>
             </div>
           </el-tab-pane>
           <el-tab-pane label="博客帖文" name="blog">
@@ -46,7 +46,7 @@
                   </el-col>
                 </el-row>
               </div>
-              <el-divider></el-divider>
+              <el-divider style="margin:10px 0px;"></el-divider>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -125,6 +125,9 @@ export default {
 </script>
 
 <style>
+.el-divider{
+ margin:10px 0px;
+}
 h2{
   margin-top:10px;
   margin-bottom: 8px;

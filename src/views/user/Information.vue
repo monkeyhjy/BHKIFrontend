@@ -15,7 +15,7 @@
                         </el-row>
                     </el-col>
                     <el-col :span="18">
-                        <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" style="text-align:left;">
+                        <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" style="text-align:left;margin-bottom:24px">
                             <el-form-item label="用户名">
                                 <el-input v-model="formLabelAlign.name"></el-input>
                             </el-form-item>
@@ -39,7 +39,7 @@
                             </el-form-item>
                         </el-form>
                         <el-divider></el-divider>
-                        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" :label-position="labelPosition" label-width="80px" style="text-align:left;">
+                        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" :label-position="labelPosition" label-width="80px" style="text-align:left;margin-top:24px">
                             <el-form-item label="原密码" prop="oldPass">
                                 <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
                             </el-form-item>
@@ -150,6 +150,9 @@ export default {
 </script>
 
 <style>
+.el-divider-wide{
+  margin:24px,0px;
+}
 .personInfo{
     margin-right: 3%;
 }
