@@ -67,33 +67,33 @@ export default {
       }
   },
    mounted(){
-     this.$axios.post('/apis/blog/getBlogInfo',
-              this.qs.stringify({
+     this.$axios.post('/apis/blog/getbloginfo',
+              {
                 id:this.$route.params.blogid
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.name=res.data.name;
-                this.content=res.data.content
-                this.type=res.data.type
+                this.name=res.data.data.title;
+                this.content=res.data.data.htmlcontent
+                this.type=res.data.data.type
               })
   },
   methods:{
       submit(){
           this.text=this.$refs.child.gettxt();
            this.$axios.post('/apis/blog/createblog',
-              this.qs.stringify({
+              {
                 id:this.$route.params.blogid,
                 name:this.name,
                 htmlcontent:this.content,
                 textcontent:this.text,
                 type:this.type
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.$router.push({path:"/BlogItem/"+this.$route.params.userid+this.$route.params.blogid})
+                this.$router.push({path:"/BlogItem/"+this.$route.params.userid+"/"+this.$route.params.blogid})
               })
       }
   }

@@ -67,9 +67,9 @@ export default {
     mounted(){
     //获取我的评论信息
      this.$axios.post('/apis/blog/getMyComment',
-              this.qs.stringify({
+              {
                
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)

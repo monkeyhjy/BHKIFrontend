@@ -42,7 +42,7 @@
           <el-card shadow="never">
             <div class="flex6">
               <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="fill"></el-image>
-              <el-link class="blog-title" :underline="false" :href="'/userinfo/'+userid" style="margin-left:10px">{{username}}</el-link>
+              <el-link class="blog-title" :underline="false" :href="'/userinfo/'+userid" style="margin-left:10px">{{ username }}</el-link>
             </div>
             <div class="flex6" style="margin-top:15px;margin-bottom:15px">
               <div v-for="(item,index) in userlist" :key="index" style="margin-right:13px">
@@ -59,7 +59,7 @@
             <h1 style="font-size:14px;font-weight:900">热门文章</h1>
             <ul v-for="(item,index) in userhotlist" :key="index">
               <li style="margin-top:5px;margin-left:10px;margin-bottom:10px" class="flex6">
-                <el-link class="blog-title" :underline="false" :href="'/blogItem/'+userid+'/'+item.id" style="font-size:12px;font-weight:500;color:gray;margin-right:5px">{{ item.name }}
+                <el-link class="blog-title" :underline="false" :href="'/blogItem/'+userid+'/'+item.blogid" style="font-size:12px;font-weight:500;color:gray;margin-right:5px">{{ item.blogname }}
 
                 </el-link>
                 <i class="flex6 iconsize">
@@ -92,11 +92,13 @@
                                  <use xlink:href="#icon-buoumaotubiao15" ></use>
                               </svg>
                            <span class="iconcolor"> 点赞量{{ likenum }} </span></span>
-              <el-button type="text" @click="checkstar(1)" v-show="star==0" class="flex6">
+              <el-button type="text" @click="checkstar(1)" v-show="star==0" >
+                  <span class="flex6">
                 <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                   <use xlink:href="#icon-shoucang"></use>
                 </svg>
                 <span style="color:gray;margin-left:10px">已收藏</span>
+                  </span>
               </el-button>
               <el-button type="text" @click="checkstar(0)" v-show="star==1">
                          <span class="flex6">
@@ -150,7 +152,7 @@
                       <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="fill"></el-image>
                       <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" style="margin-left:10px">{{ item.name }} :</el-link>
                     </div>
-                    <p style="width:80%;margin-left:15px">{{ item.content }}</p>
+                    <p style="width:80%;margin-left:15px">{{ item.textcontent }}</p>
                     <el-button type=text @click="tipid=item.id;dialogVisible2 = true">
                       <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                         <use xlink:href="#icon-report" ></use>
@@ -230,7 +232,7 @@ export default {
           follow:1,
         userimg:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
         username:"是哈哈呀",
-        userlist:[{num:123,tip:"贴子"},{num:123,tip:"获赞"},{num:123,tip:"评论"},],
+        userlist:[{blogid:2,readnum:123,blogname:"贴子"},],
         userid:0,
         userhotlist:[
             {name:"sda",id:212,readnum:12}
@@ -243,7 +245,7 @@ export default {
         tipnum:23,
         likenum:123,
         like:0,
-        tiplist:[{id:213,userid:123,name:"423",img:"213",content:"324"}],
+        tiplist:[{id:213,userid:123,name:"423",img:"213",textcontent:"324"}],
         hotbloglist:[
             {blogname:"java冲啊",blogid:231,textcontent:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
         ],
@@ -252,97 +254,100 @@ export default {
         ],
         star:1
       }
-  },
-    mounted(){
+  }, mounted(){
+        var that = this;
         this.userid=this.$route.params.userid;
         this.blogid=this.$route.params.blogid;
     //获取博客主信息
-     this.$axios.post('/apis/blog/getUserBlogInfo',
-              this.qs.stringify({
-                id:this.id
-              }),
-              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+     this.$axios.post('/apis/blog/getuserbloginfo',
+              {
+                id:this.userid
+              },
+              // {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
+              )
               .then(res => {
                 console.log(res);
-                this.userid=res.data.id;
-                this.userimg=res.data.img;
-                this.username=res.data.name;
-                this.type=res.data.type;
+       
+                this.userimg=res.data.avatar;
+                that.username=res.data.username;
                 this.userlist=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
-                //获取这种类型的相关博客
-     this.$axios.post('/apis/blog/gethotblogs',
-              this.qs.stringify({
-                type:this.type
-              }),
-              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-              .then(res => {
-                console.log(res);
-                this.hotbloglist=res.data.list
-                })
-    })
+      })
     //获取关注状态
-        //获取这种类型的相关博客
-     this.$axios.post('',
-              this.qs.stringify({
-                u_id:this.id
-              }),
+     this.$axios.post('/apis/user/get_follow_state',
+              {
+                userid:this.userid
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.follow=res.data.result
+                this.follow=res.data.is_follow
                 })
        //获取博客主热门帖子信息
-     this.$axios.post('/apis/blog/getUserHotBlog',
-              this.qs.stringify({
+     this.$axios.post('/apis/blog/getuserhotblog',
+              {
                 id:this.userid
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.userhotlist=res.data.list
+                this.userhotlist=res.data.data.list
             })
      //获取博客信息
-     this.$axios.post('/apis/blog/getBlogInfo',
-              this.qs.stringify({
+     this.$axios.post('/apis/blog/getbloginfo',
+              {
                 id:this.blogid
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.blogname=res.data.name;
-                this.htmlcontent=res.data.htmlcontent;
-                this.readnum=res.data.readnum;
-                this.tipnum=res.data.tipnum;
-                this.likenum=res.data.likenum;
-                this.like=res.data.like;
-                this.tiplist=res.data.tiplist;
-                this.type=res.data.type,
-                this.star=res.data.star
+                this.blogname=res.data.data.title;
+                this.htmlcontent=res.data.data.htmlcontent;
+                this.readnum=res.data.data.readnum;
+                this.tipnum=res.data.data.tipnum;
+                this.likenum=res.data.data.likenum;
+                this.like=res.data.data.is_like;
+                this.tiplist=res.data.data.tiplist;
+                this.type=res.data.data.type,
+                this.star=res.data.data.is_collect
+            })
+            //获取相关帖子信息
+     this.$axios.post('/apis/blog/gethotblogs',
+              {
+                type:this.type
+              },
+              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+              .then(res => {
+                console.log(res);
+                this.hotbloglist=res.data.data.list
             })
   },
   methods:{
       checklike(type){
         //点赞 取消点赞
      this.$axios.post('/apis/blog/setbloglike',
-              this.qs.stringify({
+              {
                 id:this.blogid,
                 type:type
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
                 if(res.data.status==0){
                     this.like=type
+                    if(type==0){
+                      this.likenum=this.likenum+1
+                    }
+                    else this.likenum=this.likenum-1
                 }
             })  
       },
        checkstar(type){
         //收藏 取消收藏
      this.$axios.post('/apis/blog/setblogcollect',
-              this.qs.stringify({
+              {
                 id:this.blogid,
                 type:type
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
@@ -354,10 +359,10 @@ export default {
       ju(text){
           //举报
      this.$axios.post('/apis/blog/reportblog',
-              this.qs.stringify({
+              {
                 id:this.blogid,
                 text:text
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
@@ -379,11 +384,11 @@ export default {
       },
       jutip(text){
            //举报评论
-     this.$axios.post('http://182.92.239.145/apis/blog/jubaotip',
-              this.qs.stringify({
+     this.$axios.post('/apis/blog/reportcomment',
+              {
                 id:this.tipid,
                 text:text
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
@@ -405,11 +410,11 @@ export default {
       },
       sendtip(text){
             //评论
-     this.$axios.post('http://182.92.239.145/apis/blog/comment',
-              this.qs.stringify({
+     this.$axios.post('/apis/blog/comment',
+              {
                 id:this.blogid,
                 text:text
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
@@ -426,10 +431,10 @@ export default {
       },
       changeFollow(type){
            //切换关注状态
-     this.$axios.post('',
-              this.qs.stringify({
-                u_id:this.id
-              }),
+     this.$axios.post('/apis/user/change_follow_state',
+              {
+                userid:this.userid
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);

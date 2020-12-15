@@ -71,19 +71,23 @@ export default {
       }
   },
   mounted(){
-    //获取用户的帖子论坛大致信息
-     this.$axios.post('http://182.92.239.145/apis/blog/getUserBlogInfo',
-              this.qs.stringify({
-                id:0
-              }),
-              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+	//获取用户的帖子论坛大致信息
+	 this.$axios.post('/apis/blog/getuserbloginfo', {
+            id:1
+          })
               .then(res => {
                 console.log(res);
-                this.id=res.data.id;
-                this.img=res.data.img;
-                this.name=res.data.name;
+                this.avatar=res.data.avatar;
+                this.username=res.data.username;
                 this.list=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
-              })
+			  })
+			   this.$axios.post('/apis/user/getstatus', {
+            id:1
+          })
+              .then(res => {
+                console.log(res);
+			 this.id=res.data.userid
+	  })
   },
   methods:{
     handleSelect(key, keyPath) {
@@ -91,16 +95,15 @@ export default {
       console.log(key, keyPath);
     },
     createblog(){
-      this.$router.push({path:"/BlogEdit/"+this.id+'/'+123})
       //获取用户的帖子论坛大致信息
-     this.$axios.post('http://182.92.239.145/apis/blog/createblog',
-              this.qs.stringify({
-                
-              }),
+     this.$axios.post('/apis/blog/createblog',
+              {
+				  type:1
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                 this.$router.push({path:"/BlogEdit/"+this.id+res.data.id})
+                 this.$router.push({path:"/BlogEdit/"+this.id+"/"+res.data.blogid})
               })
     }
   }

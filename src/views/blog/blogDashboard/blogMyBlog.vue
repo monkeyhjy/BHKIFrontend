@@ -9,10 +9,10 @@
           <el-card shadow="never">
             <div  v-for="(item,index) in list" :key="index">
               <div class="flex6">
-                <el-link class="blog-title" :underline="false" :href="'/BlogEdit/'+id+'/'+item.id" style="max-width:80%;">
-                  <h1 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.name }}</h1>
+                <el-link class="blog-title" :underline="false" :href="'/BlogEdit/'+id+'/'+item.blogid" style="max-width:80%;">
+                  <h1 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.title }}</h1>
                 </el-link>
-                <el-link class="blog-title" :underline="false" style="margin-left:20px"  :href="'/BlogItem/'+id+'/'+item.id">
+                <el-link class="blog-title" :underline="false" style="margin-left:20px"  :href="'/BlogItem/'+id+'/'+item.blogid">
                   <i class="flex6">
                     <svg class="icon color_deep iconmargin"  style="font-size:20px" aria-hidden="true">
                       <use xlink:href="#icon-yueduliang" ></use>
@@ -62,22 +62,21 @@ export default {
   data(){
       return{
           list:[
-            {id:123,name:"标题",textcontent:"content",date:"2020年1月1日",readnum:12,likenum:12,tipnum:12}
+            {blogid:123,title:"标题",textcontent:"content",date:"2020年1月1日",readnum:12,likenum:12,tipnum:12}
           ],
-          id:2,
+          id:1,
       }
   },
   mounted(){
     //获取我的帖子信息
      this.$axios.post('/apis/blog/getuserblogs',
-              this.qs.stringify({
-                id:0
-              }),
+             {
+                id:1
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)
-                this.list=res.data.list
-                this.id=res.data.userid
+                this.list=res.data.data.list
               })
   },
 }

@@ -84,10 +84,10 @@ export default {
     this.search1=this.$route.params.search;
         //搜索博客
      this.$axios.post('/apis/blog/searchblog',
-              this.qs.stringify({
+             {
                 text:this.search1,
                 type:0
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
@@ -98,10 +98,10 @@ export default {
     choseType(type){
         //搜索博客
      this.$axios.post('/apis/blog/SearchBlog',
-              this.qs.stringify({
+              {
                 text:this.$route.params.search,
                 type:type
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);

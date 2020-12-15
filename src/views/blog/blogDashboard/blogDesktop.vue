@@ -20,7 +20,7 @@
                     <el-col :span="14">
                       <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" >
                         <div class="flex6">
-                          <el-image style="width:30px;height:30px;border-radius:30px" :src="item.img" fit="fill"></el-image>
+                          <el-image style="width:30px;height:30px;border-radius:30px" :src="item.avatar" fit="fill"></el-image>
                           <el-link class="blog-title " :underline="false"  style="padding-left:15px">{{ item.username }}</el-link>
                         </div>
                       </el-link>
@@ -78,9 +78,7 @@ export default {
   data(){
       return{
          list:[
-            {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"},
-               {blogname:"博客名字",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"}
-          
+            {blogname:"博客名字",avatar:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"},
           ], 
           types:[{name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2},],
           id:0,
@@ -91,21 +89,21 @@ export default {
 
     //获取热门帖子信息
      this.$axios.post('/apis/blog/gethotblogs',
-              this.qs.stringify({
+              {
                 type:0
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)
-                this.list=res.data.list
+                this.list=res.data.data.list
               })
   },
   methods:{
     changeType(item){
        this.$axios.post('/apis/blog/gethotblogs',
-              this.qs.stringify({
+              {
                 type:item.type
-              }),
+              },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)
