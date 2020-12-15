@@ -1,153 +1,150 @@
 <template>
   <div class="wrapper">
-
+      <new-navigation></new-navigation>
     <section>
-    <main>
-        
-        <div style="margin-top: 15px;">
-            <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 900px">
+    <main style="text-align: center">
+
+        <div style="margin-top: 20px">
+            <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 66.6% ">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
                     <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
                         <span >{{ item.label }}</span>
                     <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
                     </el-option>
                 </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="search_click"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="search_click()"></el-button>
             </el-input>
         </div>
 
-        <div>
-            <span>
+    <el-row>
+        <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
+    </el-row>
 
-            </span>
-        </div>
-<!-- 
-        <div style="margin-top: 50px; margin-bottom: 80px">
-                <el-carousel :interval="4000" type="card" height="200px" style="width: 80%; margin-left: 11%">
-                    <el-carousel-item class="slide" v-for="item in lights"
-                                      :key="item.value"
-                                      :title="item.title"
-                                      :content="item.content">
-                        <div style="width: 80%;">
-                            <h1 class="medium" style="vertical-align: top; float: left; margin: 10px 0px 0px 10px; font-size: 30px">
-                                <i class="el-icon-s-promotion" ></i>
-                                {{ item.title }}
-                            </h1>
-                        </div>
-                        <div style="margin-top: 8%">
-                            <el-divider></el-divider>
-                        </div>
-                        <div style="margin-top: 8%;">
-                            <h4 style="float: left; margin: -30px 20px 0px 20px;">{{item.content}}</h4>
-                        </div>
-                        <div  style="margin-top: 22%;">
-                            <h2 style="float: right; margin: -50px 10px 0px 0px;vertical-align: bottom;">
-                                更多
-                                <i class="el-icon-right"></i>
-                            </h2>
-                        </div>
-                    </el-carousel-item>
-                </el-carousel>
-            </div> -->
-
-<!-- 
-        <div style="margin-top: 15px; margin-bottom: 90px;">
-        <form class="search" style="margin-top: 15px; margin-bottom: 90px;">
-            <td>
-            <el-select v-model="value" slot="prepend" placeholder="请选择" >
-                <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
-                    <span >{{ item.label }}</span>
-                </el-option>
-            </el-select>
-            </td>
-            <td style="width: 500px">
-            <el-input v-model="input" placeholder="请输入关键词" ></el-input>
-            </td>
-            <td >
-                <el-button type="submit" icon="el-icon-search" @click="search_click">搜索</el-button>
-            </td>
-        </form>
-        </div> -->
         <el-row>
             <el-col :span="4"><div style="height: 40px"></div></el-col>
             <el-col :span="16">
-                <div class="search_result" >
-        <el-tabs type="border-card" >
-            <el-tab-pane label="专家">
-                <el-col :span="24" style="margin-top: 1rem; text-align: left"
-                 v-for="(item, index) in Author_information"
-                  :key="index">
-                    <el-card class="box-card">
-                        <div class="text item">
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                                <el-link @click="jumpToAchievement(item.id)" style="font-size: 1.2rem">
-                                    <i class="el-icon-document"></i>
-                                    {{item.name}}
-                                </el-link>
+            <div class="search_result" >
+            <el-tabs type="border-card" style="background-color: #fabca2;  border-radius: 10px margin-top: 20%">
+                <el-tab-pane label="专家" >
+                    <el-col style="margin-top: 1rem; text-align: left">
+                        <el-button  @click="search1()">综合</el-button>
+                        <el-button  @click="search2()">发表论文数</el-button>
+                        <el-button  @click="search3()">h指数</el-button>
+                        <el-button  @click="search4()">被引用数</el-button>
+                    </el-col>
+                    <el-col :span="24" style="margin-top: 1rem; text-align: left"
+                     v-for="(item, index) in Author_information"
+                      :key="index">
+                        <el-card class="box-card" >
+                            <div class="text item">
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <el-link @click="jumpToAouther(item.id)" style="font-size: 1.2rem">
+                                        <i class="el-icon-document"></i>
+                                        {{item.name}}
+                                    </el-link>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                <span>h指数：{{item.h_index}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                <span>发表量：{{item.n_pubs}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                <span>被引量：{{item.n_citation}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                <span>工作单位：{{item.orgs}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                <span>相关领域：<span  v-for="(item2, index2) in item.tags"
+                                :key="index2">{{item2.t}}({{item2.w}});</span>
+                                </span>
+                                </el-col>
+                            </div>
+                        </el-card>
+                    </el-col>
+                
+                    <el-footer>
+                        <el-col :span="4"><div class="grid-content"></div></el-col>
+                            <el-col :span="24">
+                                <div style="text-align: center;">
+                                    <el-pagination
+                                    background
+                                    layout="prev, pager, next"
+                                    :total="totalnum"
+                                    :page-size="pageSize"
+                                    :current-page="currentPage"
+                                    @current-change="handleCurrentChange">
+                                    </el-pagination>
+                                </div>
                             </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>h指数：{{item.h_index}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>发表量：{{item.n_pubs}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>被引量：{{item.n_citation}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>工作单位：{{item.orgs}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>相关领域：<span  v-for="(item2, index2) in item.tags"
-                            :key="index2">{{item2.t}}({{item2.w}});</span>
-                            </span>
-                            </el-col>
-                        </div>
-                    </el-card>
-                </el-col>
+                        <el-col :span="4"><div class="grid-content"></div></el-col>
+                    </el-footer>
 
-                <!-- <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination> -->
-            </el-tab-pane>
-            <el-tab-pane label="论文">
-                <el-col :span="24" style="margin-top: 1rem; text-align: left"
-                 v-for="(item, index) in papers_information"
-                  :key="index">
-                    <el-card class="box-card">
-                        <div class="text item">
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                                <el-link @click="jumpToAchievement(item.id)" style="font-size: 1.2rem">
-                                    <i class="el-icon-document"></i>
-                                    {{item.title}}
-                                </el-link>
+                </el-tab-pane>
+
+                <el-tab-pane label="论文">
+                    <el-col style="margin-top: 1rem; text-align: left">
+                        <el-button @click="search5()">综合</el-button>
+                        <el-button @click="search6()">发表时间</el-button>
+                        <el-button @click="search7()">被引用数</el-button>
+                    </el-col>
+                    <el-col :span="24" style="margin-top: 1rem; text-align: left"
+                     v-for="(item, index) in papers_information"
+                      :key="index">
+                        <el-card class="box-card" >
+                            <div class="text item">
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <el-link @click="jumpToPaper(item.id)" style="font-size: 1.2rem">
+                                        <i class="el-icon-document"></i>
+                                        {{item.title}}
+                                    </el-link>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <el-link v-for="(author, index2) in item.authors"
+                                     :key="index2"
+                                     style="margin-right: 0.5rem; font-size: 16px"
+                                     @click="jumpToAouther(author.id)">{{author.name}}</el-link>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <span>发表刊物：{{item.venue_name}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <span>发表年限：{{item.year}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <span>被引量：{{item.n_citation}}</span>
+                                </el-col>
+                                <el-col :span="24" style="margin-bottom: 1rem">
+                                    <span>相关链接：
+                                        <span  v-for="(item2, index2) in item.url"
+                                        :key="index2" >
+                                        <a :href= "item2.url_n">{{item2.url_n}}  ;</a>
+                                        </span>
+                                    </span>
+                                </el-col>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-footer>
+                        <el-col :span="4"><div class="grid-content"></div></el-col>
+                            <el-col :span="24">
+                                <div style="text-align: center;">
+                                    <el-pagination
+                                    background
+                                    layout="prev, pager, next"
+                                    :total="totalnum"
+                                    :page-size="pageSize"
+                                    :current-page="currentPage"
+                                    @current-change="handleCurrentChange">
+                                    </el-pagination>
+                                </div>
                             </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                                <el-link v-for="(author, index2) in item.authors"
-                                 :key="index2"
-                                 style="margin-right: 0.5rem; font-size: 16px"
-                                 @click="jumpToPortal(author.id)">{{author.name}}</el-link>
-                            </el-col>
-                             <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>发表刊物：{{item.venue_name}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>发表年限：{{item.year}}</span>
-                            </el-col>
-                            <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>被引量：{{item.n_citation}}</span>
-                            </el-col>
-                             <el-col :span="24" style="margin-bottom: 1rem">
-                            <span>相关链接：<span  v-for="(item2, index2) in item.url"
-                            :key="index2" >
-                            <a :href= "item2.url_n">{{item2.url_n}}  ;</a>
-                            </span>
-                            </span>
-                            </el-col>
-                        </div>
-                    </el-card>
-                </el-col>
-            </el-tab-pane>
-        </el-tabs>
-        </div>
+                        <el-col :span="4"><div class="grid-content"></div></el-col>
+                    </el-footer>
+                </el-tab-pane>
+            </el-tabs>
+            </div>
             </el-col>
             <el-col :span="4"><div style="height: 40px"></div></el-col>
         </el-row>
@@ -158,13 +155,16 @@
 </template>
 
 <script>
+import NewNavigation from '../navigatorandsearch/NewNavigation';
 export default {
   name: 'Searching',
   data() {
       return {
         collapse: false,
-        pageSize: 5,
+        pageSize: 10,
         currentPage: 1,
+        pagenum: 10,
+        totalnum: 100,
         Author_information: [{
             id:"",
             name:"",
@@ -221,7 +221,7 @@ export default {
             n_citation:"",//被引数
             url:""//相关链接
           }, {
-            id:"***",
+            id:"1",
             title:"Semantic Wikipedia",
             authors:[{
                 id:"ak",
@@ -237,7 +237,7 @@ export default {
                url_n:"http://doi.acm.org/10.1145/1135777.1135863"//相关链接
             }]
           }, {
-            id:"*****",
+            id:"2",
             title:"Parsing",
             authors:[{
                 id:"ak",
@@ -252,52 +252,20 @@ export default {
                  url_n:"https://static.aminer.org/pdf/20160902/aclanthology/index.txt"
             }]
           }],
-        subject: [{value: '选项0', label: '所有学科'
-        }, {value:'选项1', label: '计算机科学'
-        }, {value:'选项2', label: '通信与信息科学'
-        }, {value:'选项3', label: '数学'
-        }, {value:'选项4', label: '物理学'
-        }, {value:'选项5', label: '化学'
-        }, {value:'选项6', label: '光学'
-        }, {value:'选项7', label: '生物学'
-        }, {value:'选项8', label: '天文学'
-        }, {value:'选项9', label: '航空航天工程'
-        }, {value:'选项10', label: '地理学'
-        }, {value:'选项11', label: '地质学'
-        }, {value:'选项12', label: '地球物理学'
-        }, {value:'选项13', label: '地质工程'
-        }, {value:'选项14', label: '矿业'
-        }, {value:'选项15', label: '石油工程'
-        }, {value:'选项16', label: '海洋工程'
-        }, {value:'选项17', label: '电气工程'
-        }, {value:'选项18', label: '交通运输'
-        }, {value:'选项19', label: '机械工程'
-        }, {value:'选项20', label: '医学'
-        }, {value:'选项21', label: '临床医学'
-        }, {value:'选项22', label: '药学'
-        }, {value:'选项23', label: '心理学'
-        }, {value:'选项24', label: '免疫与微生物学'
-        }, {value:'选项25', label: '神经科学'
-        }, {value:'选项26', label: '生物医学工程'
-        }, {value:'选项27', label: '仪器科学与技术'
-        }, {value:'选项28', label: '冶金工程'
-        }, {value:'选项29', label: '建筑学'
-        }, {value:'选项30', label: '核科学与技术'
-        }, {value:'选项31', label: '农业工程'
-        }, {value:'选项32', label: '林学'
-        }, {value:'选项33', label: '环境科学与工程'
-        }, {value:'选项34', label: '食品科学与工程'
-        }, {value:'选项35', label: '经济学'
-        }, {value:'选项36', label: '管理学'
-        }, {value:'选项37', label: '社会学'
-        }, {value:'选项38', label: '教育学'
-        }, {value:'选项39', label: '体育学'
-        }, {value:'选项40', label: '历史学'
+        subject: [{value: '选项0', label: '综合'
+        }, {value:'选项1', label: '作者'
+        }, {value:'选项2', label: '领域'
+        }, {value:'选项3', label: '机构'
+        }, {value:'选项4', label: '标题'
+        }, {value:'选项5', label: '刊物'
+        }, {value:'选项6', label: '关键词'
+        }, {value:'选项7', label: '摘要'
+        }, {value:'选项8', label: 'ISSN'
+        }, {value:'选项9', label: 'DOI'
         }],
-        value: '所有学科',
+        value: '综合',
         input: '',
-        input3: '',
-        select: '所有学科',
+        select: '综合',
         tableData: [{
             date: "test"
           }, {
@@ -316,8 +284,12 @@ export default {
       };
     },
     components: {
+        NewNavigation
     },
     methods: {
+      get_input(){
+          this.input=this.$route.query.input
+      },
       search_click() {
           if(this.input=='') {
               this.$alert('关键词不能为空', 'tips.', {
@@ -330,11 +302,127 @@ export default {
           }
         });
           }
-          
+          else{
+              this.$axios.post('',
+              this.qs.stringify({
+                  keyword: this.input
+              }),
+              {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
+              )
+              .then(res => {
+                  if(res.data.status === 0){
+                      this.Author_information=res.data
+                  }
+              })
+          }
       },
-    
+      jumpToAouther(Auther_id){
+          this.$router.push({
+              path:'/Author',
+              query: {
+                  author_id: this.$Base64.encode(JSON.stringify(Auther_id))
+              }
+          })
+      },
+      jumpToPaper(Paper_id){
+          this.$router.push({
+              path:'/paper',
+              query: {
+                  paper_id: this.$Base64.encode(JSON.stringify(Paper_id))
+              }
+          })
+      },
+      search1(){
+          this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.Author_information=res.data
+            }
+        }
+        )
+      },
+      search2(){
+          this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.Author_information=res.data
+            }
+        }
+        )
+      },
+      search3(){
+          this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.Author_information=res.data
+            }
+        }
+        )
+      },
+      search4(){
+          this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.Author_information=res.data
+            }
+        }
+        )
+      },
+      search5(){
+          this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.papers_information=res.data
+            }
+        }
+        )
+      },
+      search6(){
+        this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.papers_information=res.data
+            }
+        }
+        )
+      },
+      search7(){
+        this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page:1}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            if(res.data.status === 0){
+                this.papers_information=res.data
+            }
+        }
+        )
+      },
+
+      handleCurrentChange(val) {
+        this.$axios.post('http://182.92.239.145/apis/',
+        this.qs.stringify({page: val}),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(res => {
+            this.currentPage = res.data.currentPage
+            if(res.data.status === 0)
+            console.log('切换到第' + val + '页成功')
+        })
+        this.current_page = val
+      },
+      
     }
-  
 }
 </script>
 
@@ -349,5 +437,8 @@ export default {
 
     .object_select{
         width: 130px;
+    }
+    .grid-content {
+        min-height: 36px;
     }
 </style>
