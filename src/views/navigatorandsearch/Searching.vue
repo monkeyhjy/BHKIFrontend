@@ -7,8 +7,8 @@
         <div style="margin-top: 20px">
             <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 66.6% ">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
-                    <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value" @click="search_type(item.label)">
-                        <span>{{ item.label }}</span>
+                    <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value" >
+                        <div @click="search_type(item.label)">{{ item.label }}</div>
                     <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
                     </el-option>
                 </el-select>
@@ -136,7 +136,7 @@
                                     <span>相关链接：
                                         <span  v-for="(item2, index2) in item.url"
                                         :key="index2" >
-                                        <a :href= "item2.url_n">{{item2.url_n}}  ;</a>
+                                        <el-link :href= "item2.url_n" color = "blue">{{item2.url_n}}  ;</el-link>
                                         </span>
                                     </span>
                                 </el-col>
@@ -177,13 +177,14 @@ export default {
   name: 'Searching',
   data() {
       return {
-          search1_ascending: true,//默认升序排列
-          search2_ascending: true,//默认升序排列
-          search3_ascending: true,//默认升序排列
-          search4_ascending: true,//默认升序排列
-          search5_ascending: true,//默认升序排列
-          search6_ascending: true,//默认升序排列
-          search7_ascending: true,//默认升序排列
+          search1_ascending: 1,//默认升序排列
+          search2_ascending: 1,//默认升序排列
+          search3_ascending: 1,//默认升序排列
+          search4_ascending: 1,//默认升序排列
+          search5_ascending: 1,//默认升序排列
+          search6_ascending: 1,//默认升序排列
+          search7_ascending: 1,//默认升序排列
+
           pickerOptions: {
           shortcuts: [{
             text: '最近一周',
@@ -305,8 +306,7 @@ export default {
                  url_n:"https://static.aminer.org/pdf/20160902/aclanthology/index.txt"
             }]
           }],
-        subject: [{value: '选项0', label: '综合'
-        }, {value:'选项1', label: '作者'
+        subject: [{value:'选项1', label: '作者'
         }, {value:'选项2', label: '领域'
         }, {value:'选项3', label: '机构'
         }, {value:'选项4', label: '标题'
@@ -314,12 +314,15 @@ export default {
         }, {value:'选项6', label: '关键词'
         }, {value:'选项7', label: '摘要'
         }, {value:'选项8', label: 'ISSN'
-        }, {value:'选项9', label: 'DOI'
+        }, {value:'选项9', label: 'ISBN'
+        }, {value:'选项10', label: 'DOI'
         }],
-        value: '综合',
+        value: '标题',
         input: '',
-        select: '综合',
-        output_label:'',
+        select: '标题',
+        output_label:'标题',
+        label_type:1,
+
       };
     },
     components: {
@@ -329,7 +332,6 @@ export default {
       search_type(label){
           this.output_label=label;
           console.log(this.output_label);
-          console.log(aaa)
       },
       get_input(){
           this.input=this.$route.query.input
@@ -346,11 +348,40 @@ export default {
           }
         });
           }
-        //   this.subject.values
           else{
-              this.$axios.post('',
+              if(this.output_label=='ISBN'){
+                  this.label_type=9
+              }
+              else if(this.output_label=='作者'){
+                  this.label_type=1
+              }
+              else if(this.output_label=='领域'){
+                  this.label_type=2
+              }
+              else if(this.output_label=='机构'){
+                  this.label_type=3
+              }
+              else if(this.output_label=='标题'){
+                  this.label_type=4
+              }
+              else if(this.output_label=='刊物'){
+                  this.label_type=5
+              }
+              else if(this.output_label=='关键词'){
+                  this.label_type=6
+              }
+              else if(this.output_label=='摘要'){
+                  this.label_type=7
+              }
+              else if(this.output_label=='ISSN'){
+                  this.label_type=8
+              }
+              else if(this.output_label=='DOI'){
+                  this.label_type=10
+              }
+              this.$axios.post('/apis/',
               this.qs.stringify({
-                  type: 1,
+                  type: this.label_type,
                   content: this.input,
                   order: 1,
                   isasc: 1
@@ -381,20 +412,40 @@ export default {
           })
       },
       search1(){
-          this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+          if(this.search1_ascending == 1){
+            this.search1_ascending=0
+          }
+          else{
+              this.search1_ascending=1
+          }
+          this.$axios.post('/apis/',
+          this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 1,
+                  isasc: this.search1_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
+          .then(res => {
             if(res.data.status === 0){
                 this.Author_information=res.data
             }
         }
         )
-        this.search1_ascending=!this.search1_ascending
+        // this.search1_ascending=!this.search1_ascending
       },
       search2(){
-          this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+          if(this.search2_ascending == 1){
+            this.search2_ascending=0
+          }
+          else{
+              this.search2_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 4,
+                  isasc: this.search2_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -402,11 +453,20 @@ export default {
             }
         }
         )
-        this.search2_ascending=!this.search2_ascending
+        // this.search2_ascending=!this.search2_ascending
       },
-      search3(){
-          this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+      search3(){if(this.search3_ascending == 1){
+            this.search3_ascending=0
+          }
+          else{
+              this.search3_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 2,
+                  isasc: this.search3_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -414,11 +474,21 @@ export default {
             }
         }
         )
-        this.search3_ascending=!this.search3_ascending
+        // this.search3_ascending=!this.search3_ascending
       },
       search4(){
-          this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+          if(this.search4_ascending == 1){
+            this.search4_ascending=0
+          }
+          else{
+              this.search4_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 3,
+                  isasc: this.search4_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -426,11 +496,21 @@ export default {
             }
         }
         )
-        this.search4_ascending=!this.search4_ascending
+        // this.search4_ascending=!this.search4_ascending
       },
       search5(){
-          this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+          if(this.search5_ascending == 1){
+            this.search5_ascending=0
+          }
+          else{
+              this.search5_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 1,
+                  isasc: this.search5_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -438,11 +518,21 @@ export default {
             }
         }
         )
-        this.search5_ascending=!this.search5_ascending
+        // this.search5_ascending=!this.search5_ascending
       },
       search6(){
-        this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+        if(this.search6_ascending == 1){
+            this.search6_ascending=0
+          }
+          else{
+              this.search6_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 5,
+                  isasc: this.search6_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -450,11 +540,21 @@ export default {
             }
         }
         )
-        this.search6_ascending=!this.search6_ascending
+        // this.search6_ascending=!this.search6_ascending
       },
       search7(){
-        this.$axios.post('http://182.92.239.145/apis/',
-        this.qs.stringify({page:1}),
+        if(this.search7_ascending == 1){
+            this.search7_ascending=0
+          }
+          else{
+              this.search7_ascending=1
+          }
+          this.$axios.post('/apis/',
+        this.qs.stringify({
+                  type: this.label_type,
+                  content: this.input,
+                  order: 6,
+                  isasc: this.search7_ascending}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
             if(res.data.status === 0){
@@ -462,7 +562,7 @@ export default {
             }
         }
         )
-        this.search7_ascending=!this.search7_ascending
+        // this.search7_ascending=!this.search7_ascending
       },
 
       handleCurrentChange(val) {
