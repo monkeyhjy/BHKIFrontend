@@ -8,7 +8,7 @@
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <el-row>
-                            <img class="avatar-img" src="../../assets/image/user/image/avatar.jpg">
+                            <img class="avatar-img" :src="formLabelAlign.avatar">
                         </el-row>
                         <el-row>
                             <el-button type="default" style="margin-top:30px">上传头像<i class="el-icon-upload el-icon--right"></i></el-button>
@@ -67,85 +67,106 @@
     import NewNavigation from "../navigatorandsearch/NewNavigation";
 
 export default {
-    name: 'Information',
-    components: {
-      NewNavigation,
-    },
-    data() {
-      var validateOldPass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入旧密码'));
-        } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
-          }
-          callback();
+  name: 'Information',
+  components: {
+    NewNavigation,
+  },
+  data() {
+    var validateOldPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入旧密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
         }
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入新密码'));
-        } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
-          }
-          callback();
-        }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        labelPosition: 'right',
-        formLabelAlign: {
-          name: '',
-          email: '',
-          gender: '',
-          inst:'',
-          title:'',
-        },
-        ruleForm: {
-          pass: '',
-          checkPass: '',
-          oldPass: '',
-        },
-        rules: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-          oldPass: [
-            { validator: validateOldPass, trigger: 'blur' }
-          ],
-        },
-      };
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
-      submitPW(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+        callback();
       }
+    };
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入新密码'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'));
+      } else {
+        callback();
+      }
+    };
+    return {
+      labelPosition: 'right',
+      formLabelAlign: {
+        name: '',
+        email: '',
+        gender: '',
+        inst:'',
+        title:'',
+        avatar:require('../../assets/image/user/image/avatar.jpg'),
+      },
+      ruleForm: {
+        pass: '',
+        checkPass: '',
+        oldPass: '',
+      },
+      rules: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ],
+        oldPass: [
+          { validator: validateOldPass, trigger: 'blur' }
+        ],
+      },
+      is_author:0,
+      author_id:0,
+    };
+  },
+  mounted(){
+    this.init()
+  },
+  methods: {
+    onSubmit() {
+      console.log('submit!');
+    },
+    submitPW(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    init() {
+      let result
+      this.$axios.post('/apis/personality/get', {
+      }).then(res => {
+        result = res.data.status
+        if(result === 0){
+        this.$router.push("/search");
+      }
+        else{
+          this.$alert('用户名或密码错误', '登录失败', {
+            confirmButtonText: '确定',
+          });
+        }
+      })
     }
+  }
 }
 </script>
 

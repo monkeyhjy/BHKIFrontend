@@ -142,7 +142,7 @@ export default {
           })
           
         } else {
-          console.log('error submit!!');
+          //console.log('error submit!!');
           return false;
         }
       });
@@ -150,11 +150,31 @@ export default {
     signSubmitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$alert('注册成功，请登录', '注册成功', {
-            confirmButtonText: '确定',
-          });
+          let result;
+          this.$axios.post('/apis/user/register', {
+            username: this.signRuleForm.username,
+            password: this.signRuleForm.pass,
+            email:this.signRuleForm.email
+          }).then(res => {
+            result = res.data.status
+            if(result === 0){
+              this.$alert('注册成功，请登录', '注册成功', {
+                confirmButtonText: '确定',
+              });
+            }
+            else if(result === 2){
+              this.$alert('用户名已存在，请继续发挥想象力', '注册失败', {
+                confirmButtonText: '确定',
+              });
+            }
+            else{
+              this.$alert('网络请求错误', '注册失败', {
+                confirmButtonText: '确定',
+              });
+            }
+          })
         } else {
-          console.log('error submit!!');
+          //console.log('error submit!!');
           return false;
         }
       });
