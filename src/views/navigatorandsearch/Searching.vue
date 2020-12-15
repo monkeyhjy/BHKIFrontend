@@ -7,14 +7,16 @@
         <div style="margin-top: 20px">
             <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 66.6% ">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
-                    <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value">
-                        <span >{{ item.label }}</span>
+                    <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value" @click="search_type(item.label)">
+                        <span>{{ item.label }}</span>
                     <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
                     </el-option>
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" @click="search_click()"></el-button>
             </el-input>
         </div>
+
+        
 
     <el-row>
         <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
@@ -35,7 +37,7 @@
                     <el-col :span="24" style="margin-top: 1rem; text-align: left"
                      v-for="(item, index) in Author_information"
                       :key="index">
-                        <el-card class="box-card" >
+                        <el-card class="box-card" shadow="always">
                             <div class="text item">
                                 <el-col :span="24" style="margin-bottom: 1rem">
                                     <el-link @click="jumpToAouther(item.id)" style="font-size: 1.2rem">
@@ -85,6 +87,21 @@
 
                 <el-tab-pane label="论文">
                     <el-col style="margin-top: 1rem; text-align: left">
+                        <div class="block">
+                            <!-- <span class="demonstration">带快捷选项</span> -->
+                            <el-date-picker
+                            style="width: 66.6% "
+                            v-model="value2"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            :picker-options="pickerOptions">
+                            </el-date-picker>
+                            <el-button @click="search8()">筛选</el-button>
+                        </div>
                         <el-button @click="search5()">综合</el-button>
                         <el-button @click="search6()">发表时间</el-button>
                         <el-button @click="search7()">被引用数</el-button>
@@ -92,7 +109,7 @@
                     <el-col :span="24" style="margin-top: 1rem; text-align: left"
                      v-for="(item, index) in papers_information"
                       :key="index">
-                        <el-card class="box-card" >
+                        <el-card class="box-card" shadow="always">
                             <div class="text item">
                                 <el-col :span="24" style="margin-bottom: 1rem">
                                     <el-link @click="jumpToPaper(item.id)" style="font-size: 1.2rem">
@@ -160,6 +177,42 @@ export default {
   name: 'Searching',
   data() {
       return {
+          search1_ascending: true,//默认升序排列
+          search2_ascending: true,//默认升序排列
+          search3_ascending: true,//默认升序排列
+          search4_ascending: true,//默认升序排列
+          search5_ascending: true,//默认升序排列
+          search6_ascending: true,//默认升序排列
+          search7_ascending: true,//默认升序排列
+          pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        value1: '',
+        value2: '',
         collapse: false,
         pageSize: 10,
         currentPage: 1,
@@ -266,27 +319,18 @@ export default {
         value: '综合',
         input: '',
         select: '综合',
-        tableData: [{
-            date: "test"
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
+        output_label:'',
       };
     },
     components: {
         NewNavigation
     },
     methods: {
+      search_type(label){
+          this.output_label=label;
+          console.log(this.output_label);
+          console.log(aaa)
+      },
       get_input(){
           this.input=this.$route.query.input
       },
@@ -302,10 +346,14 @@ export default {
           }
         });
           }
+        //   this.subject.values
           else{
               this.$axios.post('',
               this.qs.stringify({
-                  keyword: this.input
+                  type: 1,
+                  content: this.input,
+                  order: 1,
+                  isasc: 1
               }),
               {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
               )
@@ -342,6 +390,7 @@ export default {
             }
         }
         )
+        this.search1_ascending=!this.search1_ascending
       },
       search2(){
           this.$axios.post('http://182.92.239.145/apis/',
@@ -353,6 +402,7 @@ export default {
             }
         }
         )
+        this.search2_ascending=!this.search2_ascending
       },
       search3(){
           this.$axios.post('http://182.92.239.145/apis/',
@@ -364,6 +414,7 @@ export default {
             }
         }
         )
+        this.search3_ascending=!this.search3_ascending
       },
       search4(){
           this.$axios.post('http://182.92.239.145/apis/',
@@ -375,6 +426,7 @@ export default {
             }
         }
         )
+        this.search4_ascending=!this.search4_ascending
       },
       search5(){
           this.$axios.post('http://182.92.239.145/apis/',
@@ -386,6 +438,7 @@ export default {
             }
         }
         )
+        this.search5_ascending=!this.search5_ascending
       },
       search6(){
         this.$axios.post('http://182.92.239.145/apis/',
@@ -397,6 +450,7 @@ export default {
             }
         }
         )
+        this.search6_ascending=!this.search6_ascending
       },
       search7(){
         this.$axios.post('http://182.92.239.145/apis/',
@@ -408,10 +462,11 @@ export default {
             }
         }
         )
+        this.search7_ascending=!this.search7_ascending
       },
 
       handleCurrentChange(val) {
-        this.$axios.post('http://182.92.239.145/apis/',
+        this.$axios.post('/apis/',
         this.qs.stringify({page: val}),
             {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
         .then(res => {
