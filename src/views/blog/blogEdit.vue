@@ -82,7 +82,7 @@ export default {
   methods:{
       submit(){
           this.text=this.$refs.child.gettxt();
-           this.$axios.post('/apis/blog/createblog',
+           this.$axios.post('/apis/blog/editblog',
               {
                 id:this.$route.params.blogid,
                 name:this.name,

@@ -77,8 +77,8 @@ export default {
           })
               .then(res => {
                 console.log(res);
-                this.avatar=res.data.avatar;
-                this.username=res.data.username;
+                this.img=res.data.avatar;
+                this.name=res.data.username;
                 this.list=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
 			  })
 			   this.$axios.post('/apis/user/getstatus', {

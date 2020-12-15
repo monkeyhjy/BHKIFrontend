@@ -250,7 +250,7 @@ export default {
             {blogname:"java冲啊",blogid:231,textcontent:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
         ],
         chose:[
-          {name:"全部",type:0},{name:"计算机",type:1}
+          {name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2}
         ],
         star:1
       }
