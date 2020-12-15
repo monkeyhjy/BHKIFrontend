@@ -3,15 +3,15 @@
 		<div>
 			<new-navigation></new-navigation>
 		</div>
-		<el-container style="background-color: #fbede4;">
+		<el-container>
 			<el-main style="padding-left: 0; padding-right: 0">
 				<el-col :span="24">
 					<el-col :span="4">
 						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-right: 0.5rem">
-							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">
+<!--							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">-->
 						</div>
 					</el-col>
-					<el-col :span="16">
+					<el-col :span="16" style="background-color: #fbede4; padding-bottom: 5rem">
 						<!--					标题-->
 						<div style="margin: 0 1rem">
 							<el-col :span="24" style="text-align: center">
@@ -94,7 +94,7 @@
 					</el-col>
 					<el-col :span="4">
 						<div class="grid-content" style="height: 700px; margin-top: 0.5rem; margin-left: 0.5rem">
-							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">
+<!--							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">-->
 						</div>
 					</el-col>
 				</el-col>

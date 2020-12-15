@@ -115,19 +115,14 @@
 											 overflow: hidden"/>
 								</div>
 							</el-col>
-
-							<!--					排序按钮-->
-							<!--						<el-col :span="24" style="margin-top: 1rem; text-align: right">-->
-							<!--								<el-button type="primary" icon="el-icon-key" @click="">按被引量排序</el-button>-->
-							<!--								<el-button type="primary" icon="el-icon-time" @click="">按发表时间排序</el-button>-->
-							<!--&lt;!&ndash;								<el-button type="primary" icon="el-icon-s-fold" @click="allSort('title')">按名称排序</el-button>&ndash;&gt;-->
-							<!--						</el-col>-->
 							<!--					学术成果展示-->
 							<el-col :span="24"
 											style="margin-top: 1rem; text-align: left"
 											v-for="(item, index) in author.pubs"
 											:key="index">
-								<el-card class="box-card" style="background-color: #fbede4; border-radius: 15px" shadow="hover">
+								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
+								<el-divider></el-divider>
+								<el-card class="box-card" style="background-color: #f9aebf; border-radius: 15px" shadow="hover">
 									<div class="text item">
 										<el-col :span="12" style="margin-bottom: 1rem">
 											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
@@ -510,7 +505,7 @@
 							},
 							edgeSymbol:'circle',
 							force:{
-								repulsion: 1500,
+								repulsion: 2000,
 								//edgeLength: 50,
 								layoutAnimation: true,
 							},
@@ -525,20 +520,20 @@
 										y: 0.5,
 										r: 0.6,
 										colorStops: [{
-											offset: 0, color: 'skyblue' // 0% 处的颜色
+											offset: 0, color: 'pink' // 0% 处的颜色
 										}, {
-											offset: 1, color: 'green' // 100% 处的颜色
+											offset: 1, color: 'orange' // 100% 处的颜色
 										}],
 										global: false // 缺省为 false
 									},
-									borderColor: 'blue',
+									borderColor: 'grey',
 									borderWidth: 2,
 									borderType: 'dotted',
 
 								},
 								//鼠标放上去有阴影效果
 								emphasis: {
-									shadowColor: '#ea7f20',
+									shadowColor: '#eab820',
 									shadowOffsetX: 0,
 									shadowOffsetY: 0,
 									shadowBlur: 20,

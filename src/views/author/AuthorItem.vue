@@ -234,7 +234,12 @@
 									type: 'success',
 									message: '认领成功',
 								})
-								this.$router.go(0);
+								this.$router.push({
+									path: '/author',
+									query: {
+										author_id: this.$Base64.encode(JSON.stringify(res.data.author_id)),
+									}
+								})
 							}
 							else{
 								this.$message({
