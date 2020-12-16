@@ -11,10 +11,17 @@
             <el-form-item label="密码" prop="pass">
               <el-input type="password" v-model="loginRuleForm.pass" autocomplete="off"></el-input>
             </el-form-item>
+            <!-- <el-form-item label="验证码" prop="verify">
+              <el-input type="text" v-model="loginRuleForm.verify" autocomplete="off"></el-input>
+              <i class="el-icon-school"></i>
+            </el-form-item> -->
             <el-form-item class="right-button">
               <el-button type="primary" @click="loginSubmitForm('loginRuleForm')">登录</el-button>
               <el-button @click="resetForm('loginRuleForm')">重置</el-button>
             </el-form-item>
+            <div style="text-align:right">
+              <el-link :underline="false" @click="findPW()">忘记密码？</el-link>
+            </div>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="注册" name="signup">
@@ -83,11 +90,22 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'));
       } else {
+        // if (this.loginRuleForm.verify !== '') {
+        //   this.$refs.loginRuleForm.validateField('verify');
+        // }
         callback();
       }
     };
+    // var validateLoginVerify = (rule, value, callback) => {
+    //   if (value === '') {
+    //     callback(new Error('请输入验证码'));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
       activeName: 'login',
+      ans:'',
       signRuleForm: {
         email:'',
         pass: '',
@@ -107,6 +125,7 @@ export default {
       loginRuleForm: {
         email:'',
         pass: '',
+        // varify: '',
       },
       loginRules: {
         email: [
@@ -115,9 +134,13 @@ export default {
         pass: [
           { validator: validateLoginPass, trigger: 'blur' }
         ],
+        // verify: [
+        //   { validator: validateLoginVerify, trigger: 'blur' }
+        // ],
       }
     };
   },
+
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -132,15 +155,14 @@ export default {
           }).then(res => {
             result = res.data.status
             if(result === 0){
-            this.$router.push("/search");
-          }
+              this.$router.push("/search");
+            }
             else{
               this.$alert('用户名或密码错误', '登录失败', {
                 confirmButtonText: '确定',
               });
             }
           })
-          
         } else {
           //console.log('error submit!!');
           return false;
@@ -156,6 +178,7 @@ export default {
             password: this.signRuleForm.pass,
             email:this.signRuleForm.email
           }).then(res => {
+            console.log(res)
             result = res.data.status
             if(result === 0){
               this.$alert('注册成功，请登录', '注册成功', {
@@ -163,9 +186,16 @@ export default {
               });
             }
             else if(result === 2){
-              this.$alert('用户名已存在，请继续发挥想象力', '注册失败', {
-                confirmButtonText: '确定',
-              });
+              if(res.data.message === "注册失败, 该用户名已经存在."){
+                this.$alert('用户名已被注册，请继续发挥想象力', '注册失败', {
+                  confirmButtonText: '确定',
+                });
+              }
+              else{
+                this.$alert('邮箱已被注册，请登录', '注册失败', {
+                  confirmButtonText: '确定',
+                });
+              }
             }
             else{
               this.$alert('网络请求错误', '注册失败', {
@@ -181,6 +211,11 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    findPW() {
+      this.$alert('点击忘记密码', '密码找回', {
+        confirmButtonText: '确定',
+      });
     }
   }
 }

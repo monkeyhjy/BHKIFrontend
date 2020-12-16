@@ -16,11 +16,14 @@
                     </el-col>
                     <el-col :span="18">
                         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" style="text-align:left;margin-bottom:24px">
-                            <el-form-item label="用户名">
-                                <el-input v-model="formLabelAlign.name"></el-input>
+                            <el-form-item label="用户名">{{formLabelAlign.name}}
+                                <!-- <el-input v-model="formLabelAlign.name"></el-input> -->
                             </el-form-item>
-                            <el-form-item label="邮箱">
-                                <el-input v-model="formLabelAlign.email"></el-input>
+                            <el-form-item label="邮箱">{{formLabelAlign.email}}
+                                <!-- <el-input v-model="formLabelAlign.email"></el-input> -->
+                            </el-form-item>
+                            <el-form-item label="手机号">
+                                <el-input v-model="formLabelAlign.phone"></el-input>
                             </el-form-item>
                             <el-form-item label="性别">
                                 <el-radio-group v-model="formLabelAlign.gender">
@@ -34,8 +37,11 @@
                             <el-form-item label="头衔">
                                 <el-input v-model="formLabelAlign.title"></el-input>
                             </el-form-item>
+                            <el-form-item label="个人简介">
+                                <el-input v-model="formLabelAlign.bio"></el-input>
+                            </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="onSubmit">更新信息</el-button>
+                                <el-button type="primary" @click="updateInfo()">更新信息</el-button>
                             </el-form-item>
                         </el-form>
                         <el-divider></el-divider>
@@ -103,12 +109,17 @@ export default {
     };
     return {
       labelPosition: 'right',
+      user_id:0,
       formLabelAlign: {
         name: '',
         email: '',
         gender: '',
         inst:'',
         title:'',
+        phone: '',
+        bio: '',
+        birthday: '',
+        addr: '',
         avatar:require('../../assets/image/user/image/avatar.jpg'),
       },
       ruleForm: {
@@ -129,6 +140,7 @@ export default {
       },
       is_author:0,
       author_id:0,
+      is_admin:0,
     };
   },
   mounted(){
@@ -141,7 +153,24 @@ export default {
     submitPW(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          let result
+          this.$axios.post('/apis/user/modifypassword', {
+            oldpassword: this.ruleForm.oldPass,
+            newpassword: this.ruleForm.pass,
+            newpassword2: this.ruleForm.pass,
+          }).then(res => {
+            result = res.data.status
+            if(result !== 0){
+              this.$alert(res.data.message, '更改密码失败', {
+                confirmButtonText: '确定',
+              });
+            }
+            else{
+              this.$alert("修改成功", '更改密码成功', {
+                confirmButtonText: '确定',
+              });
+            }
+          })
         } else {
           console.log('error submit!!');
           return false;
@@ -156,13 +185,54 @@ export default {
       this.$axios.post('/apis/personality/get', {
       }).then(res => {
         result = res.data.status
-        if(result === 0){
-        this.$router.push("/search");
-      }
-        else{
-          this.$alert('用户名或密码错误', '登录失败', {
+        console.log(res);
+        if(result !== 0){
+          this.$alert('网络请求错误', '加载失败', {
             confirmButtonText: '确定',
           });
+        }
+        else{
+          this.formLabelAlign.name=res.data.username
+          this.formLabelAlign.email=res.data.email
+          this.formLabelAlign.inst=res.data.org
+          this.formLabelAlign.gender=res.data.gender
+          this.formLabelAlign.title=res.data.postion
+          this.formLabelAlign.phone=res.data.phone
+          this.formLabelAlign.bio=res.data.bio
+          this.is_author=res.data.is_associated
+          this.author_id=res.data.author_id
+          this.user_id=res.data.userid
+          this.formLabelAlign.birthday=res.data.birthday
+          this.formLabelAlign.addr=res.data.addr
+          this.is_admin=res.data.is_admin
+        }
+      })
+    },
+    updateInfo() {
+      let result
+      console.log(this.formLabelAlign.phone)
+      this.$axios.post('/apis/personality/change', {
+        phone: this.formLabelAlign.phone,
+        avatar: this.formLabelAlign.avatar,
+        bio: this.formLabelAlign.bio,
+        userid: this.user_id,
+        birthday: this.formLabelAlign.birthday,
+        address: this.formLabelAlign.addr,
+        org: this.formLabelAlign.inst,
+        position: this.formLabelAlign.title,
+        gender: this.formLabelAlign.gender,
+        is_administrator: this.is_admin,
+        is_associated: this.is_associated,
+        author_id: this.author_id
+      }).then(res => {
+        result = res.data.status
+        console.log(res.data.message)
+        if(result !== 0){
+          this.$alert('网络请求错误', '更新失败', {
+            confirmButtonText: '确定',
+          });
+        }
+        else{
         }
       })
     }
@@ -176,6 +246,7 @@ export default {
 }
 .personInfo{
     margin-right: 3%;
+    margin-bottom: 1%;
 }
 .el-form{
     margin-right: 100px;

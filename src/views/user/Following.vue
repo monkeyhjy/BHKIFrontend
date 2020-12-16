@@ -104,6 +104,21 @@ export default {
       },
       onsubmit(){
         console.log("submit");
+      },
+      init() {
+        // let result
+        // this.$axios.post('/apis/user/getfolloweds', {
+        // }).then(res => {
+        //   result = res.data.status
+        //   if(result === 0){
+        //   this.$router.push("/search");
+        // }
+        //   else{
+        //     this.$alert('用户名或密码错误', '登录失败', {
+        //       confirmButtonText: '确定',
+        //     });
+        //   }
+        // })
       }
     }
 }
