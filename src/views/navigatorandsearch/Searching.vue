@@ -12,7 +12,7 @@
                     <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
                     </el-option>
                 </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="search_click()"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="search_click()" v-loading.fullscreen.lock="fullscreenLoading"></el-button>
             </el-input>
         </div>
 
@@ -27,7 +27,7 @@
             <el-col :span="16">
             <div class="search_result" >
             <el-tabs type="border-card" style="background-color: #fabca2;  border-radius: 10px margin-top: 20%">
-                <el-tab-pane label="专家" >
+                <el-tab-pane label="专家" v-if="author_boolen">
                     <el-col style="margin-top: 1rem; text-align: left">
                         <el-button  @click="search1()">综合</el-button>
                         <el-button  @click="search2()">发表论文数</el-button>
@@ -85,7 +85,7 @@
 
                 </el-tab-pane>
 
-                <el-tab-pane label="论文">
+                <el-tab-pane label="论文" v-if="paper_boolen">
                     <el-col style="margin-top: 1rem; text-align: left">
                         <div class="block">
                             <!-- <span class="demonstration">带快捷选项</span> -->
@@ -219,93 +219,99 @@ export default {
         currentPage: 1,
         pagenum: 10,
         totalnum: 100,
-        Author_information: [{
-            id:"",
-            name:"",
-            h_index:"",//h指数
-            n_pubs:"",//发表论文数
-            tags:[{
-                t:"",//关键词内容
-                w:""//相关论文数量
-            }],//相关领域
-            n_citation:"",//被引数
-            // pubs:[{
-            //     i:"",//论文id
-            //     r:""//作者排名
-            // }],//论文
-            orgs:""//工作单位
-          }, {
-            id:155,
-            name:"我吃西红柿",
-            h_index:"16",
-            n_pubs:"3",
-            tags:[{
-                t:"计算机",
-                w:"100"
-            }, {
-                t:"生物",
-                w:"50"
-            }],
-            n_citation:"1065",
-            orgs:"起点中文网"
-          }, {
-            id:156,
-            name:"我不吃西红柿",
-            h_index:"20",
-            n_pubs:"39",
-            tags:[{
-                t:"计算机",
-                w:"100"
-            }, {
-                t:"生物",
-                w:"50"
-            }],
-            n_citation:"1065",
-            orgs:"终点中文网"
-          },],
-        papers_information: [{  
-            id:"",
-            title:"",
-            authors:{
-                id:"",
-                name:""
-            },
-            venue_name:"",//刊物名
-            year:"",//发表年
-            n_citation:"",//被引数
-            url:""//相关链接
-          }, {
-            id:"1",
-            title:"Semantic Wikipedia",
-            authors:[{
-                id:"ak",
-                name:"Max V"
-            }, {
-                id:"ak1",
-                name:"Markus Kr"
-            }],
-            venue_name:"WWW",//刊物名
-            year:"2006",//发表年
-            n_citation:"639",//被引数
-            url:[{
-               url_n:"http://doi.acm.org/10.1145/1135777.1135863"//相关链接
-            }]
-          }, {
-            id:"2",
-            title:"Parsing",
-            authors:[{
-                id:"ak",
-                name:"Ralph Grishman"
-            }],
-            venue_name:"ACL",//刊物名
-            year:"1981",//发表年
-            n_citation:"11",//被引数
-            url:[{
-                url_n:"http://aclweb.org/anthology-new/P/P81/P81-1022.pdf"
-            }, {
-                 url_n:"https://static.aminer.org/pdf/20160902/aclanthology/index.txt"
-            }]
-          }],
+        Author_information: [
+        //     {
+        //     id:"",
+        //     name:"",
+        //     h_index:"",//h指数
+        //     n_pubs:"",//发表论文数
+        //     tags:[{
+        //         t:"",//关键词内容
+        //         w:""//相关论文数量
+        //     }],//相关领域
+        //     n_citation:"",//被引数
+        //     // pubs:[{
+        //     //     i:"",//论文id
+        //     //     r:""//作者排名
+        //     // }],//论文
+        //     orgs:""//工作单位
+        // }
+        ],
+        //   }, {
+        //     id:155,
+        //     name:"我吃西红柿",
+        //     h_index:"16",
+        //     n_pubs:"3",
+        //     tags:[{
+        //         t:"计算机",
+        //         w:"100"
+        //     }, {
+        //         t:"生物",
+        //         w:"50"
+        //     }],
+        //     n_citation:"1065",
+        //     orgs:"起点中文网"
+        //   }, {
+        //     id:156,
+        //     name:"我不吃西红柿",
+        //     h_index:"20",
+        //     n_pubs:"39",
+        //     tags:[{
+        //         t:"计算机",
+        //         w:"100"
+        //     }, {
+        //         t:"生物",
+        //         w:"50"
+        //     }],
+        //     n_citation:"1065",
+        //     orgs:"终点中文网"
+        //   },],
+        papers_information: [
+        //     {  
+        //     id:"",
+        //     title:"",
+        //     authors:{
+        //         id:"",
+        //         name:""
+        //     },
+        //     venue_name:"",//刊物名
+        //     year:"",//发表年
+        //     n_citation:"",//被引数
+        //     url:""//相关链接
+        // }
+        ],
+        //   }, {
+        //     id:"1",
+        //     title:"Semantic Wikipedia",
+        //     authors:[{
+        //         id:"ak",
+        //         name:"Max V"
+        //     }, {
+        //         id:"ak1",
+        //         name:"Markus Kr"
+        //     }],
+        //     venue_name:"WWW",//刊物名
+        //     year:"2006",//发表年
+        //     n_citation:"639",//被引数
+        //     url:[{
+        //        url_n:"http://doi.acm.org/10.1145/1135777.1135863"//相关链接
+        //     }]
+        //   }, {
+        //     id:"2",
+        //     title:"Parsing",
+        //     authors:[{
+        //         id:"ak",
+        //         name:"Ralph Grishman"
+        //     }],
+        //     venue_name:"ACL",//刊物名
+        //     year:"1981",//发表年
+        //     n_citation:"11",//被引数
+        //     url:[{
+        //         url_n:"http://aclweb.org/anthology-new/P/P81/P81-1022.pdf"
+        //     }, {
+        //          url_n:"https://static.aminer.org/pdf/20160902/aclanthology/index.txt"
+        //     }]
+        //   }],
         subject: [{value:'选项1', label: '作者'
         }, {value:'选项2', label: '领域'
         }, {value:'选项3', label: '机构'
@@ -318,11 +324,13 @@ export default {
         }, {value:'选项10', label: 'DOI'
         }],
         value: '标题',
-        input: '',
+        input:'',
         select: '标题',
         output_label:'标题',
         label_type:1,
-
+        author_boolen:false,
+        paper_boolen:false,
+        order:1
       };
     },
     components: {
@@ -349,57 +357,86 @@ export default {
         });
           }
           else{
+              const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
               if(this.output_label=='ISBN'){
                   this.label_type=9
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='作者'){
                   this.label_type=1
+                  this.author_boolen=true
+                  this.paper_boolen=false
               }
               else if(this.output_label=='领域'){
                   this.label_type=2
+                  this.author_boolen=true
+                  this.paper_boolen=false
               }
               else if(this.output_label=='机构'){
                   this.label_type=3
+                  this.author_boolen=true
+                  this.paper_boolen=false
               }
               else if(this.output_label=='标题'){
                   this.label_type=4
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='刊物'){
                   this.label_type=5
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='关键词'){
                   this.label_type=6
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='摘要'){
                   this.label_type=7
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='ISSN'){
                   this.label_type=8
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
               else if(this.output_label=='DOI'){
                   this.label_type=10
+                  this.author_boolen=false
+                  this.paper_boolen=true
               }
-              this.$axios.post('/apis/',
-              this.qs.stringify({
+              this.order=1
+              this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 1,
+                  order: this.order,
                   isasc: 1
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
               }),
-              {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
-              )
-              .then(res => {
-                  if(res.data.status === 0){
-                      this.Author_information=res.data
-                  }
-              })
+              console.log(this.label_type)
+              console.log(this.input)
           }
       },
       jumpToAouther(Auther_id){
           this.$router.push({
               path:'/Author',
               query: {
-                  author_id: this.$Base64.encode(JSON.stringify(Auther_id))
+                  author_id: Auther_id
               }
           })
       },
@@ -407,7 +444,7 @@ export default {
           this.$router.push({
               path:'/paper',
               query: {
-                  paper_id: this.$Base64.encode(JSON.stringify(Paper_id))
+                  paper_id: Paper_id
               }
           })
       },
@@ -418,18 +455,27 @@ export default {
           else{
               this.search1_ascending=1
           }
-          this.$axios.post('/apis/',
-          this.qs.stringify({
+          this.order=1
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 1,
-                  isasc: this.search1_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-          .then(res => {
-            if(res.data.status === 0){
-                this.Author_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search1_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search1_ascending=!this.search1_ascending
       },
@@ -440,18 +486,27 @@ export default {
           else{
               this.search2_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=4
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 4,
-                  isasc: this.search2_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.Author_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search2_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search2_ascending=!this.search2_ascending
       },
@@ -461,18 +516,27 @@ export default {
           else{
               this.search3_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=2
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 2,
-                  isasc: this.search3_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.Author_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search3_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search3_ascending=!this.search3_ascending
       },
@@ -483,18 +547,27 @@ export default {
           else{
               this.search4_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=3
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 3,
-                  isasc: this.search4_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.Author_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search4_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search4_ascending=!this.search4_ascending
       },
@@ -505,18 +578,27 @@ export default {
           else{
               this.search5_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=1
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 1,
-                  isasc: this.search5_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.papers_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search5_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search5_ascending=!this.search5_ascending
       },
@@ -527,18 +609,27 @@ export default {
           else{
               this.search6_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=5
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 5,
-                  isasc: this.search6_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.papers_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search6_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search6_ascending=!this.search6_ascending
       },
@@ -549,31 +640,52 @@ export default {
           else{
               this.search7_ascending=1
           }
-          this.$axios.post('/apis/',
-        this.qs.stringify({
+          this.order=6
+          const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
                   type: this.label_type,
                   content: this.input,
-                  order: 6,
-                  isasc: this.search7_ascending}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            if(res.data.status === 0){
-                this.papers_information=res.data
-            }
-        }
+                  order: this.order,
+                  isasc: this.search7_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              }
         )
         // this.search7_ascending=!this.search7_ascending
       },
 
       handleCurrentChange(val) {
-        this.$axios.post('/apis/',
-        this.qs.stringify({page: val}),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(res => {
-            this.currentPage = res.data.currentPage
-            if(res.data.status === 0)
-            console.log('切换到第' + val + '页成功')
-        })
+        const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
+          this.$axios.post('/apis/search/basicsearch',
+              {
+                  type: this.label_type,
+                  content: this.input,
+                  order: this.order,
+                  isasc: this.search1_ascending
+              }).then(res => {
+                  console.log(res)
+                  
+                    this.papers_information=res.data
+                    this.Author_information=res.data
+                    loading.close()
+
+              })
         this.current_page = val
       },
       

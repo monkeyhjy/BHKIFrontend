@@ -109,7 +109,7 @@
             },
             getData() {
                 var that=this
-                console.log(res);
+                // console.log(res);
                 this.$axios({
                     url:'http://182.92.239.145/apis/personality/get',
                     method:"post",
