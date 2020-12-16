@@ -13,8 +13,8 @@
 					</el-col>
 					<el-col :span="16" style="background-color: #fbede4; padding-bottom: 5rem">
 						<!--					标题-->
-						<div style="margin: 0 1rem">
-							<el-col :span="24" style="text-align: center">
+						<div >
+							<el-col :span="24" style="text-align: center; background-color: #fdc6d9; padding-bottom: 3rem">
 								<div>
 									<div style="text-align: right">
 										<el-button
@@ -34,7 +34,7 @@
 										<!--						作者，点击可跳转到该学者的门户页面--></div>
 									<div style="margin-top: 1rem" >
 									<span v-for="(item, index) in paper.authors" :key="index">
-										<el-link style="font-size: 1.2rem"  @click="jumpToPortal(item.author_id)">{{item.author_name}}</el-link>
+										<el-link style="font-size: 1.2rem"  @click="jumpToPortal(item.id)">{{item.name}}</el-link>
 										<span style="font-size: 1.2rem"  v-if="index!==paper.authors.length-1">, </span>
 									</span>
 									</div>
@@ -50,45 +50,40 @@
 									</div>
 								</div>
 							</el-col>
-							<!--						摘要-->
-							<el-col :span="24" style="text-align: left; margin-top: 3rem">
-								<el-divider></el-divider>
-								<strong style="font-size: 1.5rem">摘要：</strong>
-								<p style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
-							</el-col>
-							<!--						关键词-->
-							<el-col :span="24" style="text-align: left; font-size: 1.5rem; margin-top: 3rem">
-								<strong>关键词：</strong>
-								<span v-for="(item, index) in paper.keywords" :key="index">
+							<div style="margin: 0 1rem">
+								<!--						摘要-->
+								<el-col :span="24" style="text-align: left; margin-top: 3rem">
+									<strong style="font-size: 1.5rem">摘要：</strong>
+									<p style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
+								</el-col>
+								<!--						关键词-->
+								<el-col :span="24" style="text-align: left; font-size: 1.5rem; margin-top: 3rem">
+									<strong>关键词：</strong>
+									<span v-for="(item, index) in paper.keywords" :key="index">
 								{{item}};
 							</span>
-							</el-col>
-							<!--						原文链接-->
-							<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
-								<strong>原文链接：</strong>
-								<el-link :href="paper.url" target="_blank" style="font-size: 1.5rem">{{paper.url}}</el-link>
-							</el-col>
-							<!--						被引量-->
-							<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
-								<strong>被引量：</strong>
-								{{paper.n_citation}}
-							</el-col>
-							<!--						ISSN-->
-							<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
-								<strong>ISSN：</strong>
-								<span>{{paper.issn}}</span>
-							</el-col>
-							<!--							doi-->
-							<el-col :span="24" v-if="url!==''" style="text-align: left; margin-top: 1rem">
-								<strong>doi：</strong>
-								<span>{{paper.doi}}</span>
-							</el-col>
-							<!--						图片-->
-							<!--						<el-col :span="24">-->
-							<!--							<div style="height: 30rem; margin-top: 5rem">-->
-							<!--								-->
-							<!--							</div>-->
-							<!--						</el-col>-->
+								</el-col>
+								<!--						原文链接-->
+<!--								<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">-->
+<!--									<strong>原文链接：</strong>-->
+<!--									<el-link :href="paper.url" target="_blank" style="font-size: 1.5rem">{{paper.url}}</el-link>-->
+<!--								</el-col>-->
+								<!--						被引量-->
+								<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
+									<strong>被引量：</strong>
+									{{paper.n_citation}}
+								</el-col>
+								<!--						isbn-->
+								<el-col :span="24" style="text-align: left; margin-top: 1rem">
+									<strong>ISBN：</strong>
+									<span>{{paper.isbn}}</span>
+								</el-col>
+								<!--							doi-->
+								<el-col :span="24" style="text-align: left; margin-top: 1rem">
+									<strong>doi：</strong>
+									<span>{{paper.doi}}</span>
+								</el-col>
+							</div>
 
 						</div>
 					</el-col>
@@ -118,16 +113,16 @@
 					title: '软件系统分析与设计',
 					authors: [
 						{
-							author_id: 1,
-							author_name: '111',
+							id: 1,
+							name: '111',
 						},
 						{
-							author_id: 2,
-							author_name: '222',
+							id: 2,
+							name: '222',
 						},
 						{
-							author_id: 3,
-							author_name: '333',
+							id: 3,
+							name: '333',
 						},
 					],
 					venue_raw: '北京航空航天大学学报',
@@ -142,9 +137,8 @@
 					page_end: '90',
 					volumn: '60',
 					issue: '25',
-					issn: '',
+					isbn: '',
 					doi: '',
-					url: 'www.baidu.com',
 					abstract: '这是一篇文章的摘要',
 					is_star: 0,
 				},
@@ -155,21 +149,31 @@
 		},
 		mounted() {
 			this.get_paper_id();
-			this.$axios.post('http://182.92.239.145/apis/',
-					this.qs.stringify({
-						paper_id: this.paper_id,
-					}),
-					{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+			console.log(this.paper.paper_id)
+			this.$axios.post('/apis/search/getpaperbyid',
+					{
+						paperid: this.paper.paper_id
+					})
 					.then(res => {
-						if(res.data.paper.status === 0){
-							this.paper = res.data.paper
-							console.log("进入学术成果详情页成功")
-						}
+						console.log(res)
+						this.paper.title = res.data.title
+						this.paper.authors = res.data.authors
+						this.paper.venue_raw = res.data.venue.raw
+						this.paper.year = res.data.year
+						this.paper.keywords = res.data.keywords
+						this.paper.n_citation = res.data.n_citation
+						this.paper.page_start = res.data.page_start
+						this.paper.page_end = res.data.page_end
+						this.paper.volumn = res.data.volume
+						this.paper.issue = res.data.issue
+						this.paper.isbn = res.data.isbn
+						this.paper.doi = res.data.doi
+						this.paper.abstract = res.data.abstract
 					})
 		},
 		methods: {
 			get_paper_id() {
-				this.paper_id = JSON.parse(this.$Base64.decode(this.$route.query.paper_id))
+				this.paper.paper_id = this.$route.query.paper_id
 				//console.log(this.pid);
 			},
 			star(flag) {
@@ -190,7 +194,7 @@
 				this.$router.push({
 					path: '/author',
 					query: {
-						author_id: this.$Base64.encode(JSON.stringify(author_id)),
+						author_id: author_id,
 					}
 				})
 			}

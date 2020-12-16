@@ -15,15 +15,18 @@
 												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
 									<el-col :span="24">
-										<span style="font-size: 2rem;">{{item.name}}</span>
-										<el-button style="vertical-align: bottom; margin-left: 5rem"
-															 type="danger"
-															 @click="submitClaim(item.author_id)">认领门户</el-button>
+										<el-col :span="12"><span style="font-size: 2rem;">{{item.name}}</span></el-col>
+										<el-col :span="2" :offset="4" style="right: 2rem;">
+											<el-button style="vertical-align: middle; margin-left: 5rem"
+																 type="danger"
+																 @click="submitClaim(user_id, item.id)">认领门户</el-button>
+										</el-col>
+
 									</el-col>
 									<el-col :span="24" style="margin-top: 1rem">
 										<span style="font-size: 1.4rem;">
 											<i class="el-icon-office-building"></i>
-											{{item.orgs}}
+											<span v-if="item.hasOwnProperty('orgs')" >   {{item.orgs[0]}}</span>
 										</span>
 									</el-col>
 									<el-col :span="24" style="margin-top: 1rem">
@@ -63,6 +66,26 @@
 			</el-container>
 		</div>
 
+<!--		姓名输入框-->
+		<el-dialog
+						title="请填写您的真实姓名，如输入中文无结果，请输入姓名的拼音，格式如“Zhang sansi”"
+						:visible.sync="nameVisible"
+						center
+						:append-to-body='true'
+						:lock-scroll="false"
+						width="50%"
+						:before-close="nameClose">
+			<el-input
+							type="textarea"
+							:rows="5"
+							autosize
+							placeholder="请输入内容"
+							v-model="nameText">
+			</el-input>
+			<el-button class="medium" style="margin-left:40%;position:relative;margin-top:30px" plain
+								 @click="submitName(nameText)">发送姓名
+			</el-button>
+		</el-dialog>
 	</div>
 </template>
 
@@ -73,182 +96,56 @@
 		name: "AuthorItem",
 		data() {
 			return {
-				author_item: [
-				{
-					author_id: 1,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 2,
-							t: '计算机网络',
-						},
-						{
-							w: 1,
-							t: '生物科学',
-						}
-					],
-					n_pubs: 6,
-				},
-				{
-					author_id: 2,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 5,
-							t: '软件工程',
-						},
-						{
-							w: 3,
-							t: '人工智能',
-						},
-					],
-					n_pubs: 8,
-				},
-				{
-					author_id: 3,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 2,
-							t: '计算机网络',
-						},
-						{
-							w: 1,
-							t: '生物科学',
-						},
-						{
-							w: 5,
-							t: '软件工程',
-						},
-						{
-							w: 3,
-							t: '人工智能',
-						},
-					],
-					n_pubs: 10,
-				},
-				{
-					author_id: 1,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 2,
-							t: '计算机网络',
-						},
-						{
-							w: 1,
-							t: '生物科学',
-						}
-					],
-					n_pubs: 6,
-				},
-				{
-					author_id: 2,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 5,
-							t: '软件工程',
-						},
-						{
-							w: 3,
-							t: '人工智能',
-						},
-					],
-					n_pubs: 8,
-				},
-				{
-					author_id: 3,
-					name: "tony",
-					orgs: "BUAA",
-					tags: [
-						{
-							w: 2,
-							t: '计算机网络',
-						},
-						{
-							w: 1,
-							t: '生物科学',
-						},
-						{
-							w: 5,
-							t: '软件工程',
-						},
-						{
-							w: 3,
-							t: '人工智能',
-						},
-					],
-					n_pubs: 10,
-				},
-				],
-				page_size: 5,
+				author_item: [],
+				user_id: -1,
+				page_size: 10,
 				page_num: 2,
 				current_page: 1,
+				nameVisible: false,
+				nameText: '',
 			}
 		},
 		components: {
 			NewNavigation,
 		},
 		mounted() {
-			this.get_author_list();
+			this.get_login_status();
 		},
 		methods: {
-			get_author_list() {
-				this.$axios.post('http://182.92.239.145/apis/',)
-				.then(res => {
-					if(res.data.status === 0){
-						//返回类型，如果type为0代表已认领，直接跳转到认领页面
-						//如果type为1代表未认领，此时返回的author为0或者任意负数（反正不能是合法数字）显示备选门户列表
-						if(res.data.type === 0){
-							this.$router.push({
-								path: '/author',
-								query: {
-									author_id: this.$Base64.encode(JSON.stringify(res.data.author_id)),
-								}
-							})
-						}
-						else {
-							alert('只有在个人信息页面填入合法姓名之后才能认领门户。\n' +
-									'合法姓名例如：Zhang SanSi\n' +
-									'（如果已完善姓名，请忽略本信息）')
-							this.author_item = res.data.author_item;
-						}
-					}
-				})
-			},
-			submitClaim(author_id) {
-				this.$axios.post('http://182.92.239.145/apis/',
-						this.qs.stringify({
-							author_id: author_id,
-						}),
-						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+			//获取登录状态
+			get_login_status() {
+				this.$axios.post('/apis/user/getstatus')
 						.then(res => {
-							if(res.data.status === 0){
-								this.$message({
-									type: 'success',
-									message: '认领成功',
-								})
-								this.$router.push({
-									path: '/author',
-									query: {
-										author_id: this.$Base64.encode(JSON.stringify(res.data.author_id)),
-									}
-								})
+							console.log(res)
+							if(res.data.status === 1){
+								alert('请先登录！')
+								this.$router.push('/login')
 							}
 							else{
-								this.$message({
-									type: 'danger',
-									message: '认领失败',
-								})
+								this.user_id = res.data.userid
+								this.is_associate_author()
 							}
 						})
 			},
+			//获取已经认领的门户
+			is_associate_author() {
+					this.$axios.post('/apis/personality/get')
+							.then(res => {
+								if(!res.data.is_associated) {
+									this.nameVisible = true
+								}
+								else {
+									this.$router.push({
+										path: '/author',
+										query: {
+											author_id: res.data.author_id
+										},
+									})
+								}
+							})
+			},
+			//认领门户
+
 			handleCurrentChange(val) {
 				this.$axios.post('http://182.92.239.145/apis/',
 						this.qs.stringify({page: val}),
@@ -259,6 +156,61 @@
 								console.log('切换到第' + val + '页成功')
 						})
 				this.current_page = val
+			},
+			nameClose(done) {
+				this.nameVisible = false;
+				this.$router.go(-1)
+			},
+			submitName(text) {
+				if(text === '')
+					this.$alert('姓名不能为空', '系统提示', {
+						confirmButtonText: '确定',
+					})
+				else{
+					this.$axios.post('/apis/search/getassAuthor',
+							{
+								name: text
+							})
+							.then(res => {
+								this.author_item = res.data
+								// for(let i = 0; i < res.data.length; i++){
+								// 	this.author_item[i].id = res.data[i].id
+								// 	this.author_item[i].name = res.data[i].name
+								// 	this.author_item[i].orgs = res.data[i].orgs
+								// 	this.author_item[i].tags = res.data[i].tags
+								// 	this.author_item[i].n_pubs = res.data[i].n_pubs
+								// }
+								this.nameVisible = false;
+							})
+				}
+			},
+
+			submitClaim(user_id, author_id) {
+				this.$axios.post('/apis/search/associatetoAuthor',
+						{
+							userid: user_id,
+							authorid: author_id
+						}).then(res => {
+					console.log(res)
+					if(res.data.status === 0){
+						this.$message({
+							type: 'success',
+							message: '认领成功',
+						})
+						this.$router.push({
+							path: '/author',
+							query: {
+								author_id: author_id,
+							}
+						})
+					}
+					else{
+						this.$message({
+							type: 'danger',
+							message: '认领失败',
+						})
+					}
+				})
 			},
 		}
 	}

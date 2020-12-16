@@ -15,7 +15,7 @@
 
 					<el-col :span="16">
 						<div style="margin: 0 1rem">
-							<el-col :span="12">
+							<el-col :span="24">
 								<div style="font-weight: 700;
 								font-size: 1.5rem;
 								text-align: center; margin-bottom: 1rem">基本信息</div>
@@ -37,7 +37,11 @@
 
 												<!--											<el-button size="mini" style="vertical-align: bottom"-->
 												<!--																 v-else type="info" disabled>门户已被认领</el-button>-->
-
+												<el-button size="mini"
+																	 style="vertical-align: center; margin-left: 0.5rem"
+																	 v-if="author.is_claimed===2"
+																	 type="danger"
+																	 @click="cancelClaim">解除认领</el-button>
 												<el-button size="mini"
 																	 style="vertical-align: center; margin-left: 0.5rem"
 																	 v-if="author.is_claimed===1&&author.is_reported===0"
@@ -72,7 +76,7 @@
 									<el-col :span="24" style="margin-left: 0">
 										<el-card style="margin-bottom: 1rem; background-color: #fabca2;  border-radius: 10px">
 											<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
-											<strong>工作单位：</strong>{{author.orgs}}
+											<strong>工作单位：</strong>{{author.orgs[0]}}
 										</el-card>
 										<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
 											<el-card style="background-color: #fabca2;  border-radius: 10px">
@@ -106,22 +110,25 @@
 								</div>
 							</el-col>
 
-							<el-col :span="12">
+							<el-col :span="24">
 								<div class="grid-content" style="text-align: center">
 									<span style="font-weight: 700; font-size: 1.5rem; margin-bottom: 0.5rem">相关专家网络</span>
 									<div id="myNetwork"
 											 style="margin-top: 1rem;
-											 width: 100%; height: 25rem;
-											 overflow: hidden"/>
+											 width: 100%; height: 30rem;
+											 overflow: hidden; text-align: center"/>
 								</div>
 							</el-col>
 							<!--					学术成果展示-->
+							<el-col :span="24">
+								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
+								<el-divider></el-divider>
+							</el-col>
+
 							<el-col :span="24"
 											style="margin-top: 1rem; text-align: left"
 											v-for="(item, index) in author.pubs"
 											:key="index">
-								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
-								<el-divider></el-divider>
 								<el-card class="box-card" style="background-color: #f9aebf; border-radius: 15px" shadow="hover">
 									<div class="text item">
 										<el-col :span="12" style="margin-bottom: 1rem">
@@ -131,16 +138,16 @@
 											</el-link>
 										</el-col>
 										<el-col :span="12" style="text-align: right">
-											<el-button v-if="item.is_display" @click="pub_display(index, 1)">展示给他人</el-button>
-											<el-button v-else @click="pub_display(index, 0)">不展示给他人</el-button>
+											<el-button v-if="item.is_display&&author.is_claimed===2" @click="pub_display(index, 1)">展示给他人</el-button>
+											<el-button v-if="!item.is_display&&author.is_claimed===2" @click="pub_display(index, 0)">不展示给他人</el-button>
 										</el-col>
 										<el-col :span="24"
 														style="margin-bottom: 1rem">
 											<el-link v-for="(author, index2) in item.author"
 															 :key="index2"
 															 style="margin-right: 0.5rem; font-size: 16px"
-															 @click="jumpToPortal(author.author_id)">
-												{{author.author_name}}
+															 @click="jumpToPortal(author.id)">
+												{{author.name}}
 												<span v-if="index2!==item.author.length-1">,</span>
 											</el-link>
 										</el-col>
@@ -228,6 +235,7 @@
 <script>
 	import echarts from 'echarts'
 	import NewNavigation from "../navigatorandsearch/NewNavigation";
+
 	export default {
 		name: "Author",
 		data() {
@@ -248,7 +256,6 @@
 				imgUrl_right: require('../../assets/image/author/stair-right.jpg'),
 				author: {
 					author_id: 0,
-					user_id: 1,
 					name: "tony",
 					orgs: "BUAA",
 					h_index: 100,
@@ -272,179 +279,193 @@
 					],
 					n_pubs: 6,
 					n_citation: 366,
-					is_claimed: 1,
+					is_claimed: 2,
 					is_reported: 0,
 					is_followed: 0,
 					relative_author: [
-						{
-							name: 'jinyun Hou',
-							author_id: 1,
-							symbolSize: 70,
-						},
-						{
-							name: '222',
-							author_id: 2,
-							symbolSize: 60,
-						},
-						{
-							name: '333',
-							author_id: 3,
-							symbolSize: 55,
-						},
-						{
-							name: '444',
-							author_id: 4,
-							symbolSize: 50,
-						},
-						{
-							name: '555',
-							author_id: 5,
-							symbolSize: 40,
-						},
-						{
-							name: '666',
-							author_id: 6,
-							symbolSize: 40,
-						},
-						{
-							name: '777',
-							author_id: 7,
-							symbolSize: 40,
-						},
+						// {
+						// 	name: 'jinyun Hou',
+						// 	author_id: 1,
+						// 	graph_id: 1,
+						// 	symbolSize: 70,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '222',
+						// 	author_id: 2,
+						// 	graph_id: 2,
+						// 	symbolSize: 60,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '333',
+						// 	author_id: 3,
+						// 	graph_id: 3,
+						// 	symbolSize: 55,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '444',
+						// 	author_id: 4,
+						// 	graph_id: 4,
+						// 	symbolSize: 50,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '555',
+						// 	author_id: 5,
+						// 	graph_id: 5,
+						// 	symbolSize: 40,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '666',
+						// 	author_id: 6,
+						// 	graph_id: 6,
+						// 	symbolSize: 40,
+						// 	org: '',
+						// },
+						// {
+						// 	name: '777',
+						// 	author_id: 7,
+						// 	graph_id: 7,
+						// 	symbolSize: 40,
+						// 	org: '',
+						// },
 					],
 					pubs: [
-						{
-							paper_id: 0,
-							title: "编译原理与技术",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2018-07-02",
-							venue_raw: "BUAA",
-							n_citation: 20,
-							is_display: 1,
-						},
-						{
-							paper_id: 0,
-							title: "软件系统分析与设计",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2018-08-16",
-							source: "BUAA",
-							n_citation: 30,
-							is_display: 1,
-						},
-						{
-							paper_id: 0,
-							title: "计算机网络",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2019-02-16",
-							source: "BUAA",
-							n_citation: 15,
-							is_display: 1,
-						},
-						{
-							paper_id: 0,
-							title: "计算机组成",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2019-07-25",
-							source: "BUAA",
-							n_citation: 40,
-							is_display: 1,
-						},
-						{
-							paper_id: 0,
-							title: "算法导论",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2020-01-11",
-							source: "BUAA",
-							n_citation: 10,
-							is_display: 1,
-						},
-						{
-							paper_id: 0,
-							title: "数字电路分析设计",
-							author: [
-								{
-									author_id: 1,
-									author_name: '111',
-								},
-								{
-									author_id: 2,
-									author_name: '222',
-								},
-								{
-									author_id: 3,
-									author_name: '333',
-								},
-							],
-							year: "2017-05-19",
-							source: "BUAA",
-							n_citation: 50,
-							is_display: 1,
-						},
+						// {
+						// 	paper_id: 0,
+						// 	title: "编译原理与技术",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2018-07-02",
+						// 	venue_raw: "BUAA",
+						// 	n_citation: 20,
+						// 	is_display: 1,
+						// },
+						// {
+						// 	paper_id: 0,
+						// 	title: "软件系统分析与设计",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2018-08-16",
+						// 	source: "BUAA",
+						// 	n_citation: 30,
+						// 	is_display: 1,
+						// },
+						// {
+						// 	paper_id: 0,
+						// 	title: "计算机网络",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2019-02-16",
+						// 	source: "BUAA",
+						// 	n_citation: 15,
+						// 	is_display: 1,
+						// },
+						// {
+						// 	paper_id: 0,
+						// 	title: "计算机组成",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			author_name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			author_name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2019-07-25",
+						// 	source: "BUAA",
+						// 	n_citation: 40,
+						// 	is_display: 1,
+						// },
+						// {
+						// 	paper_id: 0,
+						// 	title: "算法导论",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2020-01-11",
+						// 	source: "BUAA",
+						// 	n_citation: 10,
+						// 	is_display: 1,
+						// },
+						// {
+						// 	paper_id: 0,
+						// 	title: "数字电路分析设计",
+						// 	author: [
+						// 		{
+						// 			id: 1,
+						// 			name: '111',
+						// 		},
+						// 		{
+						// 			id: 2,
+						// 			name: '222',
+						// 		},
+						// 		{
+						// 			id: 3,
+						// 			name: '333',
+						// 		},
+						// 	],
+						// 	year: "2017-05-19",
+						// 	source: "BUAA",
+						// 	n_citation: 50,
+						// 	is_display: 1,
+						// },
 					],
 					page_num: 2,
 					page_size: 3,
@@ -459,35 +480,152 @@
 				myChart: null,
 				chartData:[],
 				chartLink:[],
+				is_login: 0,
+				user_id: -1,
 			}
 		},
 		mounted () {
 			this.get_author_id();
-			this.$axios.post('http://182.92.239.145/apis/',
-					this.qs.stringify({
-						author_id: this.author_id,
-					}),
-					{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-					.then(res => {
-						if(res.data.author.status === 0){
-							console.log("进入门户成功")
-						}
-					})
-			this.graph();
+			this.get_login_status();
+			this.get_author();
 		},
 		methods: {
-			get_author_id() {
-				this.author_id = JSON.parse(this.$Base64.decode(this.$route.query.author_id))
-				//console.log(this.pid);
+			//完成
+			get_login_status() {
+				this.$axios.post('/apis/user/getstatus')
+						.then(res => {
+							this.is_login = res.data.status
+							this.user_id = res.data.userid
+						})
 			},
-			graph() {
+			//完成
+			get_author_id() {
+				// this.author.author_id = JSON.parse(this.$Base64.decode(this.$route.query.author_id))
+				this.author.author_id = this.$route.query.author_id
+			},
+			//未完成
+			get_author() {
+				this.$axios.post('/apis/search/getauthorbyid',
+						{
+							authorid: this.author.author_id,
+						})
+						.then(res => {
+							if(res.status === 200){
+								console.log("进入门户成功")
+								this.author.author_id = res.data.id
+								this.author.name = res.data.name
+								this.author.h_index = res.data.h_index
+								this.author.n_pubs = res.data.n_pubs
+								this.author.tags = res.data.tags
+								this.author.n_citation = res.data.n_citation
+								this.author.orgs = res.data.orgs
+								for(let i = 0; i < res.data.pubs.length; i++) {
+									// this.author.pubs[i].paper_id = res.data.pubs[i].i;
+									// this.author.pubs[i].is_display = res.data.pubs[i].is_display;
+									//学术成果
+									// this.$axios.post('/apis/search/getpaperbyid',
+									// 		{
+									// 			paperid: res.data.pubs[i].i
+									// 		}).then(res2 => {
+									// 	console.log(res2)
+									// 	let obj = {
+									// 		paper_id: res.data.pubs[i].i,
+									// 		is_display: res.data.pubs[i].is_display,
+									// 		title: res2.data.title,
+									// 		author: res2.data.authors,
+									// 		venue_raw: res2.data.venue_raw,
+									// 		year: res2.data.year,
+									// 		keywords: res2.data.keywords,
+									// 		n_citation: res2.data.n_citation,
+									// 		page_start: res2.data.page_start,
+									// 		page_end: res2.data.page_end,
+									// 		volumn: res2.data.volumn,
+									// 		issue: res2.data.issue,
+									// 		isbn: res2.data.isbn,
+									// 		doi: res2.data.doi,
+									// 		abstract: res2.data.abstract,
+									// 	}
+									// 	this.author.pubs.push(obj)
+									// 	// this.author.pubs[i].title = res2.data.title
+									// 	// this.author.pubs[i].author = res2.data.authors
+									// 	// this.author.pubs[i].venue_raw = res2.data.venue_raw
+									// 	// this.author.pubs[i].year = res2.data.year;
+									// 	// this.author.pubs[i].keywords = res2.data.keywords
+									// 	// this.author.pubs[i].n_citation = res2.data.n_citation
+									// 	// this.author.pubs[i].page_start = res2.data.page_start
+									// 	// this.author.pubs[i].page_end = res2.data.page_end
+									// 	// this.author.pubs[i].volumn = res2.data.volume
+									// 	// this.author.pubs[i].issue = res2.data.issue
+									// 	// this.author.pubs[i].isbn = res2.data.isbn
+									// 	// this.author.pubs[i].doi = res2.data.doi
+									// 	// this.author.pubs[i].abstract = res2.data.abstract
+									// })
+
+								}
+								//相关专家
+								this.$axios.post('/apis/search/getrelatedauthor',
+										{
+											authorid: this.author.author_id
+										}).then(res3 => {
+									if(res3.data.length !== 0){
+										for(let i = 0; i < res3.data.length; i++) {
+											let obj = {
+												name: res3.data[i].name,
+												author_id: res3.data[i].id,
+												graph_id: i + 1,
+												symbolSize: res3.data[i].account_cooperation * 0.3 + 40,
+												org: res3.data[i].org
+											}
+											this.author.relative_author.push(obj)
+											// this.author.relative_author[i].name = res3.data[i].name
+											// this.author.relative_author[i].author_id = res3.data[i].id
+											// this.author.relative_author[i].graph_id = i+1
+											// this.author.relative_author[i].
+											// this.author.relative_author[i].org = res3.data[i].org
+										}
+									}
+								})
+								//相似专家
+								this.$axios.post('/apis/search/getsimilarauthor',
+										{
+											authorid: this.author.author_id
+										}).then(res4 => {
+											if(res4.data.length !== 0) {
+												let tmp_len = this.author.relative_author.length;
+												for(let j = 0; j < res4.data.length; j++){
+													let obj = {
+														name: res4.data[j].name,
+														author_id: res4.data[j].id,
+														graph_id: j+tmp_len + 1,
+														symbolSize: 60,
+														org: res4.data[j].org
+													}
+													this.author.relative_author.push(obj)
+													// this.author.relative_author[j+tmp_len].name = res4.data[j].name
+													// this.author.relative_author[j+tmp_len].author_id = res4.data[j].id
+													// this.author.relative_author[j+tmp_len].graph_id = j+tmp_len+1
+													// this.author.relative_author[j+tmp_len].symbolSize = 60
+													// this.author.relative_author[j+tmp_len].org = res4.data[j].org
+													// this.author.relative_author[j+tmp_len] = res4.data[j]
+													// JSON.parse(JSON.stringify(this.author.relative_author))
+												}
+												let q = JSON.parse(JSON.stringify(this.author.relative_author))
+												this.graph(q);
+											}
+								})
+							}
+						})
+
+			},
+			//完成
+			graph(q) {
 				let dom = document.getElementById('myNetwork');
 				this.myChart = echarts.init(dom);
-				this.chartData=this.dataEChart();
-				this.chartLink=this.linkEChart();
+				this.chartData = this.dataEChart(q);
+				this.chartLink = this.linkEChart(this.chartData);
 				let option = {
 					tooltip:{
-						show:false,
+						show: false,
 					},
 					series: [
 						{
@@ -495,7 +633,7 @@
 							type:'graph',
 							layout:'force',
 							links: this.chartLink,
-							data:this.chartData,
+							data: this.chartData,
 							hoverAnimation: true,
 							edgeLabel: {
 								normal: {
@@ -505,7 +643,7 @@
 							},
 							edgeSymbol:'circle',
 							force:{
-								repulsion: 2000,
+								repulsion: 1300,
 								//edgeLength: 50,
 								layoutAnimation: true,
 							},
@@ -585,57 +723,72 @@
 					//console.log(params.data)//获取点击的头像的数据信息
 				});
 			},
-			dataEChart(){
-				let data = this.author.relative_author;
+			//完成
+			dataEChart(q){
+				let data = [];
+				data.push({
+					name: this.author.name,
+					symbolSize: 100,
+					graph_id: 0,
+				})
+				for(let i = 0; i < q.length; i++){
+					data.push(q[i])
+				}
+
 				return data;
 			},
-			linkEChart(){
+			//完成
+			linkEChart(data){
 				let dataLink = [];
-				for(let i = 0;i < this.author.relative_author.length; i++){
+				for(let i = 0;i < data.length; i++){
 					dataLink.push({
-						value: this.author.relative_author[i].symbolSize,
+						value: data[i].symbolSize,
 						source: 0,
-						target: this.author.relative_author[i].author_id,
+						target: data[i].graph_id,
 					})
 				}
 				return dataLink;
 			},
 
 			//按钮：认领、举报、私信、关注
-			//认领
-			submitClaim() {
-				this.$axios.post('http://182.92.239.145/apis/',
-						this.qs.stringify({
-							author_id: this.author.author_id,
-						}),
-						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+			//解除认领，调试
+			cancelClaim() {
+				console.log(this.user_id)
+				this.$axios.post('/apis/search/disassociatetoAuthor',
+						{
+							userid: this.user_id
+						})
 						.then(res => {
-							if(res.data.status === 0)
+							if(res.data.status === 0){
 								this.$message({
 									type: 'success',
-									message: '认领成功',
+									message: '解除认领成功',
 								})
-							this.author.is_claimed = 2
+								this.$router.push('/authoritem')
+							}
 						})
 			},
-			//举报
+			//举报输入框，未完成
 			reportDisplay() {
+				if(this.is_login === 1) {
+					alert('请先登录！')
+					this.$router.push('/login')
+				}
 				this.reportVisible = true;
 			},
+			//提交举报门户，未完成
 			submitReport(text) {
 				if(this.reportText === '')
 					this.$alert('举报内容不能为空', '系统提示', {
 						confirmButtonText: '确定',
 				})
 				else{
-					this.$axios.post('http://182.92.239.145/apis/',
-					this.qs.stringify({
-						report_text: text,
+					this.$axios.post('/apis/blog/reportauthor',
+				{
 						author_id: this.author.author_id,
 						author_user_id: this.author.user_id,
-					}),
-							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-					.then(res => {
+						text: text
+				}).then(res => {
 						if(res.data.status === 0){
 							this.author.is_reported = 1 - this.author.is_reported
 							this.$message({
@@ -650,9 +803,13 @@
 			reportClose(done) {
 				this.reportVisible = false;
 			},
-			//私信
+			//私信，未完成
 			privateMessageDisplay() {
-				if(this.author.is_claimed === 0){
+				if(this.is_login === 1) {
+					alert('请先登录！')
+					this.$router.push('/login')
+				}
+				else if(this.author.is_claimed === 0){
 					this.$alert('该门户未被认领！', '系统提示', {
 						confirmButtonText: '确定'
 					})
@@ -666,13 +823,11 @@
 						confirmButtonText: '确定',
 					})
 				else{
-					this.$axios.post('http://182.92.239.145/apis/',
-							this.qs.stringify({
-								user_id: id,
-								private_message_text: text
-							}),
-							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-							.then(res => {
+					this.$axios.post('/apis/message/sendmeaasge',
+							{
+								id: id,
+								message: text
+							}).then(res => {
 								if(res.data.status === 0)
 									this.$message({
 										type: 'success',
@@ -684,21 +839,22 @@
 			privateMessageClose(done) {
 				this.privateMessageVisible = false;
 			},
-			//关注
+			//关注，完成
 			follow(flag) {
-				if(this.author.is_claimed === 0){
+				if(this.is_login === 1) {
+					alert('请先登录！')
+					this.$router.push('/login')
+				}
+				else if(this.author.is_claimed === 0){
 					this.$alert('该门户未被认领！', '系统提示', {
 						confirmButtonText: '确定'
 					})
 				}
 				else{
-					this.$axios.post('http://182.92.239.145/apis/',
-							this.qs.stringify({
-								user_id: this.user_id,
-								flag: flag
-							}),
-							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-					.then(res => {
+					this.$axios.post('/apis/user/change_follow_state',
+							{
+								userid: this.author.user_id,
+							}).then(res => {
 						if(res.data.status === 0){
 							this.author.is_followed = 1 - this.author.is_followed
 							this.$message({
@@ -710,52 +866,68 @@
 
 				}
 			},
-			//是否给别人看某个学术成果
+			//是否给别人看某个学术成果，完成
 			pub_display(index, flag) {
 				this.author.pubs[index].is_display = 1-this.author.pubs[index].is_display
-				this.$axios.post('http://182.92.239.145/apis/',
-					this.qs.stringify({
-						paper_id: this.author.pubs[index].id,
-						flag: flag
-					}),
-					{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-					.then(res => {
-						if(res.data.status === 0){
+				//展示出来
+				if(flag === 0){
+					this.$axios.post('/apis/search/paperdisplay',
+							{
+								user_id: this.user_id,
+								paper_id: this.author.pubs[index].id,
+							}).then(res => {
+						if(res.status === 0){
 							this.$message({
 								type: "success",
-								message: "设置成功",
+								message: "设置展示成功",
 							})
 						}
 					})
+				}
+				else {
+					this.$axios.post('/apis/search/papernotdisplay',
+							{
+								user_id: this.user_id,
+								paper_id: this.author.pubs[index].id,
+							}).then(res => {
+						if(res.status === 0){
+							this.$message({
+								type: "success",
+								message: "设置隐藏成功",
+							})
+						}
+					})
+				}
 			},
-			//跳转门户所绑定用户的个人信息页面
-			jump_to_info(user_id) {
-				this.$router.push({
-					path: '',
-					query: {
-						user_id: this.$Base64.encode(JSON.stringify(user_id)),
-					}
-				})
-			},
-			//跳转对应学术成果
+			//跳转门户所绑定用户的个人信息页面，未完成
+			// jump_to_info(user_id) {
+			// 	this.$router.push({
+			// 		path: '',
+			// 		query: {
+			// 			user_id: this.$Base64.encode(JSON.stringify(user_id)),
+			// 		}
+			// 	})
+			// },
+			//跳转对应学术成果，已完成
 			jump_to_paper(paper_id){
 				this.$router.push({
 					path: '/paper',
 					query: {
-						paper_id: this.$Base64.encode(JSON.stringify(paper_id)),
+						// paper_id: this.$Base64.encode(JSON.stringify(paper_id)),
+						paper_id: paper_id,
 					}
 				})
 			},
-			//跳转对应专家门户
+			//跳转对应专家门户，已完成
 			jumpToPortal(author_id) {
 				this.$router.push({
 					path: '/author',
 					query: {
-						author_id: this.$Base64.encode(JSON.stringify(author_id)),
+						author_id: author_id,
 					}
 				})
 			},
-			//请求分页数据
+			//请求分页数据，未完成
 			handleCurrentChange(val) {
 				this.$axios.post('http://182.92.239.145/apis/',
 						this.qs.stringify({page: val}),
