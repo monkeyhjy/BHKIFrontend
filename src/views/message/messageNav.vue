@@ -64,7 +64,10 @@
     }
 </script>
 
-<style scoped>
+<style>
+    body{
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
     .nav-icon{
         color:white
     }

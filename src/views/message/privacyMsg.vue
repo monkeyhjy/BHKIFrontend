@@ -28,17 +28,17 @@
                 msgCollection:[
                     {
                         id: 1,
-                        name: 'XXX',
+                        name: '1XXX',
                         content: 'YYY',
                     },
                     {
                         id: 2,
-                        name: 'XXX',
+                        name: '2XXX',
                         content: 'YYY',
                     },
                     {
                         id: 3,
-                        name: 'XXX',
+                        name: '3XXX',
                         content: 'YYY',
                     }
                 ]
@@ -51,7 +51,7 @@
         methods: {
             getPrivacyMsg() {
                 var that=this
-                this.$axios.post('/http://182.92.239.145/apis',
+                this.$axios.post('/apis/message/getimessage',
                 ).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.msgCollection
@@ -64,12 +64,15 @@
                     }
                 })
                 this.msgCollection.splice(index,1)
-            }
+            },
         }
     }
 </script>
 
 <style scoped>
+    body{
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
     .text {
         font-size: 14px;
     }

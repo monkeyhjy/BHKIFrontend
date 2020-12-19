@@ -19,8 +19,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/user/Home.vue'),
-    redirect: "/personinfo/information"
+    component: () => import('../views/navigatorandsearch/Search'),
+    redirect: "/search"
   },
   {
     path: '/login',

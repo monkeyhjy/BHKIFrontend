@@ -27,17 +27,17 @@
                 msgCollection:[
                     {
                         id: 1,
-                        name: 'XXX',
+                        name: 'XXX1',
                         paper: 'YYY',
                     },
                     {
                         id: 2,
-                        name: 'XXX',
+                        name: 'XXX2',
                         paper: 'YYY',
                     },
                     {
                         id: 3,
-                        name: 'XXX',
+                        name: 'XXX3',
                         paper: 'YYY',
                     }
                 ]
@@ -50,7 +50,7 @@
         methods: {
             getCommentMsg() {
                 var that=this
-                this.$axios.post('/http://182.92.239.145/apis',
+                this.$axios.post('/apis/message/getcommentmessage',
                 ).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.msgCollection
@@ -69,6 +69,9 @@
 </script>
 
 <style scoped>
+    body{
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
     .text {
         font-size: 14px;
     }

@@ -16,16 +16,15 @@
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心</el-menu-item>
-            <el-submenu index="5" style="margin-left: 2rem;font-size: large">
+            <el-menu-item index="5" style="margin-left: 2rem; font-size: large" @click="gotoReported" v-show="admin">处理举报</el-menu-item>
+            <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin">
                 <template slot="title" style="font-size: large">更新数据</template>
-                <el-menu-item index="5-1" >文件夹1</el-menu-item>
-                <el-menu-item index="5-2" >文件夹2</el-menu-item>
-                <el-menu-item index="5-3" >文件夹3</el-menu-item>
+                <el-menu-item index="6-1"  @click="dialogFormVisible_author = true">更新作者信息</el-menu-item>
+                <el-menu-item index="6-2"  @click="dialogFormVisible_paper = true">更新论文信息</el-menu-item>
             </el-submenu>
-            <el-menu-item style="margin-left: 35rem" @click="gotoLogin">
-                    <span style="font-size: large">登录</span>
-            </el-menu-item>
-            <el-menu-item>
+
+
+            <el-menu-item style="display: block;float: right">
                 <el-popover
                         placement="top-start"
                         width="200"
@@ -57,10 +56,52 @@
                         <div style="margin-top: 16px; margin-left: 12px">
                             <el-link :underline="false" @click="gotoMyCollection">个人收藏</el-link>
                         </div>
+                        <div style="margin-top: 16px; margin-left: 12px">
+                            <el-link :underline="false" @click="logout" v-show="keepLogout">退出登录</el-link>
+                        </div>
                     </div>
                     <el-button slot="reference" type="warning" class="el-icon-user" style="border-color: #f9bb99;background-color: #f9bb99; border-radius: 50px"></el-button>
                 </el-popover>
             </el-menu-item>
+            <el-menu-item style="float: right" @click="gotoLogin" v-show="keepLogin">
+                <span style="font-size: large">登录</span>
+            </el-menu-item>
+
+            <el-dialog title="更新作者信息" :visible.sync="dialogFormVisible_author">
+                <el-form :model="form">
+                    <el-form-item label="开始行数" :label-width="formLabelWidth">
+                        <el-input v-model="form.start" autocomplete="off" style="width: 600px">
+                        </el-input>
+                        <el-button style="margin-left: 15px" @click="getAuthorLine()">自动获取</el-button>
+                    </el-form-item>
+                    <el-form-item label="结尾行数" :label-width="formLabelWidth">
+                        <el-input v-model="form.end" autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible_author = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogFormVisible_author = false, updateAuthor(form.start,form.end)">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-dialog title="更新论文信息" :visible.sync="dialogFormVisible_paper">
+                <el-form :model="form_2">
+                    <el-form-item label="开始行数" :label-width="formLabelWidth">
+                        <el-input v-model="form_2.start" autocomplete="off" style="width: 600px">
+                        </el-input>
+                        <el-button style="margin-left: 15px" @click="getPaperLine()">自动获取</el-button>
+                    </el-form-item>
+                    <el-form-item label="结尾行数" :label-width="formLabelWidth">
+                        <el-input v-model="form_2.end" autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible_paper = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogFormVisible_paper = false, updatePaper(form_2.start,form_2.end)">确 定</el-button>
+                </div>
+            </el-dialog>
         </el-menu>
     </div>
 </template>
@@ -70,16 +111,124 @@
         name: "NewNavigation",
         data() {
             return {
+                admin:'',
+                keepLogin: true,
+                keepLogout: false,
                 activeIndex: '1',
                 activeIndex2: '1',
-                personName: '张小牛',
-                picture: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+                personName: '',
+                picture: "",
+                dialogFormVisible_author: false,
+                dialogFormVisible_paper: false,
+                form: {
+                    start: '',
+                    end: '',
+                    delivery: false,
+                },
+                form_2: {
+                    start: '',
+                    end: '',
+                    delivery: false,
+                },
+                formLabelWidth: '80px',
+                formLabelWidth_2: '80px',
+                userId: ''
             };
         },
         mounted(){
             this.getData()
         },
         methods: {
+            updateAuthor(start,end){
+                var that = this
+                this.$axios.post('/apis/search/updateacademicdb',
+                    this.qs.stringify({
+                        administratorid: this.userId,
+                        filename:"author",
+                        startline: start,
+                        linesnumber: (end-start)
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    .then(res => {
+                        console.log(res);
+                        this.$message({
+                            type: 'success',
+                            message: '更新成功!'
+                        });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '更新失败'
+                    });
+                });
+            },
+            updatePaper(start,end){
+                var that = this
+                this.$axios.post('/apis/search/updateacademicdb',
+                    this.qs.stringify({
+                        administratorid: this.userId,
+                        filename:"paper",
+                        startline: start,
+                        linesnumber: (end-start)
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    .then(res => {
+                        console.log(res);
+                        this.$message({
+                            type: 'success',
+                            message: '更新成功!'
+                        });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '更新失败'
+                    });
+                });
+            },
+            getAuthorLine(){
+                var that = this
+                this.$axios.post('/apis/search/getupdatebyfilename',
+                    this.qs.stringify({
+                        administratorid: this.userId,
+                        filename:"author"
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    .then(res => {
+                        console.log(res);
+                        that.form.start=res.data.list[0].finishlinenum
+                    })
+            },
+            getPaperLine(){
+                var that = this
+                this.$axios.post('/apis/search/getupdatebyfilename',
+                    this.qs.stringify({
+                        administratorid: this.userId,
+                        filename:"paper"
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    .then(res => {
+                        console.log(res);
+                        that.form_2.start=res.data.list[0].finishlinenum
+                    })
+            },
+            logout(){
+                var that=this
+                // console.log(res);
+                this.$axios({
+                    url:'/apis/user/logout',
+                    method:"post",
+                }).then(res=>{
+                    console.log(res);
+                    this.personName = '',
+                    this.picture = '',
+                    this.keepLogin = true,
+                    this.keepLogout = false,
+                    this.admin = false
+                })
+            },
+            gotoReported(){
+                this.$router.push('/blogreported')
+            },
             gotoDoor(){
                 this.$router.push('/authoritem')
             },
@@ -111,26 +260,28 @@
                 var that=this
                 // console.log(res);
                 this.$axios({
-                    url:'http://182.92.239.145/apis/personality/get',
-                    method:"post",
+                    url:'/apis/personality/get',
+                        method:"post",
                 }).then(res=>{
                     console.log(res);
-                    that.personName = res.username
+                    that.personName = res.data.username
                     that.picture = res.data.avatar
+                    that.admin = res.data.is_admin
+                    if(this.personName != ""){
+                        this.keepLogin = false;
+                        this.keepLogout = true;
+                    }
                 })
-            }
+            },
         }
     }
 </script>
 
-<style>
-    body{
-        background-image: url('../../assets/image/user/image/login-back.png');
-    }
-</style>
-
 <style scoped>
     .navigationlogo {
         height: 60px;
+    }
+    body{
+          background-image: url('../../assets/image/user/image/login-back.png');
     }
 </style>

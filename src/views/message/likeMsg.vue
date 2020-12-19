@@ -27,17 +27,17 @@
                 msgCollection:[
                     {
                         id: 1,
-                        name: 'XXX',
+                        name: '1XXX',
                         paper: 'YYY',
                     },
                     {
                         id: 2,
-                        name: 'XXX',
+                        name: '2XXX',
                         paper: 'YYY',
                     },
                     {
                         id: 3,
-                        name: 'XXX',
+                        name: '3XXX',
                         paper: 'YYY',
                     }
                 ]
@@ -50,7 +50,7 @@
         methods: {
             getLikeMsg() {
                 var that=this
-                this.$axios.post('/http://182.92.239.145/apis',
+                this.$axios.post('/apis/message/getstarmessage',
                 ).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.msgCollection
