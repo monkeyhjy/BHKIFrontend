@@ -26,30 +26,30 @@
         </div>
       </aside>
       <!-- bg-indigo-900  -->
-    <section class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
-      <div class="flex flex-col space-y-6 inbox">
-        <ul  >
-          <li v-for="(item,index) in list" :key="index" style="margin:5px;width:210px">
-            <!-- py-6 -->
-            <a href="#" class="relative flex pl-5 pr-3 py-3  rounded-lg middle-nav"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
-              <div class="flex-grow mr-2" style="color: black;">
-                <!-- mb-2 -->
-                <header class="flex md:flex-col xl:flex-row justify-between mr-2 leading-snug">
-                  <div>
-                    <h1 class="text-lg font-semibold">{{item.author_name}}</h1>
-                    <h2 class="flex flex-wrap">
-                    </h2>
-                  </div>
-                </header>
-                <p>举报人：{{item.user_name_r}}</p>
-                <p>举报时间：{{item.time}}</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-      <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%">
+      <section class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
+        <div class="flex flex-col space-y-6 inbox">
+          <ul  >
+            <li v-for="(item,index) in list" :key="index" style="margin:5px;width:210px">
+              <!-- py-6 -->
+              <a href="#" class="relative flex pl-5 pr-3 py-3  rounded-lg middle-nav"  v-bind:class="index==activeindex? 'active':'bg-opacity-50 hover:bg-opacity-75'" v-on:click="active(index)">
+                <div class="flex-grow mr-2" style="color: black;">
+                  <!-- mb-2 -->
+                  <header class="flex md:flex-col xl:flex-row justify-between mr-2 leading-snug">
+                    <div>
+                      <h1 class="text-lg font-semibold">{{item.author_name}}</h1>
+                      <h2 class="flex flex-wrap">
+                      </h2>
+                    </div>
+                  </header>
+                  <p>举报人：{{item.user_name_r}}</p>
+                  <p>举报时间：{{item.time}}</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%;width:100%">
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">

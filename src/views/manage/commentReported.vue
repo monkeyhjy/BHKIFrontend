@@ -59,11 +59,11 @@
         </ul>
       </div>
     </section>
-      <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%">
+      <main v-show="flag==0" class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%;width:100%">
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-              <a href="#"><img :src="this.list[activeindex].icon" class="h-full w-full object-cover"></a>
+              <a href="#"><img :src="this.list[activeindex].user_icon" class="h-full w-full object-cover"></a>
             </div>
             <div class=" font-semibold" style="font-size:30px">
               <a href="#">{{this.list[activeindex].title}}</a>
@@ -82,8 +82,8 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center -mb-4 pt-4 md:pt-8 justify-end ">
-          <el-button type="primary" @click="open(this.list[activeindex].id,1)">删评</el-button>
-          <el-button @click="open(this.list[activeindex].id,0)">忽略</el-button>
+          <el-button type="primary" @click="ss(activeindex,1)">删评</el-button>
+          <el-button @click="ss(activeindex,0)">忽略</el-button>
         </div>
       </main>
     </div>
@@ -145,36 +145,40 @@ export default {
         icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         user_name_r:"张小牛",
         time:"2020-11-20"},
-        ]
+        ],
+        item:{},
+        flag:0,
       }
   },
   mounted(){
     //接口文档27.3
-    this.$axios.post('http://182.92.239.145/apis/report/getcommentreports',
-    this.qs.stringify({
-        type:3,
-    }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-    .then(res => {
+    this.$axios.post('/apis/report/getcommentreports',
+    {
+      type:3,
+    }).then(res => {
       //接收数据
       console.log(res);
-      this.list = res.data.list;
+      this.list = res.data.data.article_reported_list;
+      if(this.list.length==0)
+        this.flag=1;
+      else this.item=this.list[0]
     })
   },
   methods:{
     active:function(i){
       this.activeindex=i
+      this.item=this.list[i];
     },
-    open(id,i) {
-      this.$axios.post('http://182.92.239.145/apis/report/handlecommentreport',
-      this.qs.stringify({
-          id: id,
+    ss(id,i) {
+      this.$axios.post('/apis/report/handlecommentreport',
+      {
+          id: this.list[index].report_id,
           type:i,
-      }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-      .then(res => {
+      }).then(res => {
       if (res.data.status === 0) {
         this.$message.error("删除评论失败！")
       } else {
-        alert('删除评论成功！')
+        alert('处理举报成功！')
       }
       })
     }

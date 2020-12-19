@@ -24,7 +24,7 @@
                     </a>
                 </div>
             </aside>
-            <main style="background:background:rgba(240,241,244);padding:2% 6%;width:100%">
+            <main style="background:rgba(240,241,244);padding:2% 6%;width:100%">
                 <el-table
                     :data="tableData"
                     stripe
