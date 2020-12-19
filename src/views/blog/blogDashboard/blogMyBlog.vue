@@ -23,7 +23,7 @@
               </div>
               <p style="padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
               <div class="flex6" style="color:gray;font-size:12px">
-                <span style="margin-right:15px">{{ item.date}} |</span>
+                <span style="margin-right:15px">{{ formatDate(item.date) }} |</span>
                 <span class="flex6 iconsize">
                                 <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-yueduliang" ></use>
@@ -68,17 +68,51 @@ export default {
       }
   },
   mounted(){
-    //获取我的帖子信息
+      this.$axios.post('/apis/user/getstatus', {
+          }).then(res => {
+                console.log(res);
+			 this.id=res.data.userid
+			//获取我的帖子信息
      this.$axios.post('/apis/blog/getuserblogs',
              {
-                id:1
+                id:this.id
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)
                 this.list=res.data.data.list
               })
+	  })
+    
   },
+  methods:{
+    formatDate (date) {
+  Date.prototype.format = function(fmt) {
+    var o = {
+      "M+" : this.getMonth()+1,                 //月份
+      "d+" : this.getDate(),                    //日
+      "h+" : this.getHours(),                   //小时
+      "m+" : this.getMinutes(),                 //分
+      "s+" : this.getSeconds(),                 //秒
+      "q+" : Math.floor((this.getMonth()+3)/3), //季度
+      "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt)) {
+      fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    for(var k in o) {
+      if(new RegExp("("+ k +")").test(fmt)){
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+      }
+    }
+    return fmt;
+  }
+  //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+  const s = String(date)
+  s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+  return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+},
+  }
 }
 </script>
 <style>

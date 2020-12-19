@@ -75,13 +75,17 @@ export default {
           {blogname:"冲啊博客",blogid:12,textcontent:"内容",date:"2020年1月1日",username:"hazhfudi",userid:123,readnum:231,tipnum:342,likenum:34}
         ],
         chose:[
-          {name:"全部",type:0},{name:"计算机",type:1}
+          {name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2}
         ],
         type:1,
       }
   },
   mounted(){
-    this.search1=this.$route.params.search;
+  this.search()
+  },
+  methods:{
+    search(){
+      this.search1=this.$route.params.search;
         //搜索博客
      this.$axios.post('/apis/blog/searchblog',
              {
@@ -91,13 +95,13 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.list=res.data.list
+                this.list=res.data.data.list
+                this.type=0
             })
-  },
-  methods:{
+    },
     choseType(type){
         //搜索博客
-     this.$axios.post('/apis/blog/SearchBlog',
+     this.$axios.post('/apis/blog/searchblog',
               {
                 text:this.$route.params.search,
                 type:type
@@ -105,7 +109,7 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.list=res.data.list,
+                this.list=res.data.data.list,
                 this.type=type
             })
     }

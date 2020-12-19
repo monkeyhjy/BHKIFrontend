@@ -12,16 +12,17 @@ export default {
   name: "BlogSearch",
   data(){
       return{
-      
+      search:"",
       }
   },
-  props: ['search'],
+
   mounted(){
 
   },
   methods:{
       searchItem(){
        this.$router.push({path:"/BlogSearchItems/"+this.search})
+        this.$parent.search();
       }
   }
 }

@@ -66,14 +66,14 @@ export default {
   },
     mounted(){
     //获取我的评论信息
-     this.$axios.post('/apis/blog/getMyComment',
+     this.$axios.post('/apis/blog/getmycomment',
               {
                
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res)
-                this.list=res.data.list
+                this.list=res.data.data.list
               })
   },
 }

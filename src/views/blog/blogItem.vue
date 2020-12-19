@@ -37,6 +37,22 @@
     <el-button type="primary" @click="jutip(jubaotip)">确 定</el-button>
   </span>
       </el-dialog>
+       <el-dialog
+              title="私信"
+              :visible.sync="dialogVisible3"
+              width="30%"
+              center>
+        <el-input
+                type="textarea"
+                :autosize="{ minRows: 1, maxRows: 4}"
+                placeholder="请输入内容"
+                v-model="sixin">
+        </el-input>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible3= false;sixin=''">取 消</el-button>
+    <el-button type="primary" @click="sendsixin(sixin)">确 定</el-button>
+  </span>
+      </el-dialog>
       <el-row>
         <el-col :span="4">
           <el-card shadow="never">
@@ -52,8 +68,8 @@
             </div>
             <el-button type="primary" v-show="follow==0" @click="changeFollow(1)">关注</el-button>
             <el-button type="primary" v-show="follow==1" @click="changeFollow(0)">取消关注</el-button>
-
-
+            <el-button type="primary" @click="dialogVisible3=true">私信</el-button>
+ 
           </el-card>
           <el-card shadow="never" style="margin-top:30px">
             <h1 style="font-size:14px;font-weight:900">热门文章</h1>
@@ -150,10 +166,10 @@
                   <div class="flex6" >
                     <div class="flex6">
                       <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="fill"></el-image>
-                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" style="margin-left:10px">{{ item.name }} :</el-link>
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px">{{ item.name }} :</el-link>
                     </div>
                     <p style="width:80%;margin-left:15px">{{ item.textcontent }}</p>
-                    <el-button type=text @click="tipid=item.id;dialogVisible2 = true">
+                    <el-button type=text @click="tipid=item.comment_id;dialogVisible2 = true">
                       <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                         <use xlink:href="#icon-report" ></use>
                       </svg>
@@ -223,8 +239,10 @@ export default {
   },
   data(){
       return{
+        sixin:"",
           dialogVisible: false,
           dialogVisible2:false,
+          dialogVisible3:false,
           jubao:"", 
           jubaotip:"",
           textarea1:"",
@@ -245,7 +263,7 @@ export default {
         tipnum:23,
         likenum:123,
         like:0,
-        tiplist:[{id:213,userid:123,name:"423",img:"213",textcontent:"324"}],
+        tiplist:[{user_id:213,comment_id:123,name:"423",img:"213",textcontent:"324"}],
         hotbloglist:[
             {blogname:"java冲啊",blogid:231,textcontent:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
         ],
@@ -258,6 +276,25 @@ export default {
         var that = this;
         this.userid=this.$route.params.userid;
         this.blogid=this.$route.params.blogid;
+         //获取博客信息
+     this.$axios.post('/apis/blog/getbloginfo',
+              {
+                id:this.blogid
+              },
+              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+              .then(res => {
+                console.log(res);
+                this.blogname=res.data.data.title;
+                this.htmlcontent=res.data.data.htmlcontent;
+                this.readnum=res.data.data.readnum;
+                this.tipnum=res.data.data.tipnum;
+                this.likenum=res.data.data.likenum;
+                this.like=res.data.data.is_like;
+                this.tiplist=res.data.data.tiplist;
+                this.type=res.data.data.type,
+                this.star=res.data.data.is_collect
+            })
+
     //获取博客主信息
      this.$axios.post('/apis/blog/getuserbloginfo',
               {
@@ -292,24 +329,7 @@ export default {
                 console.log(res);
                 this.userhotlist=res.data.data.list
             })
-     //获取博客信息
-     this.$axios.post('/apis/blog/getbloginfo',
-              {
-                id:this.blogid
-              },
-              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-              .then(res => {
-                console.log(res);
-                this.blogname=res.data.data.title;
-                this.htmlcontent=res.data.data.htmlcontent;
-                this.readnum=res.data.data.readnum;
-                this.tipnum=res.data.data.tipnum;
-                this.likenum=res.data.data.likenum;
-                this.like=res.data.data.is_like;
-                this.tiplist=res.data.data.tiplist;
-                this.type=res.data.data.type,
-                this.star=res.data.data.is_collect
-            })
+    
             //获取相关帖子信息
      this.$axios.post('/apis/blog/gethotblogs',
               {
@@ -366,17 +386,17 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                if(res.data.status==0){
-                    <el-alert
-    title="举报成功"
-    type="success">
-  </el-alert>
+                if(res.data.data.status==0){
+            this.$message({
+          message: '举报成功',
+          type: 'success'
+        });
                 }
                 else{
-                     <el-alert
-    title="举报失败"
-    type="warning">
-  </el-alert>
+            this.$message({
+          message: '举报失败',
+          type: 'warning'
+        });
                 }
             })  
           this.dialogVisible = false;
@@ -392,21 +412,50 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                if(res.data.status==0){
-                    <el-alert
-    title="举报成功"
-    type="success">
-  </el-alert>
+                if(res.data.data.status==0){
+              this.$message({
+          message: '举报成功',
+          type: 'success'
+        });
+                }  else{
+              this.$message({
+          message: '举报失败',
+          type: 'warning'
+        });
                 }
-                else{
-                     <el-alert
-    title="举报失败"
-    type="warning">
-  </el-alert>
-                }
-            })  
+              
+                })
+                
+           
           this.dialogVisible2 = false;
           this.jubaotip="";
+      },
+      sendsixin(text){
+ this.$axios.post('/apis/message/sendmeaasge',
+              {
+                id:this.userid,
+                message:text
+              },
+              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+              .then(res => {
+                console.log(res);
+               
+                if(res.data.data.status==0){
+                     this.$message({
+          message: '发送私信成功',
+          type: 'success'
+        });
+    
+                }
+                else{
+                    this.$message({
+          message: '发送私信失败',
+          type: 'warning'
+        });
+                }
+            })  
+          this.sixin="";
+          this.dialogVisible3 = false;
       },
       sendtip(text){
             //评论
@@ -418,13 +467,20 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                if(res.data.status==0){
-                    <el-alert title="评论成功" type="success"></el-alert>
-                    var tip={id:res.data.id,userid:res.data.userid,name:res.data.name,img:res.data.img,content:text};
+                if(res.data.data.status==0){
+              this.$message({
+          message: '评论成功',
+          type: 'success'
+        });
+                    var tip={comment_id:res.data.data.id,user_id:res.data.data.userid,name:res.data.data.name,img:res.data.data.avatar,textcontent:text};
                     this.tiplist.splice(0,0,tip);
+                    this.tipnum++;
                 }
                 else{
-                     <el-alert title="评论失败" type="warning"> </el-alert>
+            this.$message({
+          message: '评论失败',
+          type: 'warning'
+        });
                 }
             })  
           this.textarea1="";
@@ -447,9 +503,7 @@ export default {
 }
 </script>
 <style>
-body{
-  background-image: url('../../assets/image/user/image/login-back.png');
-}
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;

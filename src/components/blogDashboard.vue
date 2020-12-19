@@ -3,7 +3,7 @@
 		<div>
 			<new-navigation></new-navigation>
 		</div>
-		<div class="router" style="left:0px;background-color:#f6f8fa">
+		<div class="router" style="left:0px">
 			<blog-search></blog-search>
 			<el-row style="margin-top:50px" :gutter="20">
 				<el-col :span="4">
@@ -71,9 +71,15 @@ export default {
       }
   },
   mounted(){
-	//获取用户的帖子论坛大致信息
+	  	   this.$axios.post('/apis/user/getstatus', {
+          }).then(res => {
+                console.log(res);
+			 this.id=res.data.userid
+			
+	  })
+	   //获取用户的帖子论坛大致信息
 	 this.$axios.post('/apis/blog/getuserbloginfo', {
-            id:1
+            id:this.id
           })
               .then(res => {
                 console.log(res);
@@ -81,13 +87,8 @@ export default {
                 this.name=res.data.username;
                 this.list=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
 			  })
-			   this.$axios.post('/apis/user/getstatus', {
-            id:1
-          })
-              .then(res => {
-                console.log(res);
-			 this.id=res.data.userid
-	  })
+	
+		
   },
   methods:{
     handleSelect(key, keyPath) {
