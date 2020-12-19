@@ -26,7 +26,7 @@
         </div>
       </aside>
       <!-- bg-indigo-900  -->
-      <section class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
+      <section v-if="flag==0" class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
         <div class="flex flex-col space-y-6 inbox">
           <ul  >
             <li v-for="(item,index) in list" :key="index" style="margin:5px;width:210px">
@@ -36,48 +36,48 @@
                   <!-- mb-2 -->
                   <header class="flex md:flex-col xl:flex-row justify-between mr-2 leading-snug">
                     <div>
-                      <h1 class="text-lg font-semibold">{{item.author_name}}</h1>
+                      <h1 class="text-lg font-semibold">{{name}}</h1>
                       <h2 class="flex flex-wrap">
                       </h2>
                     </div>
                   </header>
-                  <p>举报人：{{item.user_name_r}}</p>
-                  <p>举报时间：{{item.time}}</p>
+                  <a :href="'/userinfo/'+item.user_id_r"><p>举报人：{{item.user_name_r}}</p></a>
+                  <p>举报时间：{{formatDate(item.time)}}</p>
                 </div>
               </a>
             </li>
           </ul>
         </div>
       </section>
-      <main class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%;width:100%">
+      <main v-show="flag==0" class="hidden md:flex flex-col  p-4 md:p-8 bg-gray-200" style="background:rgba(240,241,244);padding:2% 6%;width:100%">
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
               <!-- 跳转到冒领者的个人主页 -->
-              <a href="#"><img :src="this.list[activeindex].user_icon" class="h-full w-full object-cover"></a>
+              <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a>
             </div>
             <div class=" font-semibold" style="font-size:30px">
-              <a href="#">{{this.list[activeindex].user_name}}</a>
+              <a :href="'/userinfo/'+item.user_id">{{item.user_name}}</a>
             </div>
           </div>
           <div class="space-y-4">
             <!-- 跳转到门户主页 -->
-            <a href="#">门户名字：{{this.list[activeindex].author_name}}</a>
+            <a :href="'/author/'+author_id">门户名字：{{name}}</a>
             <br>
-            工作单位：{{this.list[activeindex].orgs}}
+            工作单位：{{orgs}}
           </div>
           <el-divider></el-divider>
           <div class="flex mb-4">
             <div >
               <p class="font-semibold text-lg" >举报理由:</p>
               <p>      </p>
-              <p >{{this.list[activeindex].reason}}</p>
+              <p >{{item.reason}}</p>
             </div>
           </div>
         </div>
         <div class="flex flex-wrap items-center -mb-4 pt-4 md:pt-8 justify-end ">
-          <el-button type="primary" @click="open(this.list[activeindex].id,1)">解绑</el-button>
-          <el-button @click="open(this.list[activeindex].id,0)">忽略</el-button>
+          <el-button type="primary" @click="ss(activeindex,1)">解绑</el-button>
+          <el-button @click="ss(activeindex,0)">忽略</el-button>
         </div>
     </main>
     </div>
@@ -145,36 +145,78 @@ export default {
         user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         user_name_r:"张小牛",
         time:"2020-11-20"},
-        ]
+        ],
+        item:{},
+        flag:0,
+        name:"",
+        orgs:""
       }
   },
   mounted(){
     //接口文档27.3
-    this.$axios.post('/reported_list/',
-    this.qs.stringify({
+    this.$axios.post('/apis/report/getauthorreports',
+    {
         type:1,
-    }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-    .then(res => {
+    }).then(res => {
       //接收数据
       console.log(res);
-      this.list = res.data.list;
+      this.list = res.data.data.article_reported_list;
+      if(this.list.length==0)
+        this.flag=1;
+      else this.item=this.list[0]
+       this.$axios.post('/apis/search/getauthorbyid',
+      {
+        authorid:this.item.author_id,
+      }).then(res => {
+        //接收数据
+        console.log(res);
+        this.name = res.data.name
+        this.orgs = res.data.orgs[0]
+      })
     })
   },
   methods:{
     active:function(i){
       this.activeindex=i
+      this.item=this.list[i];
     },
-    open(id,i) {
-      this.$axios.post('/process_report/',
-      this.qs.stringify({
-          id: id,
+    formatDate (date) {
+      Date.prototype.format = function(fmt) {
+        var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+          if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+          }
+        }
+        return fmt;
+      }
+      //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+      const s = String(date)
+      s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+      return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+    },
+    ss(index,i) {
+      this.$axios.post('/apis/report/handleauthorreport',
+      {
+          id: this.list[index].report_id,
           type:i,
-      }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-      .then(res => {
+      }).then(res => {
       if (res.data.status === 0) {
         this.$message.error("门户认领解除绑定失败！")
+        alert("门户认领解除绑定失败！")
       } else {
-        alert("门户认领解除绑定成功！")
+        alert("处理举报成功！")
       }
       })
     }

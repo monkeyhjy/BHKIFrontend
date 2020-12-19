@@ -51,8 +51,8 @@
                     </h2>
                   </div>
                 </header>
-                <p>举报人：{{item.user_name_r}}</p>
-                <p>举报时间：{{item.time}}</p>
+                <a :href="'/userinfo/'+item.user_id_r"><p>举报人：{{item.user_name_r}}</p></a>
+                <p>举报时间：{{formatDate(item.time)}}</p>
               </div>
             </a>
           </li>
@@ -63,21 +63,21 @@
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-              <a href="#"><img :src="this.list[activeindex].user_icon" class="h-full w-full object-cover"></a>
+              <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a>
             </div>
             <div class=" font-semibold" style="font-size:30px">
-              <a href="#">{{this.list[activeindex].title}}</a>
+              <a :href="'/BlogItem/'+item.user_id+'/'+item.blog_id">{{item.title}}</a>
             </div>
           </div>
           <div class="space-y-4">
-            {{this.list[activeindex].content}}
+            {{item.content}}
           </div>
           <el-divider></el-divider>
           <div class="flex mb-4">
             <div >
               <p class="font-semibold text-lg" >举报理由:</p>
               <p>      </p>
-              <p >{{this.list[activeindex].reason}}</p>
+              <p >{{item.reason}}</p>
             </div>
           </div>
         </div>
@@ -169,7 +169,33 @@ export default {
       this.activeindex=i
       this.item=this.list[i];
     },
-    ss(id,i) {
+    formatDate (date) {
+      Date.prototype.format = function(fmt) {
+        var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+          if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+          }
+        }
+        return fmt;
+      }
+      //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+      const s = String(date)
+      s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+      return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+    },
+    ss(index,i) {
       this.$axios.post('/apis/report/handlecommentreport',
       {
           id: this.list[index].report_id,
@@ -177,6 +203,7 @@ export default {
       }).then(res => {
       if (res.data.status === 0) {
         this.$message.error("删除评论失败！")
+        alert('删除评论失败！')
       } else {
         alert('处理举报成功！')
       }
