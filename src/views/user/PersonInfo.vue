@@ -4,16 +4,16 @@
       <new-navigation></new-navigation>
     </div>
     <div class="personInfo">
-      <el-row class="main" :gutter="20" style="text-align:center;">
+      <el-row class="main" :gutter="20" style="text-align:center">
         <el-col :span="3" >
           <el-menu
-                  router
-                  default-active=activeIndex
-                  class="el-menu-vertical-demo"
-                  @select="handleSelect"
-                  background-color="#df5747"
-                  text-color="#fff"
-                  active-text-color="rgb(255,221,0)">
+            router
+            default-active=activeIndex
+            class="el-menu-vertical-demo"
+            @select="handleSelect"
+            background-color="#df5747"
+            text-color="#fff"
+            active-text-color="rgb(255,221,0)">
             <el-menu-item index="/personinfo/information">
               <!-- <img class="nav-icon" src="../icons/attribute.png"/> -->
               <i class="el-icon-user-solid nav-icon"></i>
@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(this.$route.path)
-      console.log(key, keyPath);
+      // console.log(this.$route.path)
+      // console.log(key, keyPath);
     }
   }
 }

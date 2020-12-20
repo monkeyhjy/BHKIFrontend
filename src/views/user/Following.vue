@@ -68,6 +68,7 @@ export default {
         activeName: 'user',
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         // institutionURL:url("../icons/institution.png"),
+        u_idList:[],
         u_following:[
           {
             author_id:0,
@@ -98,27 +99,37 @@ export default {
         ],
       };
     },
+    mounted() {
+      this.init()
+    },
     methods: {
       handleClick(tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
       },
       onsubmit(){
         console.log("submit");
       },
       init() {
-        // let result
-        // this.$axios.post('/apis/user/getfolloweds', {
-        // }).then(res => {
-        //   result = res.data.status
-        //   if(result === 0){
-        //   this.$router.push("/search");
-        // }
-        //   else{
-        //     this.$alert('用户名或密码错误', '登录失败', {
-        //       confirmButtonText: '确定',
-        //     });
-        //   }
-        // })
+        let result
+        this.$axios.post('/apis/user/getfolloweds', {
+        }).then(res => {
+          this.u_idList=res.data.f_list
+          console.log("list: "+this.u_idList)
+          result = res.data.status
+          var followItem={
+            author_id:'',
+            name:'',
+            title:'',
+            institution:'',
+            email:'',
+          }
+          if(result === 0){
+            console.log("请求关注成功")
+          }
+          else{
+            console.log("请求关注出错")
+          }
+        })
       }
     }
 }

@@ -13,6 +13,9 @@
                         <el-row>
                             <el-button type="default" style="margin-top:30px">上传头像<i class="el-icon-upload el-icon--right"></i></el-button>
                         </el-row>
+                        <el-row>
+                            <el-button type="primary" style="margin-top:30px">进入门户 <i class="el-icon-right"></i></el-button>
+                        </el-row>
                     </el-col>
                     <el-col :span="18">
                         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" style="text-align:left;margin-bottom:24px">
@@ -63,7 +66,6 @@
                     </el-col>
                 </el-row>
             </el-card>
-            <div style="text-align:right;margin-top:1%"><el-button type="primary">进入门户 →</el-button></div>
         </div>
     </div>
 
@@ -143,7 +145,7 @@ export default {
       is_admin:0,
     };
   },
-  mounted(){
+  created(){
     this.init()
   },
   methods: {
@@ -210,10 +212,13 @@ export default {
     },
     updateInfo() {
       let result
-      console.log(this.formLabelAlign.phone)
+      console.log(this.formLabelAlign)
+      this.$axios.post('/apis/user/getstatus',{
+      }).then(res => {
+        console.log(res)
+      });
       this.$axios.post('/apis/personality/change', {
         phone: this.formLabelAlign.phone,
-        avatar: this.formLabelAlign.avatar,
         bio: this.formLabelAlign.bio,
         userid: this.user_id,
         birthday: this.formLabelAlign.birthday,
@@ -225,14 +230,20 @@ export default {
         is_associated: this.is_associated,
         author_id: this.author_id
       }).then(res => {
+        console.log(this.formLabelAlign)
         result = res.data.status
-        console.log(res.data.message)
+        console.log(res)
         if(result !== 0){
           this.$alert('网络请求错误', '更新失败', {
             confirmButtonText: '确定',
           });
         }
         else{
+          this.$notify({
+            title: '更新个人信息',
+            message: '更新个人信息成功',
+            type: 'success'
+          });
         }
       })
     }
@@ -256,6 +267,7 @@ export default {
 }
 .avatar-img{
   height:150px;
+  width:150px;
   border-radius:75px;
 }
 </style>
