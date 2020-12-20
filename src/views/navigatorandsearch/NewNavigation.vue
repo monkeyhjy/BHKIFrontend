@@ -16,8 +16,12 @@
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心</el-menu-item>
-            <el-menu-item index="5" style="margin-left: 2rem; font-size: large" @click="gotoReported" v-show="admin">处理举报</el-menu-item>
-            <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin">
+            <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin = true">
+                <template slot="title" style="font-size: large">后台管理</template>
+                <el-menu-item index="5-1"  @click="gotoReported">处理举报</el-menu-item>
+                <el-menu-item index="5-2"  @click="gotoLog">查看日志</el-menu-item>
+            </el-submenu>
+            <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin = true">
                 <template slot="title" style="font-size: large">更新数据</template>
                 <el-menu-item index="6-1"  @click="dialogFormVisible_author = true">更新作者信息</el-menu-item>
                 <el-menu-item index="6-2"  @click="dialogFormVisible_paper = true">更新论文信息</el-menu-item>
@@ -226,6 +230,9 @@
                     this.admin = false
                 })
             },
+            gotoLog(){
+                this.$router.push('/log')
+            },
             gotoReported(){
                 this.$router.push('/blogreported')
             },
@@ -259,15 +266,19 @@
             getData() {
                 var that=this
                 // console.log(res);
-                this.$axios.post('/apis/user/getstatus').then(res => {
-                    // console.log(res)
-                    if(res.data.status !=0 ){
-                        console.log('登录状态请求失败')
-                        return
+                this.$axios({
+                    url:'/apis/personality/get',
+                    method:"post",
+                }).then(res=>{
+                    console.log(res);
+                    that.personName = res.data.username
+                    that.picture = res.data.avatar
+                    that.admin = res.data.is_admin
+                    if(this.personName != ""){
+                        this.keepLogin = false;
+                        this.keepLogout = true;
                     }
-                    this.personName = res.data.username
-                    this.picture = res.data.avatar
-                });
+                })
                 // this.$axios({
                 //     url:'http://182.92.239.145/apis/personality/get',
                 //     method:"post",

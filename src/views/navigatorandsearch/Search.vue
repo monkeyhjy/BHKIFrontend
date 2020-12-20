@@ -66,7 +66,7 @@
                                             <use xlink:href="#icon-bingren"></use>
                                         </svg>
                                         <ul style="width: 300px; height: 30px; margin: 20px 0px 0px 0px; float: right;">
-                                            <el-link v-bind:href="rank.url" style="float: left;">{{rank.name}}</el-link>
+                                            <el-link v-bind:href="rank.url" style="float: left;">{{rank.title}}</el-link>
                                         </ul>
                                     </div>
                                 </div>
@@ -200,36 +200,16 @@
                     url: 'https://www.aminer.cn/women-in-ai'
                 }],
                 ranks: [{
-                    name: '学术成果1',
-                    url: 'https://www.aminer.cn/women-in-ai',
-                }, {
-                    name: '学术成果2',
-                    url: 'https://www.aminer.cn/ranks/conf',
-                }, {
-                    name: '学术成果3',
-                    url: 'https://www.aminer.cn/ranks/org',
-                }, {
-                    name: '学术成果4',
-                    url: 'https://www.aminer.cn/ranks/experts',
+                    id: '',
+                    title: '',
+                    n_citation: ''
                 }],
                 library: [{
-                    name: '清华大学学者库',
-                    url: 'https://gct.aminer.cn/eb/series?name=%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6',
-                }, {
-                    name: '哈尔滨工业大学学者库',
-                    url: 'https://gct.aminer.cn/eb/series?name=%E5%93%88%E5%B0%94%E6%BB%A8%E5%B7%A5%E4%B8%9A%E5%A4%A7%E5%AD%A6',
-                }, {
-                    name: 'CCF-A类会议系列库',
-                    url: 'https://gct.aminer.cn/eb/series?name=CCF%E6%8E%A8%E8%8D%90%E4%BC%9A%E8%AE%AE[A%E7%B1%BB]',
-                }, {
-                    name: '图灵奖学者库',
-                    url: 'https://gct.aminer.cn/eb/gallery/detail/eb/58997b589ed5db58de40a152',
-                }, {
-                    name: '图灵奖学者库',
-                    url: 'https://gct.aminer.cn/eb/gallery/detail/eb/58997b589ed5db58de40a152',
-                }, {
-                    name: '图灵奖学者库',
-                    url: 'https://gct.aminer.cn/eb/gallery/detail/eb/58997b589ed5db58de40a152',
+                    id: '',
+                    name: '',
+                    h_index: '',
+                    n_pubs: '',
+                    n_citation: '',
                 }],
                 science: [{
                     avatar: '',
@@ -250,25 +230,27 @@
         },
         mounted() {
             this.getRanks(),
-                this.getLibrary(),
-                this.getScience(),
-                this.getLight()
+            this.getLibrary(),
+            this.getScience(),
+            this.getLight()
         },
         methods: {
+            //学术焦点
             getRanks() {
                 var that = this
-                this.$axios.post('/apis/blog/getuserhotblog',
+                this.$axios.post('/apis/search/popularpapers',
                 ).then(res => {
                     console.log(res);
-                    that.ranks = res.data.ranks
+                    that.ranks = res.data.list
                 })
             },
+            //热门专家
             getLibrary() {
                 var that = this
-                this.$axios.post('/http://182.92.239.145/apis',
-                ).then(res => {
+                this.$axios.post('/apis/search/popularauthors')
+                    .then(res => {
                     console.log(res);
-                    that.library = res.data.library
+                    that.library = res.data.list
                 })
             },
             // 热门帖子

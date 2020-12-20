@@ -4,9 +4,9 @@
             <div v-for="item in (index,msgCollection)" :key="index">
                 <el-card class="box-card" style="margin-bottom: 20px">
                     <div class="text item" style="margin-left: 20px">
-                        {{ item.name }} 举报了你的 {{item.paper}}
+                       你的 {{item.message}}被举报了！
                     </div>
-                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
+                    <el-button type="primary" style="margin:10px; float: right" @click="dele(item.id)">
                         已阅
                     </el-button>
                 </el-card>
@@ -26,34 +26,26 @@
             return{
                 msgCollection:[
                     {
-                        id: 1,
-                        name: '1XXX',
-                        paper: 'YYY',
-                    },
-                    {
-                        id: 2,
-                        name: '2XXX',
-                        paper: 'YYY',
-                    },
-                    {
-                        id: 3,
-                        name: '3XXX',
-                        paper: 'YYY',
+                        type:'',
+                        message: '',
+                        message_id:'',
                     }
                 ]
             }
         },
         mounted() {
-            alert( activeIndex),
+            // alert( activeIndex),
             this.getReportedMsg()
         },
         methods: {
             getReportedMsg() {
                 var that=this
-                this.$axios.post('/apis/message/getreportmessage',
-                ).then(res=>{
+                this.$axios({
+                    url:'/apis/message/getreportmessage',
+                    method:"post",
+                }).then(res=>{
                     console.log(res);
-                    that.msgCollection = res.data.msgCollection
+                    that.msgCollection = res.data.data.msgCollection
                 })
             },
             dele(id){

@@ -4,7 +4,7 @@
             <div v-for="item in (index,msgCollection)" :key="index">
                 <el-card class="box-card" style="margin-bottom: 20px">
                     <div class="text item" style="margin-left: 20px">
-                        {{ item.name }} 评论了你的 {{item.paper}}
+                        {{ item.name }} 评论了你的 {{item.blog_title}}
                     </div>
                     <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
                         已阅
@@ -26,34 +26,26 @@
             return{
                 msgCollection:[
                     {
-                        id: 1,
-                        name: 'XXX1',
-                        paper: 'YYY',
-                    },
-                    {
-                        id: 2,
-                        name: 'XXX2',
-                        paper: 'YYY',
-                    },
-                    {
-                        id: 3,
-                        name: 'XXX3',
-                        paper: 'YYY',
+                        name: '',
+                        blog_title: '',
+                        message_id: '',
                     }
                 ]
             }
         },
         mounted() {
-            alert( activeIndex),
+            // alert( activeIndex),
             this.getCommentMsg()
         },
         methods: {
             getCommentMsg() {
                 var that=this
-                this.$axios.post('/apis/message/getcommentmessage',
-                ).then(res=>{
+                this.$axios({
+                    url:'/apis/message/getcommentmessage',
+                    method:"post",
+                }).then(res=>{
                     console.log(res);
-                    that.msgCollection = res.data.msgCollection
+                    that.msgCollection = res.data.data.msgCollection
                 })
             },
             dele(id){
