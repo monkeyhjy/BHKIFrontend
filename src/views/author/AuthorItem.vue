@@ -1,0 +1,227 @@
+<template>
+	<div>
+		<div>
+			<new-navigation></new-navigation>
+		</div>
+		<div>
+			<el-container>
+				<el-main>
+					<el-row>
+						<el-col :span="24">
+							<el-col :span="4"><div class="grid-content"></div></el-col>
+							<el-col :span="16">
+								<div style="text-align: center; margin: 3rem 0"><strong style="font-size: 2rem">请选择您要认领的门户。</strong></div>
+								<el-card
+												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
+												 v-for="(item, index) in author_item" :key="index">
+									<el-col :span="24">
+										<el-col :span="12"><span style="font-size: 2rem;">{{item.name}}</span></el-col>
+										<el-col :span="2" :offset="4" style="right: 2rem;">
+											<el-button style="vertical-align: middle; margin-left: 5rem"
+																 type="danger"
+																 @click="submitClaim(user_id, item.id)">认领门户</el-button>
+										</el-col>
+
+									</el-col>
+									<el-col :span="24" style="margin-top: 1rem">
+										<span style="font-size: 1.4rem;">
+											<i class="el-icon-office-building"></i>
+											<span v-if="item.hasOwnProperty('orgs')" >   {{item.orgs[0]}}</span>
+										</span>
+									</el-col>
+									<el-col :span="24" style="margin-top: 1rem">
+										<span style="font-size: 1.4rem">
+											<i class="el-icon-s-grid"></i>
+											相关领域：</span>
+										<span style="font-size: 1.4rem;" v-for="(item2, index2) in item.tags" :key="index2">
+											{{item2.t}}；</span>
+									</el-col>
+									<el-col :span="24" style="margin-top: 1rem; margin-bottom: 1rem">
+										<span style="font-size: 1.4rem;">
+											<i class="el-icon-s-opportunity"></i>
+											发表论文数：{{item.n_pubs}}</span>
+									</el-col>
+								</el-card>
+							</el-col>
+							<el-col :span="4"><div class="grid-content"></div></el-col>
+						</el-col>
+					</el-row>
+				</el-main>
+				<el-footer>
+					<el-col :span="4"><div class="grid-content"></div></el-col>
+					<el-col :span="16">
+						<div style="text-align: center;">
+							<el-pagination
+											background
+											layout="prev, pager, next"
+											:total="author_item.length"
+											:page-size="page_size"
+											:current-page="current_page"
+											@current-change="handleCurrentChange">
+							</el-pagination>
+						</div>
+					</el-col>
+					<el-col :span="4"><div class="grid-content"></div></el-col>
+				</el-footer>
+			</el-container>
+		</div>
+
+<!--		姓名输入框-->
+		<el-dialog
+						title="请填写您的真实姓名，如输入中文无结果，请输入姓名的拼音，格式如“Zhang sansi”"
+						:visible.sync="nameVisible"
+						center
+						:append-to-body='true'
+						:lock-scroll="false"
+						width="50%"
+						:before-close="nameClose">
+			<el-input
+							type="textarea"
+							:rows="5"
+							autosize
+							placeholder="请输入内容"
+							v-model="nameText">
+			</el-input>
+			<el-button class="medium" style="margin-left:40%;position:relative;margin-top:30px" plain
+								 @click="submitName(nameText)">发送姓名
+			</el-button>
+		</el-dialog>
+	</div>
+</template>
+
+<script>
+	import NewNavigation from "../navigatorandsearch/NewNavigation";
+
+	export default {
+		name: "AuthorItem",
+		data() {
+			return {
+				author_item: [],
+				user_id: -1,
+				page_size: 10,
+				page_num: 2,
+				current_page: 1,
+				nameVisible: false,
+				nameText: '',
+			}
+		},
+		components: {
+			NewNavigation,
+		},
+		mounted() {
+			this.get_login_status();
+		},
+		methods: {
+			//获取登录状态
+			get_login_status() {
+				this.$axios.post('/apis/user/getstatus')
+						.then(res => {
+							console.log(res)
+							if(res.data.status === 1){
+								alert('请先登录！')
+								this.$router.push('/login')
+							}
+							else{
+								this.user_id = res.data.userid
+								this.is_associate_author()
+							}
+						})
+			},
+			//获取已经认领的门户
+			is_associate_author() {
+					this.$axios.post('/apis/personality/get')
+							.then(res => {
+								if(!res.data.is_associated) {
+									this.nameVisible = true
+								}
+								else {
+									this.$router.push({
+										path: '/author',
+										query: {
+											author_id: res.data.author_id
+										},
+									})
+								}
+							})
+			},
+			//认领门户
+
+			handleCurrentChange(val) {
+				this.$axios.post('http://182.92.239.145/apis/',
+						this.qs.stringify({page: val}),
+						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+						.then(res => {
+							this.author_item = res.data.author_item
+							if(res.data.status === 0)
+								console.log('切换到第' + val + '页成功')
+						})
+				this.current_page = val
+			},
+			nameClose(done) {
+				this.nameVisible = false;
+				this.$router.go(-1)
+			},
+			submitName(text) {
+				if(text === '')
+					this.$alert('姓名不能为空', '系统提示', {
+						confirmButtonText: '确定',
+					})
+				else{
+					this.$axios.post('/apis/search/getassAuthor',
+							{
+								name: text
+							})
+							.then(res => {
+								this.author_item = res.data
+								// for(let i = 0; i < res.data.length; i++){
+								// 	this.author_item[i].id = res.data[i].id
+								// 	this.author_item[i].name = res.data[i].name
+								// 	this.author_item[i].orgs = res.data[i].orgs
+								// 	this.author_item[i].tags = res.data[i].tags
+								// 	this.author_item[i].n_pubs = res.data[i].n_pubs
+								// }
+								this.nameVisible = false;
+							})
+				}
+			},
+
+			submitClaim(user_id, author_id) {
+				this.$axios.post('/apis/search/associatetoAuthor',
+						{
+							userid: user_id,
+							authorid: author_id
+						}).then(res => {
+					console.log(res)
+					if(res.data.status === 0){
+						this.$message({
+							type: 'success',
+							message: '认领成功',
+						})
+						this.$router.push({
+							path: '/author',
+							query: {
+								author_id: author_id,
+							}
+						})
+					}
+					else{
+						this.$message({
+							type: 'danger',
+							message: '认领失败',
+						})
+					}
+				})
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	body{
+		background-image: url('../../assets/image/user/image/login-back.png');
+	}
+	.grid-content {
+		border-radius: 4px;
+		min-height: 36px;
+	}
+</style>
