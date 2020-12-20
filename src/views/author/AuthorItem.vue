@@ -10,7 +10,12 @@
 						<el-col :span="24">
 							<el-col :span="4"><div class="grid-content"></div></el-col>
 							<el-col :span="16">
-								<div style="text-align: center; margin: 3rem 0"><strong style="font-size: 2rem">请选择您要认领的门户。</strong></div>
+								<div style="text-align: center; margin: 3rem 0">
+									<strong style="font-size: 2rem">请选择您要认领的门户。</strong>
+									<el-button style="vertical-align: top; margin-left: 1rem"
+													type="danger"
+													@click="nameVisible = true">没有我想要的门户？重新搜索</el-button>
+								</div>
 								<el-card
 												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
@@ -54,8 +59,8 @@
 							<el-pagination
 											background
 											layout="prev, pager, next"
-											:total="author_item.length"
-											:page-size="page_size"
+											:total="total"
+											:page-size="10"
 											:current-page="current_page"
 											@current-change="handleCurrentChange">
 							</el-pagination>
@@ -103,6 +108,7 @@
 				current_page: 1,
 				nameVisible: false,
 				nameText: '',
+				total: 0,
 			}
 		},
 		components: {
@@ -116,7 +122,6 @@
 			get_login_status() {
 				this.$axios.post('/apis/user/getstatus')
 						.then(res => {
-							console.log(res)
 							if(res.data.status === 1){
 								alert('请先登录！')
 								this.$router.push('/login')
@@ -147,19 +152,22 @@
 			//认领门户
 
 			handleCurrentChange(val) {
-				this.$axios.post('http://182.92.239.145/apis/',
-						this.qs.stringify({page: val}),
-						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-						.then(res => {
-							this.author_item = res.data.author_item
-							if(res.data.status === 0)
-								console.log('切换到第' + val + '页成功')
+				this.$axios.post('/apis/search/getassAuthor',
+						{
+							name: this.nameText,
+							pagenumber: val
 						})
-				this.current_page = val
+						.then(res => {
+							this.author_item = res.data.res
+							if(res.data.status === 0){
+								console.log('切换到第' + val + '页成功')
+								this.current_page = val
+							}
+						})
 			},
 			nameClose(done) {
 				this.nameVisible = false;
-				this.$router.go(-1)
+				this.$router.push('/search')
 			},
 			submitName(text) {
 				if(text === '')
@@ -169,10 +177,13 @@
 				else{
 					this.$axios.post('/apis/search/getassAuthor',
 							{
-								name: text
+								name: text,
+								pagenumber: 1,
 							})
 							.then(res => {
-								this.author_item = res.data
+								console.log(res)
+								this.total = res.data.total
+								this.author_item = res.data.res
 								// for(let i = 0; i < res.data.length; i++){
 								// 	this.author_item[i].id = res.data[i].id
 								// 	this.author_item[i].name = res.data[i].name
@@ -201,6 +212,7 @@
 							path: '/author',
 							query: {
 								author_id: author_id,
+								pagenumber: 1,
 							}
 						})
 					}

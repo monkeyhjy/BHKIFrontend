@@ -142,6 +142,7 @@
 					abstract: '这是一篇文章的摘要',
 					is_star: 0,
 				},
+				user_id: -1,
 				imgUrl_left: require('../../assets/image/paper/flower-left.jpg'),
 				imgUrl_right: require('../../assets/image/paper/flower-right.jpg'),
 				imgUrl_footer: require('../../assets/image/paper/flower2.jpg'),
@@ -149,42 +150,53 @@
 		},
 		mounted() {
 			this.get_paper_id();
-			console.log(this.paper.paper_id)
+			//console.log(this.paper.paper_id)
+
 			this.$axios.post('/apis/search/getpaperbyid',
 					{
 						paperid: this.paper.paper_id
 					})
 					.then(res => {
-						console.log(res)
-						this.paper.title = res.data.title
-						this.paper.authors = res.data.authors
-						this.paper.venue_raw = res.data.venue.raw
-						this.paper.year = res.data.year
-						this.paper.keywords = res.data.keywords
-						this.paper.n_citation = res.data.n_citation
-						this.paper.page_start = res.data.page_start
-						this.paper.page_end = res.data.page_end
-						this.paper.volumn = res.data.volume
-						this.paper.issue = res.data.issue
-						this.paper.isbn = res.data.isbn
-						this.paper.doi = res.data.doi
-						this.paper.abstract = res.data.abstract
+						if(res.status === 200) {
+							console.log(res)
+							this.paper.title = res.data.title
+							this.paper.authors = res.data.authors
+							this.paper.venue_raw = res.data.venue.raw
+							this.paper.year = res.data.year
+							this.paper.keywords = res.data.keywords
+							this.paper.n_citation = res.data.n_citation
+							this.paper.page_start = res.data.page_start
+							this.paper.page_end = res.data.page_end
+							this.paper.volumn = res.data.volume
+							this.paper.issue = res.data.issue
+							this.paper.isbn = res.data.isbn
+							this.paper.doi = res.data.doi
+							this.paper.abstract = res.data.abstract
+						}
+						else {
+							alert('抱歉，您所点击的论文还未收录')
+							this.$router.go(-1)
+						}
 					})
 		},
 		methods: {
+			get_login_status() {
+				this.$axios.post('/apis/user/getstatus')
+						.then(res => {
+							this.user_id = res.data.userid
+						})
+			},
 			get_paper_id() {
 				this.paper.paper_id = this.$route.query.paper_id
-				//console.log(this.pid);
 			},
 			star(flag) {
 				this.paper.is_star = 1 - this.paper.is_star;
 				this.$axios.post('http://182.92.239.145/apis/',
-						this.qs.stringify({
-							paper_id: this.paper_id,
-							flag: flag,
-						}),
-						{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-						.then(res => {
+						{
+							userid: this.user_id,
+							paperid: this.paper.paper_id
+						}
+				).then(res => {
 							if(res.data.status === 0){
 								this.paper = res.data.paper
 							}
