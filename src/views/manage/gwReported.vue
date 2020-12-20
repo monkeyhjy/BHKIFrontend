@@ -164,15 +164,17 @@ export default {
       if(this.list.length==0)
         this.flag=1;
       else this.item=this.list[0]
-       this.$axios.post('/apis/search/getauthorbyid',
-      {
-        authorid:this.item.author_id,
-      }).then(res => {
-        //接收数据
-        console.log(res);
-        this.name = res.data.name
-        this.orgs = res.data.orgs[0]
-      })
+      if(this.flag!=1)
+        this.$axios.post('/apis/search/getauthorbyid',
+        {
+          authorid:this.item.author_id,
+          pagenumber:1
+        }).then(res => {
+          //接收数据
+          console.log(res);
+          this.name = res.data.res.name
+          this.orgs = res.data.res.orgs[0]
+        })
     })
   },
   methods:{
@@ -224,6 +226,12 @@ export default {
         this.$message.error("门户认领解除绑定失败！")
         alert("门户认领解除绑定失败！")
       } else {
+        this.$router.go(0);
+        // this.list.splice(this.activeindex,1)
+        // this.activeindex=0
+        // if(this.list.length==0)
+        //   this.flag=1;
+        // else this.item=this.list[0]
         alert("处理举报成功！")
       }
       })

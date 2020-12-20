@@ -205,6 +205,12 @@ export default {
         this.$message.error("删除评论失败！")
         alert('删除评论失败！')
       } else {
+        this.$router.go(0);
+        // this.list.splice(this.activeindex,1)
+        // this.activeindex=0
+        // if(this.list.length==0)
+        //   this.flag=1;
+        // else this.item=this.list[0]
         alert('处理举报成功！')
       }
       })
