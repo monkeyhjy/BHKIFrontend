@@ -1,11 +1,11 @@
 <template>
     <el-container>
         <el-main>
-            <div v-for="item in (index,msgCollection)" :key="index">
+            <div v-for="(item,index) in msgCollection" :key="index">
                 <el-card class="box-card" style="margin-bottom: 20px">
                     <div class="text item" style="margin-left: 20px">
-                        <p>{{ item.name }} 给你发了一条私信: </p>
-                        {{item.content}}
+                        <p>{{ item.user }} 给你发了一条私信: </p>
+                        {{item.message}}
                     </div>
                     <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
                         已阅
@@ -27,34 +27,26 @@
             return{
                 msgCollection:[
                     {
-                        id: 1,
-                        name: '1XXX',
-                        content: 'YYY',
+                        user:'',
+                        message:'',
+                        message_id:'',
                     },
-                    {
-                        id: 2,
-                        name: '2XXX',
-                        content: 'YYY',
-                    },
-                    {
-                        id: 3,
-                        name: '3XXX',
-                        content: 'YYY',
-                    }
                 ]
             }
         },
         mounted() {
-            alert( activeIndex),
+            // alert( activeIndex),
             this.getPrivacyMsg()
         },
         methods: {
             getPrivacyMsg() {
                 var that=this
-                this.$axios.post('/apis/message/getimessage',
-                ).then(res=>{
+                this.$axios({
+                    url:'/apis/message/getimessage',
+                    method:"post",
+                }).then(res=>{
                     console.log(res);
-                    that.msgCollection = res.data.msgCollection
+                    that.msgCollection = res.data.data.msgCollection
                 })
             },
             dele(id){
