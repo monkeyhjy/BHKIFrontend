@@ -36,7 +36,7 @@
 					</a> -->
         </div>
       </aside>
-      <section v-if="flag==0" class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
+      <section class="p-4 text-indigo-100 grey-bgcolor" style="width:250px;bgcolor:white">
       <div class="flex flex-col space-y-6 inbox">
         <ul  >
           <li v-for="(item,index) in list" :key="index" style="margin:5px;width:210px">
@@ -51,7 +51,7 @@
                     </h2>
                   </div>
                 </header>
-                <p>举报人：{{item.user_name_r}}</p>
+                <a :href="'/userinfo/'+item.user_id_r"><p>举报人：{{item.user_name_r}}</p></a>
                 <p>举报时间：{{formatDate(item.time)}}</p>
               </div>
             </a>
