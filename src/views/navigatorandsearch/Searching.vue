@@ -3,8 +3,9 @@
       <new-navigation></new-navigation>
     <section>
     <main style="text-align: center">
-
+    
         <div style="margin-top: 20px">
+            <keep-alive>
             <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 66.6% ">
                 <el-select v-model="select" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
                     <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value" >
@@ -14,7 +15,9 @@
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" @click="search_click()" v-loading.fullscreen.lock="fullscreenLoading"></el-button>
             </el-input>
+            </keep-alive>
         </div>
+    
 
         
 
@@ -87,8 +90,8 @@
 
                 <el-tab-pane label="论文" v-if="paper_boolen">
                     <el-col style="margin-top: 1rem; text-align: left">
-                        <div class="block">
-                            <!-- <span class="demonstration">带快捷选项</span> -->
+
+                        <!-- <div class="block">
                             <el-date-picker
                             style="width: 66.6% "
                             v-model="value2"
@@ -100,11 +103,44 @@
                             end-placeholder="结束日期"
                             :picker-options="pickerOptions">
                             </el-date-picker>
-                            <el-button @click="search8()">筛选</el-button>
-                        </div>
+                            <el-button @click="search8()">筛选发表年限</el-button>
+                        </div> -->
+                        
                         <el-button @click="search5()">综合</el-button>
                         <el-button @click="search6()">发表时间</el-button>
                         <el-button @click="search7()">被引用数</el-button>
+                        
+
+                        <el-form :inline="true" :model="formInline" class="demo-form-inline" style="margin-top:2rem">
+                            <el-form-item label="起始年限">
+                                <!-- <el-select v-model="formInline.start" placeholder="起始年限">
+                                    <el-option v-for="item in start" :key="item.value" :label="item.label" :value="item.value" >
+                                    <div @click="search_start(item.label)">{{ item.label }}</div>
+                                    </el-option>
+                                </el-select> -->
+                                 <el-input-number v-model="min_num" @change="search_start(min_num)" :min="1800" :max="2020" label="起始年限"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="结束年限">
+                                <!-- <el-select v-model="formInline.end" placeholder="结束年限">
+                                    <el-option v-for="item in start" :key="item.value" :label="item.label" :value="item.value" >
+                                    <div @click="search_end(item.label)">{{ item.label }}</div>
+                                    </el-option>
+                                </el-select> -->
+                                <el-input-number v-model="max_num" @change="search_end(max_num)" :min="1800" :max="2020" label="结束年限"></el-input-number>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button @click="search8()">按发表年限筛选</el-button>
+                            </el-form-item>
+                        </el-form>
+
+                        <!-- <div class="block">
+                            <el-cascader
+                            v-model="value_year"
+                            :options="options"
+                            clearable
+                            @change="change_year"></el-cascader>
+                             <el-button @click="search8()">按发表年限筛选</el-button>
+                        </div> -->
                     </el-col>
                     <el-col :span="24" style="margin-top: 1rem; text-align: left"
                      v-for="(item, index) in papers_information"
@@ -136,7 +172,7 @@
                                     <span>相关链接：
                                         <span  v-for="(item2, index2) in item.url"
                                         :key="index2" >
-                                        <el-link :href= "item2.url_n" color = "blue">{{item2.url_n}}  ;</el-link>
+                                        <el-link :href= "item2.url_n" color = "blue">{{item2.url_n}}</el-link>
                                         </span>
                                     </span>
                                 </el-col>
@@ -177,6 +213,35 @@ export default {
   name: 'Searching',
   data() {
       return {
+          min_num:1800,
+          max_num:2020,
+          formInline: {
+          start: '',
+          end: ''
+        },
+          start: [{value:'选项1', label: '1800'
+        }, {value:'选项2', label: '1801'
+        }, {value:'选项3', label: '1802'
+        }, {value:'选项4', label: '1803'
+        }, {value:'选项5', label: '1804'
+        }, {value:'选项6', label: '1805'
+        }, {value:'选项7', label: '1806'
+        }, {value:'选项8', label: '1807'
+        }, {value:'选项9', label: '1998'
+        }, {value:'选项10', label: '1999'
+        }],
+        end: [{value:'选项1', label: '1990'
+        }, {value:'选项2', label: '1991'
+        }, {value:'选项3', label: '1992'
+        }, {value:'选项4', label: '1993'
+        }, {value:'选项5', label: '1994'
+        }, {value:'选项6', label: '1995'
+        }, {value:'选项7', label: '1996'
+        }, {value:'选项8', label: '1997'
+        }, {value:'选项9', label: '1998'
+        }, {value:'选项10', label: '1999'
+        }],
+
           search1_ascending: 1,//默认升序排列
           search2_ascending: 1,//默认升序排列
           search3_ascending: 1,//默认升序排列
@@ -185,40 +250,40 @@ export default {
           search6_ascending: 1,//默认升序排列
           search7_ascending: 1,//默认升序排列
 
-          pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
+        //   pickerOptions: {
+        //   shortcuts: [{
+        //     text: '最近一周',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近一个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近三个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }]
+        // },
         value1: '',
         value2: '',
         collapse: false,
         pageSize: 10,
         currentPage: 1,
         pagenum: 10,
-        totalnum: 100,
+        totalnum: 10,
         Author_information: [
         //     {
         //     id:"",
@@ -323,20 +388,36 @@ export default {
         }, {value:'选项9', label: 'ISBN'
         }, {value:'选项10', label: 'DOI'
         }],
-        value: '标题',
-        input:'',
-        select: '标题',
-        output_label:'标题',
+        value: this.$route.query.type,//this.$route.params.type
+        input:this.$route.query.input,//this.$route.params.input
+        select: this.$route.query.type,//this.$route.params.type
+        output_label:this.$route.query.type,//this.$route.params.type
         label_type:1,
         author_boolen:false,
         paper_boolen:false,
-        order:1
+        order:1,
+        // start_year:1990,
+        // end_year:2020,
+        s_year:1800,
+        e_year:2020,
+        is_range:0
       };
     },
     components: {
         NewNavigation
     },
+    mounted () {
+        this.search_click();
+    },
     methods: {
+      search_start(label){
+          this.s_year=label
+          console.log(label)
+          console.log(this.s_year)
+      },
+      search_end(label){
+          this.e_year=label
+      },
       search_type(label){
           this.output_label=label;
           console.log(this.output_label);
@@ -419,12 +500,14 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: 1
+                  isasc: 1,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }),
@@ -467,12 +550,16 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search1_ascending
+                  isasc: this.search1_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
-                  
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -498,12 +585,17 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search2_ascending
+                  isasc: this.search2_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -528,12 +620,17 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search3_ascending
+                  isasc: this.search3_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -559,12 +656,17 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search4_ascending
+                  isasc: this.search4_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -590,12 +692,17 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search5_ascending
+                  isasc: this.search5_ascending,
+                  israng:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -621,12 +728,17 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search6_ascending
+                  isasc: this.search6_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
@@ -652,17 +764,66 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search7_ascending
+                  isasc: this.search7_ascending,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               }
         )
         // this.search7_ascending=!this.search7_ascending
+      },
+
+      search8(){
+          if(this.s_year>this.e_year) {
+              this.$alert('年限选择无效', 'tips.', {
+              confirmButtonText: '确定',
+              callback: action => {
+              this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+            });
+          }
+          else{
+              const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+                })
+                this.start_year=this.s_year
+                this.end_year=this.e_year
+                console.log(this.s_year)
+                console.log(this.e_year)
+                this.is_range=1
+                this.$axios.post('/apis/search/basicsearch',
+              {
+                  type: this.label_type,
+                  content: this.input,
+                  order: this.order,
+                  isasc: 1,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:1
+              }).then(res => {
+                  console.log(res)
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
+                    loading.close()
+              })
+            }
       },
 
       handleCurrentChange(val) {
@@ -674,21 +835,26 @@ export default {
             })
           this.$axios.post('/apis/search/basicsearch',
               {
-                  type: this.label_type,
+                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: this.search1_ascending
+                  isasc: 1,
+                  isrange:this.is_range,
+                  lowrange:this.start_year,
+                  highrange:this.end_year,
+                  pagenumber:val
               }).then(res => {
                   console.log(res)
                   
-                    this.papers_information=res.data
-                    this.Author_information=res.data
+                    this.papers_information=res.data.res
+                    this.Author_information=res.data.res
+                    this.totalnum=res.data.total
                     loading.close()
 
               })
         this.current_page = val
       },
-      
+
     }
 }
 </script>
