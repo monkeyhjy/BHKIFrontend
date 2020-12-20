@@ -41,7 +41,7 @@
                       </h2>
                     </div>
                   </header>
-                  <a :href="'/userinfo/'+item.user_id_r"><p>举报人：{{item.user_name_r}}</p></a>
+                  <p>举报人：{{item.user_name_r}}</p>
                   <p>举报时间：{{formatDate(item.time)}}</p>
                 </div>
               </a>
@@ -62,7 +62,7 @@
           </div>
           <div class="space-y-4">
             <!-- 跳转到门户主页 -->
-            <a :href="'/author/'+author_id">门户名字：{{name}}</a>
+            <a @click="jumpToPortal(item.author_id)" class="cursor-pointer">门户名字：{{name}}</a>
             <br>
             工作单位：{{orgs}}
           </div>
@@ -179,6 +179,14 @@ export default {
     active:function(i){
       this.activeindex=i
       this.item=this.list[i];
+    },
+    jumpToPortal(author_id){
+      this.$router.push({
+        path:'/author',
+        query:{
+          author_id:author_id,
+        }
+      })
     },
     formatDate (date) {
       Date.prototype.format = function(fmt) {

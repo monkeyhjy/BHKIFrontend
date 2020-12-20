@@ -41,7 +41,7 @@
                     </h2>
                   </div>
                 </header>
-                <a :href="'/userinfo/'+item.user_id_r"><p>举报人：{{item.user_name_r}}</p></a>
+                <p>举报人：{{item.user_name_r}}</p>
                 <p>举报时间：{{formatDate(item.time)}}</p>
               </div>
             </a>
