@@ -15,18 +15,18 @@
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
-            <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心</el-menu-item>
+            <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心
+            </el-menu-item>
             <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin = true">
                 <template slot="title" style="font-size: large">后台管理</template>
-                <el-menu-item index="5-1"  @click="gotoReported">处理举报</el-menu-item>
-                <el-menu-item index="5-2"  @click="gotoLog">查看日志</el-menu-item>
+                <el-menu-item index="5-1" @click="gotoReported">处理举报</el-menu-item>
+                <el-menu-item index="5-2" @click="gotoLog">查看日志</el-menu-item>
             </el-submenu>
             <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin = true">
                 <template slot="title" style="font-size: large">更新数据</template>
-                <el-menu-item index="6-1"  @click="dialogFormVisible_author = true">更新作者信息</el-menu-item>
-                <el-menu-item index="6-2"  @click="dialogFormVisible_paper = true">更新论文信息</el-menu-item>
+                <el-menu-item index="6-1" @click="dialogFormVisible_author = true">更新作者信息</el-menu-item>
+                <el-menu-item index="6-2" @click="dialogFormVisible_paper = true">更新论文信息</el-menu-item>
             </el-submenu>
-
 
             <el-menu-item style="display: block;float: right">
                 <el-popover
@@ -64,7 +64,8 @@
                             <el-link :underline="false" @click="logout" v-show="keepLogout">退出登录</el-link>
                         </div>
                     </div>
-                    <el-button slot="reference" type="warning" class="el-icon-user" style="border-color: #f9bb99;background-color: #f9bb99; border-radius: 50px"></el-button>
+                    <el-button slot="reference" type="warning" class="el-icon-user"
+                               style="border-color: #f9bb99;background-color: #f9bb99; border-radius: 50px"></el-button>
                 </el-popover>
             </el-menu-item>
             <el-menu-item style="float: right" @click="gotoLogin" v-show="keepLogin">
@@ -85,7 +86,9 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible_author = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisible_author = false, updateAuthor(form.start,form.end)">确 定</el-button>
+                    <el-button type="primary"
+                               @click="dialogFormVisible_author = false, updateAuthor(form.start,form.end)">确 定
+                    </el-button>
                 </div>
             </el-dialog>
 
@@ -103,7 +106,9 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible_paper = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisible_paper = false, updatePaper(form_2.start,form_2.end)">确 定</el-button>
+                    <el-button type="primary"
+                               @click="dialogFormVisible_paper = false, updatePaper(form_2.start,form_2.end)">确 定
+                    </el-button>
                 </div>
             </el-dialog>
         </el-menu>
@@ -115,7 +120,7 @@
         name: "NewNavigation",
         data() {
             return {
-                admin:'',
+                admin: '',
                 keepLogin: true,
                 keepLogout: false,
                 activeIndex: '1',
@@ -139,20 +144,19 @@
                 userId: ''
             };
         },
-        mounted(){
+        mounted() {
             this.getData()
         },
         methods: {
-            updateAuthor(start,end){
+            updateAuthor(start, end) {
                 var that = this
                 this.$axios.post('/apis/search/updateacademicdb',
-                    this.qs.stringify({
+                    {
                         administratorid: this.userId,
-                        filename:"author",
+                        filename: "author",
                         startline: start,
-                        linesnumber: (end-start)
-                    }),
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                        linesnumber: (end - start)
+                    })
                     .then(res => {
                         console.log(res);
                         this.$message({
@@ -166,16 +170,15 @@
                     });
                 });
             },
-            updatePaper(start,end){
+            updatePaper(start, end) {
                 var that = this
                 this.$axios.post('/apis/search/updateacademicdb',
-                    this.qs.stringify({
+                    {
                         administratorid: this.userId,
-                        filename:"paper",
+                        filename: "paper",
                         startline: start,
-                        linesnumber: (end-start)
-                    }),
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                        linesnumber: (end - start)
+                    })
                     .then(res => {
                         console.log(res);
                         this.$message({
@@ -189,92 +192,92 @@
                     });
                 });
             },
-            getAuthorLine(){
+            getAuthorLine() {
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
-                    this.qs.stringify({
-                        administratorid: this.userId,
-                        filename:"author"
-                    }),
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    {
+                        administratorid: this.author_id,
+                        filename: "author",
+                        pagenumber: 1,
+                    })
                     .then(res => {
                         console.log(res);
-                        that.form.start=res.data.list[0].finishlinenum
+                        that.form_2.start = res.data.list[0].finishlinenum
                     })
             },
-            getPaperLine(){
+            getPaperLine() {
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
-                    this.qs.stringify({
-                        administratorid: this.userId,
-                        filename:"paper"
-                    }),
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                    {
+                        administratorid: this.author_id,
+                        filename: "paper",
+                        pagenumber: 1,
+                    })
                     .then(res => {
                         console.log(res);
-                        that.form_2.start=res.data.list[0].finishlinenum
+                        that.form_2.start = res.data.list[0].finishlinenum
                     })
             },
-            logout(){
-                var that=this
+            logout() {
+                var that = this
                 // console.log(res);
                 this.$axios({
-                    url:'/apis/user/logout',
-                    method:"post",
-                }).then(res=>{
+                    url: '/apis/user/logout',
+                    method: "post",
+                }).then(res => {
                     console.log(res);
                     this.personName = '',
-                    this.picture = '',
-                    this.keepLogin = true,
-                    this.keepLogout = false,
-                    this.admin = false
+                        this.picture = '',
+                        this.keepLogin = true,
+                        this.keepLogout = false,
+                        this.admin = false
                 })
             },
-            gotoLog(){
+            gotoLog() {
                 this.$router.push('/log')
             },
-            gotoReported(){
+            gotoReported() {
                 this.$router.push('/blogreported')
             },
-            gotoDoor(){
+            gotoDoor() {
                 this.$router.push('/authoritem')
             },
-            gotoMsgCollection(){
-              this.$router.push('/messageNav/likeMsg')
+            gotoMsgCollection() {
+                this.$router.push('/messageNav/likeMsg')
             },
-            gotoMyinfo(){
-              this.$router.push('/personinfo/information')
+            gotoMyinfo() {
+                this.$router.push('/personinfo/information')
             },
-            gotoMyLike(){
+            gotoMyLike() {
                 this.$router.push('/personinfo/following')
             },
-            gotoMyCollection(){
+            gotoMyCollection() {
                 this.$router.push('/personinfo/collected')
             },
-            gotoLogin(){
-              this.$router.push('/login')
+            gotoLogin() {
+                this.$router.push('/login')
             },
-            gotoMain(){
-              this.$router.push('/Search')
+            gotoMain() {
+                this.$router.push('/Search')
             },
-            gotoBlog(){
+            gotoBlog() {
                 this.$router.push('/BlogDashboard/BlogDesktop')
             },
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
             getData() {
-                var that=this
+                var that = this
                 // console.log(res);
                 this.$axios({
-                    url:'/apis/personality/get',
-                    method:"post",
-                }).then(res=>{
+                    url: '/apis/personality/get',
+                    method: "post",
+                }).then(res => {
                     console.log(res);
                     that.personName = res.data.username
                     that.picture = res.data.avatar
                     that.admin = res.data.is_admin
-                    if(this.personName != ""){
+                    if (this.personName != "") {
                         this.keepLogin = false;
                         this.keepLogout = true;
                     }
@@ -296,7 +299,8 @@
     .navigationlogo {
         height: 60px;
     }
-    body{
-          background-image: url('../../assets/image/user/image/login-back.png');
+
+    body {
+        background-image: url('../../assets/image/user/image/login-back.png');
     }
 </style>

@@ -7,7 +7,7 @@
                         <p>{{ item.user }} 给你发了一条私信: </p>
                         {{item.message}}
                     </div>
-                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
+                    <el-button type="primary" style="margin:10px; float: right" @click="dele(item.message_id)">
                         已阅
                     </el-button>
                 </el-card>
@@ -49,7 +49,7 @@
                     that.msgCollection = res.data.data.msgCollection
                 })
             },
-            dele(id){
+            del(id){
                 var index=this.msgCollection.findIndex(item => {
                     if(item.id==id) {
                         return true;
@@ -57,6 +57,16 @@
                 })
                 this.msgCollection.splice(index,1)
             },
+            dele(id){
+                var that = this
+                this.$axios.post('/apis/message/readimessage',
+                    {
+                        message_id: id
+                    },).then(res=>{
+                    console.log(res);
+                    that.del(id)
+                })
+            }
         }
     }
 </script>

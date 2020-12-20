@@ -6,7 +6,7 @@
                     <div class="text item" style="margin-left: 20px">
                         {{ item.name }} 收藏了你的 {{item.blog_title}}
                     </div>
-                    <el-button :type="item.type==type?'primary':''" style="margin:10px; float: right" @click="dele(item.id)">
+                    <el-button type="primary" style="margin:10px; float: right" @click="dele(item.message_id)">
                         已阅
                     </el-button>
                 </el-card>
@@ -48,13 +48,23 @@
                     that.msgCollection = res.data.data.msgCollection
                 })
             },
-            dele(id){
+            del(id){
                 var index=this.msgCollection.findIndex(item => {
                     if(item.id==id) {
                         return true;
                     }
                 })
                 this.msgCollection.splice(index,1)
+            },
+            dele(id){
+                var that = this
+                this.$axios.post('/apis/message/readstarmessage',
+                    {
+                        message_id: id
+                    },).then(res=>{
+                    console.log(res);
+                    that.del(id)
+                })
             }
         }
     }
