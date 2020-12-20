@@ -191,14 +191,16 @@
 			},
 			star(flag) {
 				this.paper.is_star = 1 - this.paper.is_star;
-				this.$axios.post('http://182.92.239.145/apis/',
+				this.$axios.post('/apis/user/star_paper',
 						{
 							userid: this.user_id,
 							paperid: this.paper.paper_id
 						}
 				).then(res => {
 							if(res.data.status === 0){
-								this.paper = res.data.paper
+								this.$message({
+									message: res.data.message
+								})
 							}
 						})
 			},
