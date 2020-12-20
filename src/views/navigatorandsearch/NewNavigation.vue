@@ -259,20 +259,24 @@
             getData() {
                 var that=this
                 // console.log(res);
-                this.$axios({
-                    url:'/apis/personality/get',
-                        method:"post",
-                }).then(res=>{
-                    console.log(res);
-                    that.personName = res.data.username
-                    that.picture = res.data.avatar
-                    that.admin = res.data.is_admin
-                    if(this.personName != ""){
-                        this.keepLogin = false;
-                        this.keepLogout = true;
+                this.$axios.post('/apis/user/getstatus').then(res => {
+                    // console.log(res)
+                    if(res.data.status !=0 ){
+                        console.log('登录状态请求失败')
+                        return
                     }
-                })
-            },
+                    this.personName = res.data.username
+                    this.picture = res.data.avatar
+                });
+                // this.$axios({
+                //     url:'http://182.92.239.145/apis/personality/get',
+                //     method:"post",
+                // }).then(res=>{
+                //     console.log(res);
+                //     that.personName = res.username
+                //     that.picture = res.data.avatar
+                // })
+            }
         }
     }
 </script>
