@@ -435,7 +435,7 @@ export default {
           this.jubaotip="";
       },
       sendsixin(text){
- this.$axios.post('/apis/message/sendmeaasge',
+ this.$axios.post('/apis/message/sendimessage',
               {
                 id:this.userid,
                 message:text
@@ -443,7 +443,6 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-               
                 if(res.data.data.status==0){
                      this.$message({
           message: '发送私信成功',
