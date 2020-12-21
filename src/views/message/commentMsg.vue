@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-main>
-            <div v-for="item in (index,msgCollection)" :key="index">
+            <div v-for="(item,index) in msgCollection" :key="index">
                 <el-card class="box-card" style="margin-bottom: 20px">
                     <div class="text item" style="margin-left: 20px">
                         {{ item.name }} 评论了你的 {{item.blog_title}}
