@@ -12,7 +12,7 @@
               <p>{{user_email}}</p>
               <p>{{user_title}}<span v-show="user_title && user_institution"> | </span>{{user_institution}}</p>
               <p><el-button type="primary" v-show="!is_currentUser & !followed" @click="follow()">关注</el-button></p>
-              <p><el-button type="default" v-show="!is_currentUser & followed" @click="unfollow()">取消关注</el-button></p>
+              <p><el-button v-show="!is_currentUser & followed" @click="unfollow()">取消关注</el-button></p>
             </el-col>
             <el-col :span="20">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -118,6 +118,7 @@ export default {
   },
   methods: {
     init() {
+      var that = this
       this.user_id=this.$route.params.userId
       this.$axios.post('/apis/user/getstatus').then(res => {
         // console.log(res)
@@ -138,7 +139,7 @@ export default {
       this.$axios.post('/apis/personality/get_other',{
         userid:this.user_id
       }).then(res => {
-        // console.log(res)
+        console.log(res)
         if(res.data.status != 0){
           console.log('获取用户信息失败')
           return
@@ -205,7 +206,7 @@ export default {
       this.$axios.post('/apis/blog/collectbloglist', {
         userid:this.user_id
       }).then(res => {
-        // console.log(res)
+        console.log(res)
         // console.log(res.data.status)
         if(res.data.status !== 0 ){
           console.log("请求收藏帖子列表失败");
@@ -213,56 +214,118 @@ export default {
         }
         var i;
         var result = res.data.data.list;
-        var avatarItem='';
+        var blogList = new Array()
+        var avatarItem="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
         var read=0, like=0, tip=0;
         for(i=0;i<result.length;i++){
-          this.collectValid=true;
-          // TODO: 查询所有用户头像
+          this.collectValid=true
+          var blogItem = new Object()
+          //   id:123,
+          //   name:"A blog published by whatever",
+          //   author:"Zhang Manwei",
+          //   avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+          //   content:"A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever ",
+          //   date:"2020年1月1日",
+          //   readnum:12,
+          //   likenum:12,
+          //   tipnum:12
+
+          // author: "aaa"
+          // authorid: ""
+          // bio: ""
+          // blogid: 12
+          // content: "英国bla"
+          // created: "2020-12-21T16:25:29.186"
+          // title: "多国确认出现变异新冠病毒确诊病例"
+          blogItem.id = result[i].blogid
+          blogItem.name = result[i].title
+          blogItem.author = result[i].author
+          blogItem.authorid = result[i].authorid
+          blogItem.content = result[i].content
+          blogItem.date = result[i].created
           this.$axios.post('/apis/personality/get_other',{
-            userid:result[i].authorid
+            userid : result[i].authorid
           }).then(res => {
-            if(res.data.status !== 0 ){
-              console.log("请求头像失败");
-              return
-            }
             avatarItem = res.data.avatar
           })
           this.$axios.post('/apis/blog/getbloginfo',{
             id:result[i].blogid
-          }).then(res => {
-            if(res.data.status !== 0 ){
-              console.log("请求帖子数据失败");
-              return
-            }
-            read=res.data.data.readnum
-            like=res.data.data.likenum
-            tip=res.data.data.tipnum
+          }).then(blogRes => {
+            read=blogRes.data.data.readnum
+            like=blogRes.data.data.likenum
+            tip=blogRes.data.data.tipnum
           })
-          this.collected.push(
-            {
-          //     id:123,
-          // name:"A blog published by whatever",
-          // author:"Zhang Manwei",
-          // avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-          // content:"A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever ",
-          // date:"2020年1月1日",
-          // readnum:12,
-          // likenum:12,
-          // tipnum:12
-              id: result[i].blogid,
-              name: result[i].title,
-              author: result[i].author,
-              avatar:avatarItem,
-              content: result[i].content,
-              date: result[i].created,
-              readnum: read,
-              likenum: like,
-              tipnum: tip
-            }
-          );
+          blogItem.avatar = avatarItem
+          blogItem.readnum = read
+          blogItem.likenum = like
+          blogItem.tipnum = tip
+          blogList[i]=blogItem
         }
+        that.collected = blogList
       });
+
+      // this.$axios.post('/apis/blog/collectbloglist', {
+      //   userid:this.user_id
+      // }).then(res => {
+      //   // console.log(res)
+      //   // console.log(res.data.status)
+      //   if(res.data.status !== 0 ){
+      //     console.log("请求收藏帖子列表失败");
+      //     return
+      //   }
+      //   var i;
+      //   var result = res.data.data.list;
+      //   var avatarItem='';
+      //   var read=0, like=0, tip=0;
+      //   for(i=0;i<result.length;i++){
+      //     this.collectValid=true;
+      //     // TODO: 查询所有用户头像
+      //     this.$axios.post('/apis/personality/get_other',{
+      //       userid:result[i].authorid
+      //     }).then(res => {
+      //       if(res.data.status !== 0 ){
+      //         console.log("请求头像失败");
+      //         return
+      //       }
+      //       avatarItem = res.data.avatar
+      //     })
+      //     this.$axios.post('/apis/blog/getbloginfo',{
+      //       id:result[i].blogid
+      //     }).then(res => {
+      //       if(res.data.status !== 0 ){
+      //         console.log("请求帖子数据失败");
+      //         return
+      //       }
+      //       read=res.data.data.readnum
+      //       like=res.data.data.likenum
+      //       tip=res.data.data.tipnum
+      //     })
+      //     this.collected.push(
+      //       {
+      //     //     id:123,
+      //     // name:"A blog published by whatever",
+      //     // author:"Zhang Manwei",
+      //     // avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      //     // content:"A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever ",
+      //     // date:"2020年1月1日",
+      //     // readnum:12,
+      //     // likenum:12,
+      //     // tipnum:12
+      //         id: result[i].blogid,
+      //         name: result[i].title,
+      //         author: result[i].author,
+      //         avatar:avatarItem,
+      //         content: result[i].content,
+      //         date: result[i].created,
+      //         readnum: read,
+      //         likenum: like,
+      //         tipnum: tip
+      //       }
+      //     );
+      //   }
+      // });
     },
+
     handleClick(tab, event) {
       // console.log(tab, event);
     },

@@ -8,7 +8,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="学术成果" name="paper">
             <div v-show="!paperValid">您还没有收藏学术成果……</div>
-            <div class="collected-main" v-for="item in p_collected" :key="item.paper_id">
+            <div v-show="paperValid" class="collected-main" v-for="item in p_collected" :key="item.paper_id">
               <div class="collected-block">
                 <el-row>
                   <el-col :span="21">
@@ -18,7 +18,8 @@
                     </div>
                   </el-col>
                   <el-col :span="3" style="padding-top:20px">
-                    <el-button type="primary" @click="onsubmit()">取消收藏</el-button>
+                    <el-button v-show="item.collected" @click="unfavPaper(item.paper_id)">取消收藏</el-button>
+                    <el-button v-show="!item.collected" type="primary" @click="favPaper(item.paper_id)">收藏</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -27,7 +28,7 @@
           </el-tab-pane>
           <el-tab-pane label="博客帖文" name="blog">
             <div v-show="!blogValid">您还没有收藏帖子……</div>
-            <div class="collected-main" v-for="item in b_collected" :key="item.blogid">
+            <div v-show="b_collected" class="collected-main" v-for="item in b_collected" :key="item.blogid">
               <div class="collected-block">
                 <el-row>
                   <el-col :span="21">
@@ -44,7 +45,8 @@
                     </div>
                   </el-col>
                   <el-col :span="3" style="padding-top:20px">
-                    <el-button type="primary" @click="unfavBlog(item.blogid)">取消收藏</el-button>
+                    <el-button v-show="item.collected" @click="unfavBlog(item.blogid)">取消收藏</el-button>
+                    <el-button v-show="!item.collected" type="primary" @click="favBlog(item.blogid)">收藏</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -69,55 +71,43 @@ export default {
   data() {
     return {
       blogValid:false,
-      paperValid:true,
+      user_id:0,
+      paperValid:false,
       activeName: 'paper',
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       p_collected:[
-        {
-          paper_id:1,
-          title:"Paper1",
-          author:[
-            {id:1, name:"Zhang Manwei"},
-            {id:2, name:"Another author"},
-          ],
-          source:"Journal1",
-        },
-        {
-          paper_id:2,
-          title:"Paper2",
-          author:[
-            {id:1, name:"Zhang Manwei"},
-            {id:2, name:"Another author"},
-          ],
-          source:"Journal2",
-        }
+        // {
+        //   paper_id:2,
+        //   title:"Paper2",
+        //   author:[
+        //     {id:1, name:"Zhang Manwei"},
+        //     {id:2, name:"Another author"},
+        //   ],
+        //   source:"Journal2",
+        // }
       ],
       b_collected:[
-        {
-          blogid:1,
-          title:"Blog1 : Today's weather : snow storm",
-          author:"Zhang Manwei",
-          authorid:1,
-          avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-          content:"This is a very rough blog.",
-          created:'',
-          bio:'',
-        },
-        {
-          blogid:2,
-          title:"Blog2",
-          author:"Another author",
-          authorid:2,
-          avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-          content:"This is an another very rough blog.",
-          created:'',
-          bio:'',
-        }
+        // {
+        //   blogid:1,
+        //   title:"Blog1 : Today's weather : snow storm",
+        //   author:"Zhang Manwei",
+        //   authorid:1,
+        //   avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+        //   content:"This is a very rough blog.",
+        //   created:'',
+        //   bio:'',
+        // },
       ],
     };
   },
   mounted() {
     this.init()
+    // "53e997fcb7602d970200604d"
+    this.$axios.post('/apis/search/getpaperbyid',{
+      paperid:"53e997fcb7602d970200604d"
+    }).then(res => {
+      console.log(res)
+    })
   },
   methods: {
     handleClick(tab, event) {
@@ -131,44 +121,183 @@ export default {
         }
       })
     },
-    init() {
+    getCollectedBlog(userID) {
+      var that = this
       this.$axios.post('/apis/blog/collectbloglist', {
-        userid:0
+        userid:userID
       }).then(res => {
-        // console.log(res)
+        console.log(res)
         // console.log(res.data.status)
         if(res.data.status !== 0 ){
           console.log("请求收藏帖子列表失败");
           return
         }
-        var blogList = [];
         var i;
         var result = res.data.data.list;
-        var avatarItem;
+        var blogList = new Array()
+        var avatarItem="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
+        var read=0, like=0, tip=0;
         for(i=0;i<result.length;i++){
-          this.blogValid=true;
-          // TODO: 查询所有用户头像
-          // this.$axios.post().then(res => {})
-          blogList.push(
-            {
-              blogid: result[i].blogid,
-              title: result[i].title,
-              content: result[i].content,
-              created: result[i].created,
-              author: result[i].author,
-              authorid: result[i].authorid,
-              bio: result[i].bio,
-              avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-            }
-          );
-        }
-        this.b_collected=blogList;
-      });
-      // TODO: 查询所有收藏学术成果
-    },
-    unfavBlog(id){
+          this.blogValid=true
+          var blogItem = new Object()
+          //   blogid:2,
+          //   title:"Blog2",
+          //   author:"Another author",
+          //   authorid:2,
+          //   avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+          //   content:"This is an another very rough blog.",
+          //   created:'',
 
-    }
+          // author: "aaa"
+          // authorid: ""
+          // bio: ""
+          // blogid: 12
+          // content: "英国bla"
+          // created: "2020-12-21T16:25:29.186"
+          // title: "多国确认出现变异新冠病毒确诊病例"
+          blogItem.blogid = result[i].blogid
+          blogItem.title = result[i].title
+          blogItem.author = result[i].author
+          blogItem.authorid = result[i].authorid
+          blogItem.content = result[i].content
+          blogItem.created = result[i].created
+          blogItem.collected = true
+          // this.$axios.post('/apis/personality/get_other',{
+          //   userid : result[i].authorid
+          // }).then(res => {
+          //   avatarItem = res.data.avatar
+          // })
+          blogItem.avatar = avatarItem
+          blogList[i]=blogItem
+        }
+        that.b_collected = blogList
+        console.log("that.b_collected")
+        console.log(that.b_collected)
+      });
+    },
+
+    getCollectedPaper(userID) {
+      var that = this
+      this.$axios.post('/apis/user/get_star_paper_by_userid',{
+        userid:userID
+      }).then(paperIdRes => {
+        console.log(paperIdRes)
+        var result = paperIdRes.data.paper_id_list
+        var paperList = new Array()
+        for(var i=0,len=result.length; i<len; i++){
+          var paperItem = new Object()
+          that.paperValid=true
+
+          var p_id = result[i]
+          paperItem.paper_id = p_id
+          paperItem.collected = true
+          this.$axios.post('/apis/search/getpaperbyid',{
+            paperid:p_id
+          }).then(res => {
+            // console.log(res)
+            var authorList = new Array()
+
+            paperItem.title = res.data.title
+            paperItem.source = res.data.venue.raw
+            for(var j=0, alen = res.data.authors.length; j<alen; j++){
+              var authorItem = new Object()
+              authorItem.id = res.data.authors[j].id
+              authorItem.name = res.data.authors[j].name
+              authorList[j] = authorItem
+            }
+            paperItem.author = authorList
+          })
+          paperList[i]=paperItem
+          // paper_id:2,
+          //   title:"Paper2",
+          //   author:[
+          //     {id:1, name:"Zhang Manwei"},
+          //     {id:2, name:"Another author"},
+          //   ],
+          //   source:"Journal2",
+        }
+        console.log(paperList)
+        that.p_collected = paperList
+      })
+    },
+    init() {
+      var that = this
+      this.$axios.post('/apis/user/getstatus').then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('登录状态请求失败')
+          return
+        }
+        this.user_id = res.data.userid
+        this.getCollectedBlog(res.data.userid)
+        this.getCollectedPaper(res.data.userid)
+        
+
+        // TODO: 查询所有收藏学术成果
+        
+      });
+      
+    },
+    switchPaperFav (id) {
+      this.$axios.post('/apis/user/star_paper',{
+        userid: this.user_id,
+        paperid:id
+      }).then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('收藏状态切换失败')
+          return
+        }
+      });
+    },
+    unfavPaper(id) {
+      this.p_collected.forEach(item =>{
+        if(item.paper_id == id)
+          this.$set(item, 'collected', false)
+      })
+      this.switchPaperFav(id)
+    },
+    favPaper(id) {
+      this.p_collected.forEach(item =>{
+        if(item.paper_id == id)
+          this.$set(item, 'collected', true)
+      })
+      this.switchPaperFav(id)
+    },
+    
+    unfavBlog(id) {
+      this.b_collected.forEach(item =>{
+        if(item.blogid == id)
+          this.$set(item, 'collected', false)
+      })
+      console.log(this.b_collected)
+      this.$axios.post('/apis/blog/setblogcollect',{
+        id: id,
+        type: 1
+      }).then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('收藏状态切换失败')
+          return
+        }
+      });
+    },
+    favBlog(id) {
+      this.b_collected.forEach(item =>{
+        if(item.blogid == id)
+          this.$set(item, 'collected', true)
+      })
+      this.$axios.post('/apis/blog/setblogcollect',{
+        id: id,
+        type: 0
+      }).then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('收藏状态切换失败')
+          return
+        }
+      });
+    },
   }
 }
 </script>

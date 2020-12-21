@@ -1,5 +1,7 @@
 body{
     background-color: rgb(240, 241, 244);
+    /* background-repeat:no-repeat;
+    background-attachment:fixed; */
 }
 
 .el-link.el-link--default{

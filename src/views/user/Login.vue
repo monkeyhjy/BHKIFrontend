@@ -224,6 +224,8 @@ export default {
 <style>
 body{
   background-image: url('../../assets/image/user/image/login-back.png');
+  background-repeat:no-repeat;
+  background-attachment:fixed
 }
 .login{
   height:100%

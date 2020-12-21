@@ -8,13 +8,22 @@
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <el-row>
-                            <img class="avatar-img" :src="formLabelAlign.avatar">
+                            <!-- <img v-show="hasAvatar" class="avatar-img" :src="formLabelAlign.avatar"> -->
+                            <el-upload
+                              class="avatar-uploader avatar-img"
+                              action="/apis/personality/change_avatar"
+                              :show-file-list="false"
+                              :on-success="handleAvatarSuccess"
+                              :before-upload="beforeAvatarUpload">
+                              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-row>
+                        <el-row v-if="imageUrl" style="margin-top:15px;font-size:15px;color:#303133">
+                            (点击头像进行更换)
                         </el-row>
                         <el-row>
-                            <el-button type="default" style="margin-top:30px">上传头像<i class="el-icon-upload el-icon--right"></i></el-button>
-                        </el-row>
-                        <el-row>
-                            <el-button type="primary" style="margin-top:30px">进入门户 <i class="el-icon-right"></i></el-button>
+                            <el-button type="primary" style="margin-top:30px" @click="toAuthor()">进入门户 <i class="el-icon-right"></i></el-button>
                         </el-row>
                     </el-col>
                     <el-col :span="18">
@@ -67,12 +76,24 @@
                 </el-row>
             </el-card>
         </div>
+        <el-dialog
+          title="提示"
+          :visible.sync="dialogVisible"
+          width="30%"
+          :before-close="handleClose">
+          <span>您并未认领门户，是否前往认领界面？</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="toClaim">确 定</el-button>
+          </span>
+        </el-dialog>
     </div>
 
 </template>
 
 <script>
     import NewNavigation from "../navigatorandsearch/NewNavigation";
+import CollectedVue from './Collected.vue';
 
 export default {
   name: 'Information',
@@ -111,7 +132,10 @@ export default {
     };
     return {
       labelPosition: 'right',
+      dialogVisible: false,
+      imageUrl:'',
       user_id:0,
+      author_id:'',
       formLabelAlign: {
         name: '',
         email: '',
@@ -194,6 +218,7 @@ export default {
           });
         }
         else{
+          this.imageUrl=res.data.avatar
           this.formLabelAlign.name=res.data.username
           this.formLabelAlign.email=res.data.email
           this.formLabelAlign.inst=res.data.org
@@ -246,12 +271,83 @@ export default {
           });
         }
       })
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    toAuthor() {
+      this.$axios.post('/apis/user/get_authorid_by_userid',{
+        userid:this.user_id
+      }).then(res => {
+        console.log(res)
+        this.author_id = res.data.authorid
+        if(this.author_id == ''){
+          this.dialogVisible=true
+        }else{
+          this.$router.push({
+            path:'/author',
+            query:{
+              author_id:this.author_id,
+            }
+          })
+        }
+      })
+    },
+    toClaim() {
+      this.$router.push('/authoritem');
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.$router.push('/authoritem');
+        })
+        .catch(_ => {
+
+        });
     }
   }
 }
 </script>
 
 <style>
+.avatar-uploader {
+  margin:0 auto;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+}
+.avatar {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
 .el-divider-wide{
   margin:24px,0px;
 }
