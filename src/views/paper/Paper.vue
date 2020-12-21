@@ -20,7 +20,7 @@
 										<el-button
 														type="primary"
 														icon="el-icon-star-on"
-														v-if="paper.is_star===0"
+														v-if="paper.is_star"
 														circle
 														@click="star(1)"></el-button>
 										<el-button
@@ -150,40 +150,39 @@
 		},
 		mounted() {
 			this.get_paper_id();
-			//console.log(this.paper.paper_id)
-
-			this.$axios.post('/apis/search/getpaperbyid',
-					{
-						paperid: this.paper.paper_id
-					})
-					.then(res => {
-						if(res.status === 200) {
-							console.log(res)
-							this.paper.title = res.data.title
-							this.paper.authors = res.data.authors
-							this.paper.venue_raw = res.data.venue.raw
-							this.paper.year = res.data.year
-							this.paper.keywords = res.data.keywords
-							this.paper.n_citation = res.data.n_citation
-							this.paper.page_start = res.data.page_start
-							this.paper.page_end = res.data.page_end
-							this.paper.volumn = res.data.volume
-							this.paper.issue = res.data.issue
-							this.paper.isbn = res.data.isbn
-							this.paper.doi = res.data.doi
-							this.paper.abstract = res.data.abstract
-						}
-						else {
-							alert('抱歉，您所点击的论文还未收录')
-							this.$router.go(-1)
-						}
-					})
+			this.init();
 		},
 		methods: {
-			get_login_status() {
+			init() {
 				this.$axios.post('/apis/user/getstatus')
 						.then(res => {
 							this.user_id = res.data.userid
+							this.$axios.post('/apis/search/getpaperbyid',
+									{
+										paperid: this.paper.paper_id
+									})
+									.then(res => {
+										if(res.status === 200) {
+											this.paper.title = res.data.title
+											this.paper.authors = res.data.authors
+											this.paper.venue_raw = res.data.venue.raw
+											this.paper.year = res.data.year
+											this.paper.keywords = res.data.keywords
+											this.paper.n_citation = res.data.n_citation
+											this.paper.page_start = res.data.page_start
+											this.paper.page_end = res.data.page_end
+											this.paper.volumn = res.data.volume
+											this.paper.issue = res.data.issue
+											this.paper.isbn = res.data.isbn
+											this.paper.doi = res.data.doi
+											this.paper.abstract = res.data.abstract
+											this.get_star_status()
+										}
+										else {
+											alert('抱歉，您所点击的论文还未收录')
+											this.$router.go(-1)
+										}
+									})
 						})
 			},
 			get_paper_id() {
@@ -197,8 +196,10 @@
 							paperid: this.paper.paper_id
 						}
 				).then(res => {
+					console.log(res)
 							if(res.data.status === 0){
 								this.$message({
+									type: "success",
 									message: res.data.message
 								})
 							}
@@ -210,6 +211,16 @@
 					query: {
 						author_id: author_id,
 					}
+				})
+			},
+			get_star_status() {
+				this.$axios.post('/apis/user/get_star_status',
+						{
+							userid: this.user_id,
+							paperid: this.paper.paper_id
+						}).then(res => {
+							console.log(res)
+							this.paper.is_star = res.data.is_star
 				})
 			}
 		},
