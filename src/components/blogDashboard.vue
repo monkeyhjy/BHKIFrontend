@@ -3,7 +3,7 @@
 		<div>
 			<new-navigation></new-navigation>
 		</div>
-		<div class="router" style="left:0px">
+		<div class="router" style="left:30px">
 			<blog-search></blog-search>
 			<el-row style="margin-top:50px" :gutter="20">
 				<el-col :span="4">

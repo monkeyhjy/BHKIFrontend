@@ -27,9 +27,9 @@
                       <p style="margin-top:10px;font-size:15px;width:90%;padding-left:15px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">{{ item.textcontent }}</p>
                     </div>
                     <div class="flex6" style="font-size:12px;color:gray">
-                      <span style="margin-right:20px">{{ item.date}}</span>
+                      <span style="margin-right:20px">{{ formatDate(item.date) }}</span>
                       <span style="margin-right:20px;color:gray">作者
-                          <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid">{{ item.username}}</el-link></span>
+                          <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid"  style="font-size:15px;color:gray;margin-top:-5px">{{ item.username}}</el-link></span>
                       <span class="flex6 iconsize">
                                 <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-yueduliang" ></use>
@@ -84,6 +84,32 @@ export default {
   this.search()
   },
   methods:{
+     formatDate (date) {
+  Date.prototype.format = function(fmt) {
+    var o = {
+      "M+" : this.getMonth()+1,                 //月份
+      "d+" : this.getDate(),                    //日
+      "h+" : this.getHours(),                   //小时
+      "m+" : this.getMinutes(),                 //分
+      "s+" : this.getSeconds(),                 //秒
+      "q+" : Math.floor((this.getMonth()+3)/3), //季度
+      "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt)) {
+      fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    for(var k in o) {
+      if(new RegExp("("+ k +")").test(fmt)){
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+      }
+    }
+    return fmt;
+  }
+  //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+  const s = String(date)
+  s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+  return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+},
     search(){
       this.search1=this.$route.params.search;
         //搜索博客
