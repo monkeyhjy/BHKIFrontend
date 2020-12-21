@@ -155,7 +155,7 @@
                         administratorid: this.userId,
                         filename: "author",
                         startline: start,
-                        linesnumber: (end - start)
+                        linesnumber: (end - start + 1)
                     })
                     .then(res => {
                         console.log(res);
@@ -177,7 +177,7 @@
                         administratorid: this.userId,
                         filename: "paper",
                         startline: start,
-                        linesnumber: (end - start)
+                        linesnumber: (end - start + 1)
                     })
                     .then(res => {
                         console.log(res);
@@ -196,7 +196,7 @@
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        administratorid: this.author_id,
+                        administratorid: this.userid,
                         filename: "author",
                         pagenumber: 1,
                     })
@@ -209,7 +209,7 @@
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        administratorid: this.author_id,
+                        administratorid: this.userid,
                         filename: "paper",
                         pagenumber: 1,
                     })
@@ -267,29 +267,21 @@
                 console.log(key, keyPath);
             },
             getData() {
-                var that = this
+                var that=this
                 // console.log(res);
                 this.$axios({
-                    url: '/apis/personality/get',
-                    method: "post",
-                }).then(res => {
+                    url:'/apis/personality/get',
+                    method:"post",
+                }).then(res=>{
                     console.log(res);
                     that.personName = res.data.username
                     that.picture = res.data.avatar
                     that.admin = res.data.is_admin
-                    if (this.personName != "") {
+                    if(this.personName != ""){
                         this.keepLogin = false;
                         this.keepLogout = true;
                     }
                 })
-                // this.$axios({
-                //     url:'http://182.92.239.145/apis/personality/get',
-                //     method:"post",
-                // }).then(res=>{
-                //     console.log(res);
-                //     that.personName = res.username
-                //     that.picture = res.data.avatar
-                // })
             }
         }
     }
