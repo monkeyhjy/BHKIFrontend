@@ -20,35 +20,6 @@
                         <el-button slot="append" icon="el-icon-search" @click="sendSearch(input3, type)"></el-button>
                     </el-input>
                 </div>
-                <!--                <div style="margin-top: 50px; margin-bottom: 80px">-->
-                <!--                    <el-carousel :interval="4000" type="card" height="200px" style="width: 80%; margin-left: 11%">-->
-                <!--                        <el-carousel-item class="slide" v-for="item in lights"-->
-                <!--                                          :key="item.value"-->
-                <!--                                          :title="item.title"-->
-                <!--                                          :content="item.content">-->
-                <!--                            <div style="width: 80%;">-->
-                <!--                                <h1 class="medium" style="vertical-align: top; float: left; margin: 10px 0px 0px 10px; font-size: 30px">-->
-                <!--                                    <i class="el-icon-s-promotion" ></i>-->
-                <!--                                    {{ item.title }}-->
-                <!--                                </h1>-->
-                <!--                            </div>-->
-                <!--                            <div style="margin-top: 8%">-->
-                <!--                                <el-divider></el-divider>-->
-                <!--                            </div>-->
-                <!--                            <div style="margin-top: 8%;">-->
-                <!--                                <h4 style="float: left; margin: -30px 20px 0px 20px;">{{item.content}}</h4>-->
-                <!--                            </div>-->
-                <!--                            <div  style="margin-top: 22%;">-->
-                <!--                                <h2 v-bind:href="item.url" style="float: right; margin: -50px 10px 0px 0px;vertical-align: bottom;">-->
-                <!--                                    更多-->
-                <!--                                    <el-link :underline="false" v-bind:href="item.url">-->
-                <!--                                        <i class="el-icon-right" style="font-size: 50px; color: white"></i>-->
-                <!--                                    </el-link>-->
-                <!--                                </h2>-->
-                <!--                            </div>-->
-                <!--                        </el-carousel-item>-->
-                <!--                    </el-carousel>-->
-                <!--                </div>-->
                 <el-row style="margin-bottom: 60px">
                     <!--                卡片-1-左-->
                     <el-col :span="6" :offset="2">
@@ -66,7 +37,8 @@
                                             <use xlink:href="#icon-bingren"></use>
                                         </svg>
                                         <ul style="width: 300px; height: 30px; margin: 20px 0px 0px 0px; float: right;">
-                                            <el-link v-bind:href="rank.url" style="float: left;">{{rank.title}}</el-link>
+                                            <el-link v-bind:href="rank.url" style="float: left;">{{rank.title}}
+                                            </el-link>
                                         </ul>
                                     </div>
                                 </div>
@@ -82,7 +54,8 @@
                                 </div>
                                 <div style="width: 380px; height: 240px">
                                     <div v-for="lib in library" style="width: 380px; height: 50px; margin-top: -8px">
-                                        <svg class="icon" style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
+                                        <svg class="icon"
+                                             style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
                                             <use xlink:href="#icon-tangguo"></use>
                                         </svg>
                                         <ul style="float:right; width: 300px; margin-top: 5px">
@@ -102,7 +75,8 @@
                                 </div>
                                 <div v-for="sci in science" class="text item"
                                      style="width: 380px; height: 20px;margin-top: 3% ">
-                                    <svg class="icon" style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
+                                    <svg class="icon"
+                                         style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
                                         <use xlink:href="#icon-tianshi"></use>
                                     </svg>
                                     <div style="float:left; width: 300px;">
@@ -168,37 +142,6 @@
                     label: 'DOI'
                 }],
                 value: '',
-                lights: [{
-                    value: '1',
-                    title: 'AI',
-                    content: 'AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...AI is...',
-                    url: 'https://www.aminer.cn/women-in-ai'
-                }, {
-                    value: '2',
-                    title: 'Computer',
-                    content: 'Computer is...',
-                    url: 'https://www.aminer.cn/women-in-ai'
-                }, {
-                    value: '3',
-                    title: 'Software',
-                    content: 'Software is...',
-                    url: 'https://www.aminer.cn/women-in-ai',
-                }, {
-                    value: '4',
-                    title: 'BUAA',
-                    content: 'BUAA is...',
-                    url: 'https://www.aminer.cn/women-in-ai'
-                }, {
-                    value: '5',
-                    title: 'Hedgehog',
-                    content: 'Hedgehog is...',
-                    url: 'https://www.aminer.cn/women-in-ai'
-                }, {
-                    value: '6',
-                    title: 'Beijing',
-                    content: 'Beijing is...',
-                    url: 'https://www.aminer.cn/women-in-ai'
-                }],
                 ranks: [{
                     id: '',
                     title: '',
@@ -225,14 +168,14 @@
                 input1: '',
                 input2: '',
                 input3: '',
-                type: ''
+                type: '关键词'
             }
         },
         mounted() {
             this.getRanks(),
-            this.getLibrary(),
-            this.getScience(),
-            this.getLight()
+                this.getLibrary(),
+                this.getScience(),
+                this.getLight()
         },
         methods: {
             //学术焦点
@@ -249,9 +192,9 @@
                 var that = this
                 this.$axios.post('/apis/search/popularauthors')
                     .then(res => {
-                    console.log(res);
-                    that.library = res.data.list
-                })
+                        console.log(res);
+                        that.library = res.data.list
+                    })
             },
             // 热门帖子
             getScience() {
@@ -277,13 +220,21 @@
                 this.type = label
             },
             sendSearch(input, type) {
-                this.$router.push({
-                    path: '/Searching',
-                    query: {
-                        input: input,
-                        type: type
-                    }
-                })
+                if(input.length == 0){
+                    this.$message({
+                        type: 'info',
+                        message: '请输入搜索内容！'
+                    })
+                }
+                else {
+                    this.$router.push({
+                        path: '/Searching',
+                        query: {
+                            input: input,
+                            type: type
+                        }
+                    })
+                }
             }
         }
     }

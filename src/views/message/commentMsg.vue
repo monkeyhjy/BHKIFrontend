@@ -65,7 +65,8 @@
                         message_id: id
                     },).then(res=>{
                     console.log(res);
-                    that.del(id)
+                    // that.del(id)
+                    that.$router.go(0)
                 })
             }
         }

@@ -17,12 +17,12 @@
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心
             </el-menu-item>
-            <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin = true">
+            <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin">
                 <template slot="title" style="font-size: large">后台管理</template>
                 <el-menu-item index="5-1" @click="gotoReported">处理举报</el-menu-item>
                 <el-menu-item index="5-2" @click="gotoLog">查看日志</el-menu-item>
             </el-submenu>
-            <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin = true">
+            <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin">
                 <template slot="title" style="font-size: large">更新数据</template>
                 <el-menu-item index="6-1" @click="dialogFormVisible_author = true">更新作者信息</el-menu-item>
                 <el-menu-item index="6-2" @click="dialogFormVisible_paper = true">更新论文信息</el-menu-item>
@@ -152,7 +152,7 @@
                 var that = this
                 this.$axios.post('/apis/search/updateacademicdb',
                     {
-                        administratorid: this.userId,
+                        administratorid: that.userId,
                         filename: "author",
                         startline: start,
                         linesnumber: (end - start + 1)
@@ -174,7 +174,7 @@
                 var that = this
                 this.$axios.post('/apis/search/updateacademicdb',
                     {
-                        administratorid: this.userId,
+                        administratorid: that.userId,
                         filename: "paper",
                         startline: start,
                         linesnumber: (end - start + 1)
@@ -196,7 +196,7 @@
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        administratorid: this.userid,
+                        // administratorid: that.userid,
                         filename: "author",
                         pagenumber: 1,
                     })
@@ -209,7 +209,7 @@
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        administratorid: this.userid,
+                        // administratorid: that.userid,
                         filename: "paper",
                         pagenumber: 1,
                     })
@@ -227,10 +227,11 @@
                 }).then(res => {
                     console.log(res);
                     this.personName = '',
-                        this.picture = '',
-                        this.keepLogin = true,
-                        this.keepLogout = false,
-                        this.admin = false
+                    this.picture = '',
+                    this.keepLogin = true,
+                    this.keepLogout = false,
+                    this.admin = false,
+                    this.gotoLogin()
                 })
             },
             gotoLog() {
@@ -274,6 +275,7 @@
                     method:"post",
                 }).then(res=>{
                     console.log(res);
+                    console.log(res.data.userId)
                     that.personName = res.data.username
                     that.picture = res.data.avatar
                     that.admin = res.data.is_admin
