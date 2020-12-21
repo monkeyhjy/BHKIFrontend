@@ -52,6 +52,34 @@
                     label="更新时间">
                     </el-table-column>
                 </el-table>
+                <br>
+                <el-table
+                    :data="tableData2"
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                    prop="filename"
+                    label="文件名"
+                    width="180">
+                    </el-table-column>
+                    <el-table-column
+                    prop="startlinenum"
+                    label="开始行数"
+                    width="180">
+                    </el-table-column>
+                    <el-table-column
+                    prop="endlinenum"
+                    label="结束行数">
+                    </el-table-column>
+                    <el-table-column
+                    prop="updateadministatorname"
+                    label="管理员">
+                    </el-table-column>
+                    <el-table-column
+                    prop="updatetime"
+                    label="更新时间">
+                    </el-table-column>
+                </el-table>
             </main>
         </div>
     </div>
@@ -71,6 +99,31 @@ export default {
       return{
         search:"搜索内容",
         count:0,
+        tableData2: [{
+          filename: 'D://filename',
+          startlinenum: '345',
+          endlinenum: '789',
+          updateadministatorname:'xiaoming',
+          updatetime:'2016-05-02'
+        }, {
+          filename: 'D://filename',
+          startlinenum: '345',
+          endlinenum: '789',
+          updateadministatorname:'xiaoming',
+          updatetime:'2016-05-02'
+        }, {
+          filename: 'D://filename',
+          startlinenum: '345',
+          endlinenum: '789',
+          updateadministatorname:'xiaoming',
+          updatetime:'2016-05-02'
+        }, {
+          filename: 'D://filename',
+          startlinenum: '345',
+          endlinenum: '789',
+          updateadministatorname:'xiaoming',
+          updatetime:'2016-05-02'
+        }],
         tableData: [{
           filename: 'D://filename',
           startlinenum: '345',
@@ -100,20 +153,52 @@ export default {
   },
   mounted(){
     //接口文档27.3
-    this.$axios.post('/log_list/',
-    this.qs.stringify({
-    }), {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-    .then(res => {
+    this.$axios.post('/apis/search/getupdatebyfilename',
+    {
+        administratorid:1,
+        filename:"author",
+        pagenum:1
+    }).then(res => {
       //接收数据
       console.log(res);
-      this.list = res.data.list;
+      this.tableData = res.data.record_list;
+
+      this.$axios.post('/apis/search/getupdatebyfilename',
+      {
+          filename:"author",
+          pagenum:2
+      }).then(res => {
+        //接收数据
+        console.log(res);
+        this.tableData.push(data.record_list);
+      })
+    }),
+    this.$axios.post('/apis/search/getupdatebyfilename',
+    {
+        administratorid:1,
+        filename:"paper",
+        pagenum:1
+    }).then(res => {
+      //接收数据
+      console.log(res);
+      this.tableData2 = res.data.record_list;
+
+      this.$axios.post('/apis/search/getupdatebyfilename',
+      {
+          filename:"paper",
+          pagenum:2
+      }).then(res => {
+        //接收数据
+        console.log(res);
+        this.tableData2.push(data.record_list);
+      })
     })
   },
-  methods:{
-    active:function(i){
-      this.activeindex=i
-    },
-  }
+  // methods:{
+  //   active:function(i){
+  //     this.activeindex=i
+  //   },
+  // }
 };
 </script>
 
