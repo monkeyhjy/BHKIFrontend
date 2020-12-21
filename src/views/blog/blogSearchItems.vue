@@ -81,7 +81,7 @@ export default {
       }
   },
   mounted(){
-  this.search()
+ // this.search()
   },
   methods:{
     search(){

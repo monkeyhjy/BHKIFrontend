@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div >
     <div>
       <new-navigation></new-navigation>
     </div>
-    <div>
+    <div style="margin-top:20px">
       <el-dialog
               title="举报"
               :visible.sync="dialogVisible"
@@ -338,7 +338,7 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
                 console.log(res);
-                this.hotbloglist=res.data.data.list
+                this.hotbloglist=res.data.data.list.splice(0,5)
             })
   },
   methods:{
@@ -503,7 +503,9 @@ export default {
 }
 </script>
 <style>
-
+  body{
+          background-image: url('../../assets/image/user/image/login-back.png');
+    }
   .grid-content {
     border-radius: 4px;
     min-height: 36px;

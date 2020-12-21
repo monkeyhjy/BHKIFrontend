@@ -1,10 +1,13 @@
 <template>
      <div style="height:100px"> 
-            <div style="width:500px;position:absolute;left:30%;margin-top:30px">
-            <el-input v-model="search" placeholder="请输入内容" >
-                <el-button slot="append" icon="el-icon-search" @click="searchItem()"></el-button>
-            </el-input>
-        </div>
+        <div class="search d1">
+		  <form>
+		  <input type="text"  v-model="search"  placeholder="搜索从这里开始...">
+		  <button   @click="searchItem()">
+               <img class="navigationlogo" src="../icons/search.png" height="30" width="20"/>   
+      </button>
+		  </form>
+		</div>
     </div>
 </template>
 <script>
@@ -27,3 +30,8 @@ export default {
   }
 }
 </script>
+<style >
+  body{
+          background-image: url('../assets/image/user/image/login-back.png');
+    }
+</style>

@@ -52,12 +52,18 @@
           </ul>
         </el-col>
         <el-col :span="6">
-          <div class="flex6">
-            <el-button :type="item.type==type?'primary':''" v-for="(item,index) in types" :key="index" style="margin:10px">
+<div class="cards">
+  <h3 style="margin-bottom:30px">类别</h3>
+  <div class="card card__one flex6" v-for="(item,index) in types" :key="index" style="width:100px;margin-right:0px">
+    <div class="card-text">
+      <el-button :type="item.type==type?'primary':''" >
               <span style="padding-top:-10px;font-size:13px" @click="changeType(item)"> {{ item.name }}</span>
-            </el-button>
-          </div>
+        </el-button>
+    </div>
+    
+  </div>
 
+</div>
         </el-col>
       </el-row>
 
@@ -97,6 +103,37 @@ export default {
                 console.log(res)
                 this.list=res.data.data.list
               })
+
+              
+  var cards = document.querySelector(".cards");
+var images = document.querySelectorAll(".card__img");
+var backgrounds = document.querySelectorAll(".card__bg");
+var range = 40;
+
+// const calcValue = (a, b) => (((a * 100) / b) * (range / 100) -(range / 2)).toFixed(1);
+var calcValue = function calcValue(a, b) {return (a / b * range - range / 2).toFixed(1);}; // thanks @alice-mx
+
+var timeout = void 0;
+document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.y;
+  if (timeout) {
+    window.cancelAnimationFrame(timeout);
+  }
+
+  timeout = window.requestAnimationFrame(function () {
+    var yValue = calcValue(y, window.innerHeight);
+    var xValue = calcValue(x, window.innerWidth);
+    console.log(xValue, yValue);
+    cards.style.transform = "rotateX(" + yValue + "deg) rotateY(" + xValue + "deg)";
+
+    [].forEach.call(images, function (image) {
+      image.style.transform = "translateX(" + -xValue + "px) translateY(" + yValue + "px)";
+    });
+
+    [].forEach.call(backgrounds, function (background) {
+      background.style.backgroundPosition = xValue * .45 + "px " + -yValue * .45 + "px";
+    });
+  });
+}, false);
   },
   methods:{
     formatDate (date) {
@@ -167,4 +204,115 @@ body{
     border-radius: 4px;
     min-height: 36px;
   }
+  
+h1 {
+  color: #df5746;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  -webkit-transform: translateZ(35px);
+          transform: translateZ(35px);
+}
+
+.cards {
+  display: inline-block;
+  padding: 30px 15px;
+  margin:0px 10px;
+  -webkit-perspective: 1800px;
+          perspective: 1800px;
+  text-align: left;
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: rotateX(11deg) rotateY(16.5deg);
+          transform: rotateX(11deg) rotateY(16.5deg);
+  min-width: 50px;
+}
+
+.card {
+
+  display: inline-block;
+  height: 50px;
+  overflow: hidden;
+  -webkit-perspective: 1200px;
+          perspective: 1200px;
+  position: relative;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transform: translatez(35px);
+          transform: translatez(35px);
+  transition: -webkit-transform 200ms ease-out;
+  transition: transform 200ms ease-out;
+  transition: transform 200ms ease-out, -webkit-transform 200ms ease-out;
+  width: 100px;
+  text-align: center;
+}
+.card:not(:last-child) {
+  margin-right: 10px;
+}
+
+
+.card__bg {
+  bottom: -50px;
+  left: -50px;
+  position: absolute;
+  right: -50px;
+  top: -50px;
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  -webkit-transform: translateZ(-50px);
+          transform: translateZ(-50px);
+  z-index: 0;
+}
+
+.card__text {
+  align-items: center;
+  background: linear-gradient(to bottom,  rgba(0, 0, 0, 0) 0%, rgb(20, 18, 18) 100%);
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+}
+
+.card__title {
+  color: #fff;
+  font-size: 13px;
+  padding: 0 6px;
+  margin-bottom: 3px;
+}
+
+
+.twitter__link {
+  cursor: pointer;
+  position: absolute;
+  right: -10px;
+  top: 12px;
+  z-index: -1;
+  background: #00aced;
+  border-radius: 20px;
+  height: 30px;
+  text-decoration: none;
+  padding-right: 10px;
+  justify-content: space-between;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  width: 74px;
+  opacity: 0.15;
+}
+.twitter__link:hover {
+  opacity: 1;
+}
+
+.twitter__icon {
+  height: 30px;
+}
 </style>
