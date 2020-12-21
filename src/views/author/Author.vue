@@ -85,51 +85,55 @@
 									</el-col>
 
 									<el-col :span="24" style="margin-left: 0">
-										<el-card style="margin-bottom: 1rem; background-color: #fabca2;  border-radius: 10px">
-											<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
-											<strong>工作单位：</strong>{{author.orgs[0]}}
-										</el-card>
-										<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
-											<el-card style="background-color: #fabca2;  border-radius: 10px">
-												<div>
-													<i class="el-icon-s-opportunity" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
-													<strong>相关领域：</strong>
-												</div>
-												<el-col :span="8" style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
-													{{item.t}}
-												</el-col>
-											</el-card>
-
+										<el-col :span="12">
+											<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
+												<el-card style="background-color: #fabca2;  border-radius: 10px">
+													<div>
+														<i class="el-icon-s-opportunity" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
+														<strong>相关领域：</strong>
+													</div>
+													<el-col :span="24" style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
+														{{item.t}}
+													</el-col>
+												</el-card>
+											</el-col>
+											<el-col :span="24">
+												<el-card style="margin-bottom: 1rem; background-color: #fabca2;  border-radius: 10px">
+													<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
+													<strong>工作单位：</strong>{{author.orgs[0]}}
+												</el-card>
+											</el-col>
+											<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem">
+												<el-card style="background-color: #fabca2;  border-radius: 10px">
+													<el-col :span="8" style="margin-bottom: 1rem">
+														<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
+														<el-col :span="24">{{author.n_pubs}}</el-col>
+													</el-col>
+													<el-col :span="8" style="margin-bottom: 1rem">
+														<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
+														<el-col :span="24">{{author.h_index}}</el-col>
+													</el-col>
+													<el-col :span="8" style="margin-bottom: 1rem">
+														<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
+														<el-col :span="24">{{author.n_citation}}</el-col>
+													</el-col>
+												</el-card>
+											</el-col>
 										</el-col>
-										<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem">
-											<el-card style="background-color: #fabca2;  border-radius: 10px">
-												<el-col :span="8" style="margin-bottom: 1rem">
-													<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
-													<el-col :span="24">{{author.n_pubs}}</el-col>
-												</el-col>
-												<el-col :span="8" style="margin-bottom: 1rem">
-													<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
-													<el-col :span="24">{{author.h_index}}</el-col>
-												</el-col>
-												<el-col :span="8" style="margin-bottom: 1rem">
-													<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
-													<el-col :span="24">{{author.n_citation}}</el-col>
-												</el-col>
-											</el-card>
+										<el-col :span="12">
+											<div class="grid-content" style="text-align: center">
+												<span style="font-weight: 700; font-size: 1.5rem; margin-bottom: 0.5rem">相关专家网络</span>
+												<div id="myNetwork"
+														 style="margin-top: 1rem;
+											 width: 100%; height: 30rem;
+											 overflow: hidden; text-align: center"/>
+											</div>
 										</el-col>
 									</el-col>
 								</div>
 							</el-col>
 
-							<el-col :span="24">
-								<div class="grid-content" style="text-align: center">
-									<span style="font-weight: 700; font-size: 1.5rem; margin-bottom: 0.5rem">相关专家网络</span>
-									<div id="myNetwork"
-											 style="margin-top: 1rem;
-											 width: 100%; height: 30rem;
-											 overflow: hidden; text-align: center"/>
-								</div>
-							</el-col>
+
 							<!--					学术成果展示-->
 							<el-col :span="24">
 								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
@@ -348,7 +352,6 @@
 						{
 							authorid: this.$route.query.author_id
 						}).then(res => {
-					//console.log(this.user_id)
 							if(res.data.status === 0) {
 								this.author.author_user_id = res.data.userid
 								if(res.data.userid === -1){
@@ -380,7 +383,6 @@
 							pagenumber: 1,
 						})
 						.then(res => {
-							console.log(res)
 							if(res.status === 200){
 								this.author.author_id = res.data.res.id
 								this.author.name = res.data.res.name
@@ -392,7 +394,6 @@
 								for(let i = 0; i < res.data.res.pubs.length; i++) {
 									// this.author.pubs[i].paper_id = res.data.res.pubs[i].i;
 									// this.author.pubs[i].is_display = res.data.res.pubs[i].is_display;
-									// console.log(this.author.pubs)
 									//学术成果
 									this.$axios.post('/apis/search/getpaperbyid',
 											{
@@ -463,7 +464,6 @@
 											authorid: this.author.author_id,
 											pagenumber: 1,
 										}).then(res4 => {
-									console.log(res4)
 											if(res4.data.res.length !== 0) {
 												let tmp_len = this.author.relative_author.length;
 												for(let j = 0; j < res4.data.res.length; j++){
@@ -663,7 +663,7 @@
 									type: 'success',
 									message: '解除认领成功',
 								})
-								this.$router.push('/authoritem')
+								this.$router.go(0)
 							}
 						})
 			},
@@ -682,7 +682,7 @@
 						confirmButtonText: '确定',
 				})
 				else{
-					this.$axios.post('/apis/blog/reportauthor',
+					this.$axios.post('/apis/report/reportauthor',
 				{
 						author_id: this.author.author_id,
 						author_user_id: this.author.author_user_id,
@@ -722,16 +722,19 @@
 						confirmButtonText: '确定',
 					})
 				else{
-					this.$axios.post('/apis/message/sendmeaasge',
+					this.$axios.post('/apis/message/sendimessage',
 							{
 								id: id,
 								message: text
 							}).then(res => {
-								if(res.data.status === 0)
+								if(res.data.data.status === 0){
 									this.$message({
 										type: 'success',
 										message: '私信发送成功',
 									})
+									this.privateMessageVisible = false
+								}
+
 							})
 				}
 			},
@@ -754,7 +757,6 @@
 							{
 								userid: this.author.author_user_id,
 							}).then(res => {
-						console.log(res)
 						if(res.data.status === 0){
 							this.author.is_followed = !this.author.is_followed
 							this.$message({
