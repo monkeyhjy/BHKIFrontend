@@ -353,11 +353,15 @@ export default {
               .then(res => {
                 console.log(res);
                 if(res.data.status==0){
-                    this.like=type
-                    if(type==0){
-                      this.likenum=this.likenum+1
+                    
+                    if(type==1){
+                      this.likenum=this.likenum-1
+                      this.like=1
                     }
-                    else this.likenum=this.likenum-1
+                    else {
+                      this.likenum=this.likenum+1
+                      this.like=0
+                    }
                 }
             })  
       },
@@ -378,7 +382,7 @@ export default {
       },
       ju(text){
           //举报
-     this.$axios.post('/apis/blog/reportblog',
+     this.$axios.post('/apis/report/reportblog',
               {
                 id:this.blogid,
                 text:text
@@ -404,7 +408,7 @@ export default {
       },
       jutip(text){
            //举报评论
-     this.$axios.post('/apis/blog/reportcomment',
+     this.$axios.post('/apis/report/reportcomment',
               {
                 id:this.tipid,
                 text:text
@@ -459,7 +463,7 @@ export default {
       },
       sendtip(text){
             //评论
-     this.$axios.post('/apis/blog/comment',
+     this.$axios.post('/apis/comment/create',
               {
                 id:this.blogid,
                 text:text

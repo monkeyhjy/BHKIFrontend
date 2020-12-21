@@ -1,12 +1,12 @@
 <template>
      <div style="height:100px"> 
         <div class="search d1">
-		  <form>
+	<div class="c">
 		  <input type="text"  v-model="search"  placeholder="搜索从这里开始...">
 		  <button   @click="searchItem()">
                <img class="navigationlogo" src="../icons/search.png" height="40" width="30"/>   
       </button>
-		  </form>
+	</div>
 		</div>
     </div>
 </template>
