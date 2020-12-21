@@ -53,7 +53,7 @@
         </el-col>
         <el-col :span="6">
 <div class="cards">
-  <h3 style="margin-bottom:30px">类别</h3>
+  <h3 style="margin-bottom:30px;color:#ce3524">类别</h3>
   <div class="card card__one flex6" v-for="(item,index) in types" :key="index" style="width:100px;margin-right:0px">
     <div class="card-text">
       <el-button :type="item.type==type?'primary':''" >

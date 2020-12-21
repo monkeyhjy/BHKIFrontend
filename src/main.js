@@ -13,7 +13,9 @@ import Clipboard from "clipboard";
 //import './assets/css/user/general.css';
 import './assets/css/blog/all.css'
 import './assets/css/blog/blogstyle.css'
+import './assets/css/blog/style1.css'
 import './assets/css/blog/demo.css'
+import './assets/css/blog/demo1.css'
 import './assets/css/blog/normalize.css'
 import './assets/css/blog/style-salal.css'
 import './assets/iconfontBlog/iconfont.css'
