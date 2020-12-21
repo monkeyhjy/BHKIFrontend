@@ -24,8 +24,10 @@
                     </a>
                 </div>
             </aside>
-            <main style="background:rgba(240,241,244);padding:2% 6%;width:100%">
-                <el-table
+            <!-- padding:2% 6%; -->
+            <main style="background:rgba(240,241,244);width:100%">
+                <div style="margin-top: 2%;margin-left: 8%;margin-right: 8%">
+                  <el-table
                     :data="tableData"
                     stripe
                     style="width: 100%">
@@ -80,6 +82,7 @@
                     label="更新时间">
                     </el-table-column>
                 </el-table>
+                </div>
             </main>
         </div>
     </div>
@@ -155,50 +158,48 @@ export default {
     //接口文档27.3
     this.$axios.post('/apis/search/getupdatebyfilename',
     {
-        administratorid:1,
+        // administratorid:1,
         filename:"author",
-        pagenum:1
+        pagenumber:1
     }).then(res => {
       //接收数据
       console.log(res);
-      this.tableData = res.data.record_list;
+      this.tableData = res.data;
 
-      this.$axios.post('/apis/search/getupdatebyfilename',
-      {
-          filename:"author",
-          pagenum:2
-      }).then(res => {
-        //接收数据
-        console.log(res);
-        this.tableData.push(data.record_list);
-      })
+      // this.$axios.post('/apis/search/getupdatebyfilename',
+      // {
+      //     administratorid:1,
+      //     filename:"author",
+      //     pagenum:2
+      // }).then(res => {
+      //   //接收数据
+
+      //   console.log(res);
+      //   this.tableData.push(data.record_list);
+      // })
     }),
     this.$axios.post('/apis/search/getupdatebyfilename',
     {
-        administratorid:1,
+        // administratorid:1,
         filename:"paper",
-        pagenum:1
+        pagenumber:1
     }).then(res => {
       //接收数据
       console.log(res);
-      this.tableData2 = res.data.record_list;
+      this.tableData2 = res.data;
 
-      this.$axios.post('/apis/search/getupdatebyfilename',
-      {
-          filename:"paper",
-          pagenum:2
-      }).then(res => {
-        //接收数据
-        console.log(res);
-        this.tableData2.push(data.record_list);
-      })
+      // this.$axios.post('/apis/search/getupdatebyfilename',
+      // {
+      //     administratorid:1,
+      //     filename:"paper",
+      //     pagenum:2
+      // }).then(res => {
+      //   //接收数据
+      //   console.log(res);
+      //   this.tableData2.push(data.record_list);
+      // })
     })
   },
-  // methods:{
-  //   active:function(i){
-  //     this.activeindex=i
-  //   },
-  // }
 };
 </script>
 
