@@ -53,7 +53,7 @@
     <el-button type="primary" @click="sendsixin(sixin)">确 定</el-button>
   </span>
       </el-dialog>
-      <el-row>
+      <el-row style="left:30px">
         <el-col :span="4">
           <el-card shadow="never">
             <div class="flex6">
