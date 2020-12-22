@@ -61,8 +61,8 @@
                                 <span>工作单位：{{item.orgs}}</span>
                                 </el-col>
                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                <span>相关领域：<span  v-for="(item2, index2) in item.tags"
-                                :key="index2">{{item2.t}}({{item2.w}});</span>
+                                <span>相关领域：
+                                    <span  v-for="(item2, index2) in item.tags.slice(0,10)" :key="index2" >{{item2.t}}({{item2.w}});</span>
                                 </span>
                                 </el-col>
                             </div>
@@ -191,6 +191,7 @@
                                     :current-page="currentPage"
                                     @current-change="handleCurrentChange">
                                     </el-pagination>
+                                    <!-- 分页器 -->
                                 </div>
                             </el-col>
                         <el-col :span="4"><div class="grid-content"></div></el-col>
@@ -504,7 +505,7 @@ export default {
                   pagenumber:1
               }).then(res => {
                   console.log(res)
-                  
+                    
                     this.papers_information=res.data.res
                     this.Author_information=res.data.res
                     this.totalnum=res.data.total
@@ -874,4 +875,5 @@ export default {
     .grid-content {
         min-height: 36px;
     }
+    
 </style>

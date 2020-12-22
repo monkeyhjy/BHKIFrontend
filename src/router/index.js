@@ -179,6 +179,11 @@ const routes = [
     component: () => import('../views/navigatorandsearch/Searching.vue')
   },
   {
+    path: '/AdvancedSearch',
+    name: 'AdvancedSearch',
+    component: () => import('../views/navigatorandsearch/AdvancedSearch.vue')
+  },
+  {
     path:"/changefile/:userid/:blogid",
     name: "ChangeFile",
     component: () => import("../views/blog/changeFile.vue")
