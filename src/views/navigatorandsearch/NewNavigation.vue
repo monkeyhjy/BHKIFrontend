@@ -17,7 +17,7 @@
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
             <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">
                 消息中心
-                <el-badge :value="totalMsgNum" >
+                <el-badge :value="totalMsgNum">
                 </el-badge>
             </el-menu-item>
             <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin">
@@ -227,11 +227,11 @@
                 }).then(res => {
                     console.log(res);
                     this.personName = '',
-                    this.picture = '',
-                    this.keepLogin = true,
-                    this.keepLogout = false,
-                    this.admin = false,
-                    this.gotoLogin()
+                        this.picture = '',
+                        this.keepLogin = true,
+                        this.keepLogout = false,
+                        this.admin = false,
+                        this.gotoLogin()
                 })
             },
             gotoLog() {
@@ -268,17 +268,17 @@
                 console.log(key, keyPath);
             },
             getData() {
-                var that=this
+                var that = this
                 this.$axios({
-                    url:'/apis/personality/get',
-                    method:"post",
-                }).then(res=>{
+                    url: '/apis/personality/get',
+                    method: "post",
+                }).then(res => {
                     console.log(res);
                     that.personName = res.data.username
                     that.picture = res.data.avatar
                     that.admin = res.data.is_admin
                     that.userId = res.data.userid
-                    if(this.personName !== ""){
+                    if (this.personName !== "") {
                         this.keepLogin = false;
                         this.keepLogout = true;
                     }

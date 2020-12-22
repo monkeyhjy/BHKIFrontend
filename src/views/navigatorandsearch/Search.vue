@@ -19,6 +19,9 @@
                         </el-select>
                         <el-button slot="append" icon="el-icon-search" @click="sendSearch(input3, type)"></el-button>
                     </el-input>
+                    <el-link type="warning" :underline="false" style="margin-left: 10px; font-size: 16px"
+                             @click="gotoCompSearch()">高级检索
+                    </el-link>
                 </div>
                 <el-row style="margin-bottom: 60px">
                     <!--                卡片-1-左-->
@@ -165,19 +168,20 @@
                     tipnum: '',
                     userid: '',
                 }],
-                input1: '',
-                input2: '',
                 input3: '',
                 type: '标题'
             }
         },
         mounted() {
             this.getRanks()
-                this.getLibrary()
-                this.getScience()
-                this.getLight()
+            this.getLibrary()
+            this.getScience()
         },
         methods: {
+            //高级检索跳转
+            gotoCompSearch() {
+                this.$router.push('/AdvancedSearch')
+            },
             //学术焦点
             getRanks() {
                 var that = this
@@ -212,13 +216,12 @@
                 this.type = label
             },
             sendSearch(input, type) {
-                if(input.length === 0){
+                if (input.length === 0) {
                     this.$message({
                         type: 'info',
                         message: '请输入搜索内容！'
                     })
-                }
-                else {
+                } else {
                     this.$router.push({
                         path: '/Searching',
                         query: {
