@@ -18,12 +18,15 @@
                               :on-success="handleAvatarSuccess"
                               :before-upload="beforeAvatarUpload"
                               :http-request="uploadAvatar">
-                              <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="fail to load">
-                              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                              <el-image v-if="imageUrl" :src="imageUrl" class="avatar" alt="fail to load" fit="cover"></el-image>
+                              <i v-if="!imageUrl" class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
                         </el-row>
                         <el-row v-if="imageUrl" style="margin-top:15px;font-size:15px;color:#303133">
                             (点击头像进行更换)
+                        </el-row>
+                        <el-row>
+                            <el-button type="primary" style="margin-top:30px" @click="toSpace()">进入主页 <i class="el-icon-right"></i></el-button>
                         </el-row>
                         <el-row>
                             <el-button type="primary" style="margin-top:30px" @click="toAuthor()">进入门户 <i class="el-icon-right"></i></el-button>
@@ -95,7 +98,7 @@
 </template>
 
 <script>
-    import NewNavigation from "../navigatorandsearch/NewNavigation";
+import NewNavigation from "../navigatorandsearch/NewNavigation";
 import CollectedVue from './Collected.vue';
 
 export default {
@@ -149,7 +152,7 @@ export default {
         bio: '',
         birthday: '',
         addr: '',
-        avatar:require('../../assets/image/user/image/avatar.jpg'),
+        // avatar:require('../../assets/image/user/image/avatar.jpg'),
       },
       ruleForm: {
         pass: '',
@@ -332,18 +335,22 @@ export default {
         }
       })
     },
+    toSpace() {
+      this.$router.push('/userinfo/'+this.user_id)
+    },
     toClaim() {
       this.$router.push('/authoritem');
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {
+      .then(_ => {
+        done();
+      })
+      .catch(_ => {
 
-        });
-    }
+      });
+    },
+    
   }
 }
 </script>

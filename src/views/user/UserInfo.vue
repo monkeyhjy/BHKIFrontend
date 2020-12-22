@@ -6,7 +6,7 @@
         <el-card class="user-blogs">
           <el-row :gutter="40">
             <el-col :span="4" style="text-align: center;">
-              <img class="avatar-img" :src="user_avatar"><br/>
+              <el-image class="avatar-img" :src="user_avatar" fit="cover"></el-image><br/>
               <h2 class="profile-username">{{user_name}}</h2>
               <el-divider class="black-divider"></el-divider>
               <p>{{user_email}}</p>
@@ -24,10 +24,10 @@
                           <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
                           <el-row>
                             <el-col :span="1">
-                              <img :src="user_avatar" class="inline-avatar">
+                              <el-image :src="user_avatar" class="inline-avatar" fit="cover"></el-image>
                             </el-col>
                             <el-col :span="23" class="bloginfo-block">
-                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false">{{user_name}}</el-link> | {{item.date}} | {{item.content}}</el-col>
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false">{{user_name}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
                               <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
                             </el-col>
                           </el-row>
@@ -44,10 +44,10 @@
                           <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
                           <el-row>
                             <el-col :span="1">
-                              <img :src="item.avatar" class="inline-avatar">
+                              <el-image :src="item.avatar" class="inline-avatar" fit="cover"></el-image>
                             </el-col>
                             <el-col :span="23" class="bloginfo-block">
-                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false">{{item.author}}</el-link> | {{item.date}} | {{item.content}}</el-col>
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false">{{item.author}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
                               <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
                             </el-col>
                           </el-row>
@@ -82,10 +82,10 @@ export default {
       is_currentUser:false,
       activeName: 'publish',
       user_id: 0,
-      user_name: "Zhang Manwei",
-      user_email:"shinyano@sina.com",
-      user_institution: "Beihang University",
-      user_title: "student",
+      user_name: "",
+      user_email:"",
+      user_institution: "",
+      user_title: "",
       user_avatar: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       published:[
         // {
@@ -194,28 +194,35 @@ export default {
           blogItem.id = result[i].blogid
           blogItem.name = result[i].title
           blogItem.author = result[i].author
-          blogItem.authorid = result[i].authorid
+          blogItem.authorid = result[i].userid
           blogItem.content = result[i].content
           blogItem.date = result[i].created
-          // this.$axios.post('/apis/personality/get_other',{
-          //   userid : result[i].authorid
-          // }).then(res => {
-          //   avatarItem = res.data.avatar
-          // })
+          blogItem.avatar = avatarItem
+          this.$axios.post('/apis/personality/get_other',{
+            userid : result[i].userid
+          }).then(res => {
+            // c
+            if(res.data.avatar!="")
+              blogItem.avatar = res.data.avatar
+          })
           this.$axios.post('/apis/blog/getbloginfo',{
             id:result[i].blogid
           }).then(blogRes => {
-            read=blogRes.data.data.readnum
-            like=blogRes.data.data.likenum
-            tip=blogRes.data.data.tipnum
+            console.log(blogRes)
+            blogItem.readnum = blogRes.data.data.readnum
+            blogItem.likenum = blogRes.data.data.likenum
+            blogItem.tipnum = blogRes.data.data.tipnum
           })
-          blogItem.avatar = avatarItem
-          blogItem.readnum = read
-          blogItem.likenum = like
-          blogItem.tipnum = tip
+          // blogItem.avatar = avatarItem
+          // blogItem.readnum = read
+          // blogItem.likenum = like
+          // blogItem.tipnum = tip
           blogList[i]=blogItem
+          console.log(blogItem)
         }
         that.collected = blogList
+        console.log(that.collected)
+        // 这里必须在控制台输出，否则不会更新collected数组
       });
     },
     init() {
@@ -253,7 +260,7 @@ export default {
           }
         }
         this.user_institution=res.data.org
-        this.user_title=res.data.position
+        this.user_title=res.data.postion
       })
 
       this.$axios.post('/apis/user/get_follow_state',{
@@ -298,7 +305,33 @@ export default {
           return
         }
       });
-    }
+    },
+    formatDate (date) {
+      Date.prototype.format = function(fmt) {
+        var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+          if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+          }
+        }
+        return fmt;
+      }
+      //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+      const s = String(date)
+      s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+      return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+    },
   }
 }
 </script>

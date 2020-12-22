@@ -8,7 +8,6 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="学术成果" name="paper">
             <div v-show="!paperValid">您还没有收藏学术成果……</div>
-            <div v-show="!paperValid">(开发中)</div>
             <div v-show="paperValid" class="collected-main" v-for="item in p_collected" :key="item.paper_id">
               <div class="collected-block">
                 <el-row>
@@ -16,9 +15,10 @@
                     <div class="following-content">
                       <el-link class="blog-title" :underline="false" @click="jump_to_paper(item.paper_id)"><h2>{{item.title}}</h2></el-link>
                       <p class="limit-text-length blog-info-p">
-                        <el-link v-if="item.author1" :underline="false" :href="'/userinfo/'+item.author1.id">{{item.author1.name}}</el-link>
+                        <el-link v-if="item.author1" :underline="false" @click="toAuthor(item.author1.id)">{{item.author1.name}}</el-link>
                         <span v-if="item.author2">,</span> 
-                        <el-link v-if="item.author2" :underline="false" :href="'/userinfo/'+item.author2.id">{{item.author2.name}}</el-link> | {{item.source}}
+                        <el-link v-if="item.author2" :underline="false" @click="toAuthor(item.author2.id)">{{item.author2.name}}</el-link>
+                        <span v-if="item.authorCount == 3">, ...</span> | {{item.source}}
                       </p>
                     </div>
                   </el-col>
@@ -33,7 +33,7 @@
           </el-tab-pane>
           <el-tab-pane label="博客帖文" name="blog">
             <div v-show="!blogValid">您还没有收藏帖子……</div>
-            <div v-show="b_collected" class="collected-main" v-for="item in b_collected" :key="item.blogid">
+            <div v-show="blogValid" class="collected-main" v-for="item in b_collected" :key="item.blogid">
               <div class="collected-block">
                 <el-row>
                   <el-col :span="21">
@@ -112,6 +112,14 @@ export default {
     handleClick(tab, event) {
       // console.log(tab, event);
     },
+    toAuthor(authorid) {
+      this.$router.push({
+        path:'/author',
+        query:{
+          author_id:authorid,
+        }
+      })
+    },
     jump_to_paper(paper_id){
       this.$router.push({
         path: '/paper',
@@ -160,13 +168,15 @@ export default {
           blogItem.authorid = result[i].userid
           blogItem.content = result[i].content
           blogItem.created = result[i].created
-          blogItem.collectStatus = true
-          // this.$axios.post('/apis/personality/get_other',{
-          //   userid : result[i].authorid
-          // }).then(res => {
-          //   avatarItem = res.data.avatar
-          // })
           blogItem.avatar = avatarItem
+          blogItem.collectStatus = true
+          this.$axios.post('/apis/personality/get_other',{
+            userid : result[i].userid
+          }).then(res => {
+            // c
+            if(res.data.avatar!="")
+              blogItem.avatar = res.data.avatar
+          })
           blogList[i]=blogItem
         }
         that.b_collected = blogList
@@ -194,7 +204,7 @@ export default {
             paperid:p_id
           }).then(res => {
             // console.log(res)
-            var authorList = new Array()
+            // var authorList = new Array()
             var authorRes = res.data.authors
 
             paperItem.title = res.data.title
@@ -202,24 +212,25 @@ export default {
             paperItem.authorCount = 0
             if(authorRes.length < 1){
             }else{
+              paperItem.authorCount += 1
               paperItem.author1 = new Object()
               paperItem.author1.id = authorRes[0].id
               paperItem.author1.name = authorRes[0].name
               if(authorRes.length == 1){
-                paperItem.authorCount == 1
               }else{
+                paperItem.authorCount += 1
                 paperItem.author2 = new Object()
                 paperItem.author2.id = authorRes[1].id
                 paperItem.author2.name = authorRes[1].name
                 if(authorRes.length == 2){
-                  paperItem.authorCount == 2
                 }else{
-                  paperItem.authorCount == 3
+                  paperItem.authorCount += 1
                 }
               } 
             } 
           })
           paperList[i]=paperItem
+          this.$set(that.p_collected,i,paperItem)
           // paper_id:2,
           //   title:"Paper2",
           //   author:[
@@ -228,8 +239,12 @@ export default {
           //   ],
           //   source:"Journal2",
         }
-        console.log(paperList)
-        that.p_collected = paperList
+        // that.p_collected = paperList
+        console.log(that.p_collected)
+        that.p_collected.forEach(item => {
+          this.$set(item,'collectedStatus',true)
+          return
+        })
       })
     },
     init() {
@@ -241,8 +256,8 @@ export default {
           return
         }
         this.user_id = res.data.userid
-        this.getCollectedBlog(res.data.userid)
         this.getCollectedPaper(res.data.userid)
+        this.getCollectedBlog(res.data.userid)
         
 
         // TODO: 查询所有收藏学术成果
@@ -353,6 +368,8 @@ p {
 .inline-avatar{
     margin-right:10px;
     height:30px;
+    width:30px;
+    border-radius:50%
 }
 .blog-info-p{
   font-size: 0.9em;

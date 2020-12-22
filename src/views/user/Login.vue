@@ -4,8 +4,8 @@
       <img class="login-logo" src="../../assets/image/user/image/logoT.png">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="登录" name="login">
-          <el-form :model="loginRuleForm" status-icon :rules="loginRules" ref="loginRuleForm" label-width="100px" class="demo-ruleForm login-form">
-            <el-form-item label="邮箱" prop="email">
+          <el-form :model="loginRuleForm" status-icon :rules="loginRules" ref="loginRuleForm" label-width="110px" class="demo-ruleForm login-form">
+            <el-form-item label="邮箱 / 用户名" prop="email">
               <el-input type="email" v-model="loginRuleForm.email" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="pass">
@@ -25,7 +25,7 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="注册" name="signup">
-          <el-form :model="signRuleForm" status-icon :rules="signRules" ref="signRuleForm" label-width="100px" class="demo-ruleForm login-form">
+          <el-form :model="signRuleForm" status-icon :rules="signRules" ref="signRuleForm" label-width="110px" class="demo-ruleForm login-form">
             <el-form-item label="用户名" prop="username">
               <el-input type="text" v-model="signRuleForm.username" autocomplete="off"></el-input>
             </el-form-item>

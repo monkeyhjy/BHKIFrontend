@@ -8,7 +8,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="关注用户" name="user">
             <div v-show="!hasFollow">您还没有关注用户……</div>
-            <div class="following-main" v-for="(item) in u_following" :key="item.author_id">
+            <div class="following-main" v-for="item in u_following" :key="item.author_id">
               <div class="following-block">
                 <el-row>
                   <el-col :span="2">
@@ -16,8 +16,8 @@
                   </el-col>
                   <el-col :span="19">
                     <div class="following-content">
-                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.author_id"><h2>{{item.name}}</h2></el-link>
-                      <p>{{item.title}}, {{item.institution}} | {{item.email}}</p>
+                      <el-link v-show="item.name" class="blog-title" :underline="false" :href="'/userinfo/'+item.author_id"><h2>{{item.name}}</h2></el-link>
+                      <p>{{item.title}}<span v-show="item.title!='' && item.institution!=''">, </span>{{item.institution}}<span v-show="(item.title!='' || item.institution!='') && item.email!=''"> | </span>{{item.email}}</p>
                     </div>
                   </el-col>
                   <el-col :span="3" style="padding-top:20px;text-align:left">
@@ -82,16 +82,16 @@ export default {
           // },
         ],
         i_following:[
-          {
-            institution_id:0,
-            name:"Inst1",
-            addr:"address1,hweoudhew,nefow"
-          },
-          {
-            institution_id:1,
-            name:"Inst2",
-            addr:"address2,hweoudhew,nefow"
-          }
+          // {
+          //   institution_id:0,
+          //   name:"Inst1",
+          //   addr:"address1,hweoudhew,nefow"
+          // },
+          // {
+          //   institution_id:1,
+          //   name:"Inst2",
+          //   addr:"address2,hweoudhew,nefow"
+          // }
         ],
       };
     },
@@ -105,14 +105,14 @@ export default {
       onsubmit(){
         console.log("submit");
       },
-      init() {
-        let result
+      getFollows() {
         var that = this
         this.$axios.post('/apis/user/getfolloweds', {
         }).then(res => {
           var resList=res.data.f_list
+          console.log(res)
           // console.log("list: "+this.u_idList)
-          result = res.data.status
+          var result = res.data.status
           var list=new Array()
           if(result === 0){
             // author_id:0,
@@ -124,32 +124,48 @@ export default {
             for(var i=0, len=resList.length;i<len;i++){
               that.hasFollow = true
               var followItem = new Object()
-              var uName = ""
-              followItem.name = uName
+              followItem.name = resList[i].username
               followItem.author_id = resList[i].userid
-              followItem.avatar = resList[i].ava_url
+              if(resList[i].ava_url != '')
+                followItem.avatar = resList[i].ava_url
+              else
+                followItem.avatar = this.circleUrl
               followItem.title = resList[i].pos
               followItem.institution = resList[i].org
               followItem.email = resList[i].email
               followItem.followed = true
-              this.$axios.post('/apis/personality/get_other',{
-                userid: resList[i].userid
-              }).then(resname => {
-                // console.log(resname)
-                uName = resname.data.username
-                // console.log(uName)
-              followItem.name = uName
-              })
               list[i] = followItem
+              // that.u_following.push(followItem)
               // console.log(followItem)
             }
             that.u_following = list
-            // console.log(that.u_following)
+            console.log(list)
           }
           else{
             console.log("请求关注出错")
           }
         })
+        // this.getNames()
+        console.log("getname")
+        console.log(that.u_following)
+      },
+      getNames(){
+        this.u_following.forEach(item => {
+          this.$axios.post('/apis/personality/get_other',{
+            userid: item.author_id
+          }).then(resname => {
+            // console.log(resname)
+            var uName = resname.data.username
+            console.log(uName)
+            this.$set(item, 'name', uName)
+          })
+        })
+        console.log(this.u_following)
+      },
+      init() {
+        this.getFollows()
+        // this.getNames()
+        
       },
       switchFollow (id) {
         this.$axios.post('/apis/user/change_follow_state',{
@@ -178,7 +194,8 @@ export default {
             this.$set(item, 'followed', true)
         })
         this.switchFollow(id)
-      }
+      },
+      
     }
 }
 </script>
