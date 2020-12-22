@@ -24,6 +24,7 @@
         },
         data(){
             return{
+                likeMsgNum:'',
                 msgCollection:[
                     {
                         name: '',
@@ -46,6 +47,7 @@
                 }).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.data.msgCollection
+                    that.likeMsgNum = res.data.data.msgCollection.length
                 })
             },
             del(id){

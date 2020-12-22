@@ -25,6 +25,7 @@
         },
         data(){
             return{
+                commentMsgNum:'',
                 blank: false,
                 msgCollection:[
                     {
@@ -48,6 +49,7 @@
                 }).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.data.msgCollection
+                    that.commentMsgNum = res.data.data.msgCollection.length
                 })
             },
             del(id){

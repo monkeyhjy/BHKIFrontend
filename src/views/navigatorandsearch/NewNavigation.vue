@@ -15,7 +15,10 @@
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
             <el-menu-item index="3" style="margin-left: 2rem; font-size: large" @click="gotoBlog">帖子广场</el-menu-item>
-            <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">消息中心
+            <el-menu-item index="4" style="margin-left: 2rem; font-size: large" @click="gotoMsgCollection">
+                消息中心
+                <el-badge :value="totalMsgNum" >
+                </el-badge>
             </el-menu-item>
             <el-submenu index="5" style="margin-left: 2rem;font-size: large" v-show="admin">
                 <template slot="title" style="font-size: large">后台管理</template>
@@ -141,7 +144,8 @@
                 },
                 formLabelWidth: '80px',
                 formLabelWidth_2: '80px',
-                userId: ''
+                userId: '',
+                totalMsgNum: '',
             };
         },
         mounted() {
@@ -153,7 +157,7 @@
                 this.$axios.post('/apis/search/updateacademicdb',
                     {
                         administratorid: that.userId,
-                        filename: "author",
+                        file: "author",
                         startline: start,
                         linesnumber: (end - start + 1)
                     })
@@ -175,7 +179,7 @@
                 this.$axios.post('/apis/search/updateacademicdb',
                     {
                         administratorid: that.userId,
-                        filename: "paper",
+                        file: "paper",
                         startline: start,
                         linesnumber: (end - start + 1)
                     })
@@ -196,31 +200,27 @@
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        // administratorid: that.userid,
                         filename: "author",
                         pagenumber: 1,
                     })
                     .then(res => {
                         console.log(res);
-                        that.form_2.start = res.data.list[0].finishlinenum
+                        that.form.start = res.data[0].finishlinenum
                     })
             },
             getPaperLine() {
                 var that = this
                 this.$axios.post('/apis/search/getupdatebyfilename',
                     {
-                        // administratorid: that.userid,
                         filename: "paper",
                         pagenumber: 1,
                     })
                     .then(res => {
                         console.log(res);
-                        that.form_2.start = res.data.list[0].finishlinenum
+                        that.form_2.start = res.data[0].finishlinenum
                     })
             },
             logout() {
-                var that = this
-                // console.log(res);
                 this.$axios({
                     url: '/apis/user/logout',
                     method: "post",
@@ -269,17 +269,16 @@
             },
             getData() {
                 var that=this
-                // console.log(res);
                 this.$axios({
                     url:'/apis/personality/get',
                     method:"post",
                 }).then(res=>{
                     console.log(res);
-                    console.log(res.data.userId)
                     that.personName = res.data.username
                     that.picture = res.data.avatar
                     that.admin = res.data.is_admin
-                    if(this.personName != ""){
+                    that.userId = res.data.userid
+                    if(this.personName !== ""){
                         this.keepLogin = false;
                         this.keepLogout = true;
                     }

@@ -8,7 +8,7 @@
                     <img src="../../assets/logoT.png" height="320" width="350"/></div>
                 <div style="margin-top: 15px; margin-bottom: 90px;">
                     <el-input placeholder="请输入内容" v-model="input3" style="width: 900px;">
-                        <el-select v-model="value" slot="prepend" placeholder="请选择" style="width: 140px;">
+                        <el-select v-model="value" slot="prepend" placeholder="标题" style="width: 140px;">
                             <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -31,12 +31,12 @@
                                 <div>
                                 </div>
                                 <div style="width: 380px;height: 200px;">
-                                    <div v-for="rank in ranks" style="width: 380px; height: 50px;">
+                                    <div v-for="rank in ranks" style="width: 380px; height: 50px;margin-top: 0px ">
                                         <svg class="icon"
-                                             style=" float: left; width: 40px;height: 30px; margin: 20px 0px 0px 0px;">
+                                             style=" float: left; width: 40px;height: 30px; margin: 5px 0px 10px 0px;">
                                             <use xlink:href="#icon-bingren"></use>
                                         </svg>
-                                        <ul style="width: 300px; height: 30px; margin: 20px 0px 0px 0px; float: right;">
+                                        <ul style="width: 300px; height: 50px; margin: 5px 0px 10px -40px; float: right;">
                                             <el-link v-bind:href="rank.url" style="float: left;">{{rank.title}}
                                             </el-link>
                                         </ul>
@@ -53,12 +53,12 @@
                                     <span style="float: left">热门专家</span>
                                 </div>
                                 <div style="width: 380px; height: 240px">
-                                    <div v-for="lib in library" style="width: 380px; height: 50px; margin-top: -8px">
+                                    <div v-for="lib in library" style="width: 380px; height: 50px; margin-top: -6px">
                                         <svg class="icon"
                                              style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
                                             <use xlink:href="#icon-tangguo"></use>
                                         </svg>
-                                        <ul style="float:right; width: 300px; margin-top: 5px">
+                                        <ul style="float:right; width: 300px; margin-top: 7px">
                                             <el-link v-bind:href="lib.url" style="float: left">{{lib.name}}</el-link>
                                         </ul>
                                     </div>
@@ -168,13 +168,13 @@
                 input1: '',
                 input2: '',
                 input3: '',
-                type: '关键词'
+                type: '标题'
             }
         },
         mounted() {
-            this.getRanks(),
-                this.getLibrary(),
-                this.getScience(),
+            this.getRanks()
+                this.getLibrary()
+                this.getScience()
                 this.getLight()
         },
         methods: {
@@ -184,7 +184,7 @@
                 this.$axios.post('/apis/search/popularpapers',
                 ).then(res => {
                     console.log(res);
-                    that.ranks = res.data.list
+                    that.ranks = res.data
                 })
             },
             //热门专家
@@ -193,7 +193,7 @@
                 this.$axios.post('/apis/search/popularauthors')
                     .then(res => {
                         console.log(res);
-                        that.library = res.data.list
+                        that.library = res.data
                     })
             },
             // 热门帖子
@@ -208,19 +208,11 @@
                         that.science = res.data.data.list
                     })
             },
-            getLight() {
-                var that = this
-                this.$axios.post('/http://182.92.239.145/apis',
-                ).then(res => {
-                    console.log(res);
-                    that.lights = res.data.lights
-                })
-            },
             getType(label) {
                 this.type = label
             },
             sendSearch(input, type) {
-                if(input.length == 0){
+                if(input.length === 0){
                     this.$message({
                         type: 'info',
                         message: '请输入搜索内容！'

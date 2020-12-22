@@ -17,7 +17,10 @@
                             style="margin-top: 20px">
                         <el-menu-item index="/messageNav/privacyMsg">
                             <i class="el-icon-message-solid nav-icon"></i>
-                            <span slot="title">私信消息</span>
+                            <span slot="title">私信消息
+                            </span>
+                            <el-badge :value="privacyMsgNum" >
+                            </el-badge>
                         </el-menu-item>
                         <el-menu-item index="/messageNav/likeMsg">
                             <!-- <img class="nav-icon" src="../icons/attribute.png"/> -->
@@ -44,14 +47,26 @@
 
 <script>
     import NewNavigation from "../navigatorandsearch/NewNavigation";
+    // import commentMsg from "./commentMsg";
+    // import reportedMsg from "./reportedMsg";
+    // import likeMsg from "./likeMsg";
+    import privacyMsg from "./privacyMsg";
 
     export default {
         name: "massageNav",
         components: {
             NewNavigation,
+            // likeMsg,
+            // commentMsg,
+            // reportedMsg,
+            privacyMsg,
         },
         data(){
             return{
+                // likeMsgNum:this.$refs.likeMsg.likeMsgNum,
+                // commentMsgNum:this.$refs.commentMsg.commentMsgNum,
+                // reportedMsgNum:this.$refs.reportedMsg.reportedMsgNum,
+                privacyMsgNum:'',
                 activeIndex: this.$route.path,
             }
         },

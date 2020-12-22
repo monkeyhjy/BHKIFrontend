@@ -25,6 +25,7 @@
         },
         data(){
             return{
+                privacyMsgNum:'',
                 msgCollection:[
                     {
                         user:'',
@@ -39,6 +40,14 @@
             this.getPrivacyMsg()
         },
         methods: {
+            sendPrivacyMsg(){
+                this.$router.push({
+                    path: '/messageNav/privacyMsg',
+                    query: {
+                        privacyMsgNum: this.privacyMsgNum
+                    }
+                })
+            },
             getPrivacyMsg() {
                 var that=this
                 this.$axios({
@@ -47,6 +56,7 @@
                 }).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.data.msgCollection
+                    that.privacyMsgNum = res.data.data.msgCollection.length
                 })
             },
             del(id){

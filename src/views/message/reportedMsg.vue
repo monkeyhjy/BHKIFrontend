@@ -25,6 +25,7 @@
         },
         data(){
             return{
+                reportedMsgNum:'',
                 msgCollection:[
                     {
                         type:'',
@@ -47,6 +48,7 @@
                 }).then(res=>{
                     console.log(res);
                     that.msgCollection = res.data.data.msgCollection
+                    that.reportedMsgNum = res.data.data.msgCollection.length
                 })
             },
             del(id){
