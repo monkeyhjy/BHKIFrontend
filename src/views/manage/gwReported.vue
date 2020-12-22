@@ -128,10 +128,12 @@ export default {
           //接收数据
           console.log(res);
           this.name = res.data.res.name;
-          if (res.data.res.orgs[0]=="")
+          if (typeof(res.data.res.orgs)=="undefined")
+            this.orgs = "暂无数据";
+          else if(res.data.res.orgs[0]=="")
             this.orgs = "暂无数据";
           else
-            this.orgs = res.data.res.orgs[0]
+            this.orgs = res.data.res.orgs[0];
         })
     })
   },

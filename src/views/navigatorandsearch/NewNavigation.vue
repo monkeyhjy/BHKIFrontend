@@ -10,7 +10,7 @@
                 active-text-color="#f9ae8f"
         >
             <div style="float: left">
-                <img class="navigationlogo" src="../../assets/logoT02.png" height="60" width="160"/>
+                <img class="navigationlogo" src="../../assets/logoT02-white.png" height="60" width="160"/>
             </div>
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
@@ -288,7 +288,12 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+li{
+    /deep/ .el-submenu__title{
+        font-size:18px
+    }
+}
     .navigationlogo {
         height: 60px;
     }
