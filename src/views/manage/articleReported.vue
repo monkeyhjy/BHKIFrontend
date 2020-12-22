@@ -53,7 +53,10 @@
       <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
         <div class="flex mb-4">
           <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-            <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a>
+            <!-- <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a> -->
+            <a :href="'/userinfo/'+item.user_id">
+            <el-image style="height:48px;width:48px;border-radius:50%" :src="item.user_icon" fit="cover"></el-image>
+            </a>
           </div>
           <div class=" font-semibold" style="font-size:30px">
             <a :href="'/BlogItem/'+item.user_id+'/'+item.blog_id">{{item.title}}</a>
@@ -97,31 +100,7 @@ export default {
         search:"搜索内容",
         count:0,
         activeindex:0,
-        list:[{
-             report_id:0,
-              blog_id:0,
-              title:"标识符",
-              reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-              content:"<h2>这几天心里颇不宁静。今晚在院子里坐着乘凉，忽然想起日日走过的荷塘，在这满月的光里，总该另有一番样子吧。月亮渐渐地升高了，墙外马路上孩子们的欢笑，已经听不见了；妻在屋里拍着闰儿⑴，迷迷糊糊地哼着眠歌。我悄悄地披了大衫，带上门出去。</h2>",
-              user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-              user_name_r:"张小牛",
-              user_id:1,
-              user_id_r:4,
-              user_name:"234",
-              time:"2020-11-20"},
-              {
-             report_id:0,
-              blog_id:0,
-              title:"标识符",
-              reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-              content:"<h2>这几天心里颇不宁静。今晚在院子里坐着乘凉，忽然想起日日走过的荷塘，在这满月的光里，总该另有一番样子吧。月亮渐渐地升高了，墙外马路上孩子们的欢笑，已经听不见了；妻在屋里拍着闰儿⑴，迷迷糊糊地哼着眠歌。我悄悄地披了大衫，带上门出去。</h2>",
-              user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-              user_name_r:"张小牛",
-              user_id:1,
-              user_id_r:4,
-              user_name:"234",
-              time:"2020-11-20"},
-        ],
+        list:[],
         item:{},
         flag:0,
       }

@@ -102,104 +102,69 @@ export default {
       return{
         search:"搜索内容",
         count:0,
-        tableData2: [{
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }],
-        tableData: [{
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }, {
-          filename: 'D://filename',
-          startlinenum: '345',
-          endlinenum: '789',
-          updateadministatorname:'xiaoming',
-          updatetime:'2016-05-02'
-        }],
+        tableData2: [],
+        tableData: [],
       }
   },
   mounted(){
     //接口文档27.3
     this.$axios.post('/apis/search/getupdatebyfilename',
     {
-        // administratorid:1,
         filename:"author",
         pagenumber:1
     }).then(res => {
       //接收数据
       console.log(res);
+      for(var i=0,len = res.data.length; i<len;i++){
+        res.data[i].updatetime = this.formatDate(res.data[i].updatetime)
+      }
       this.tableData = res.data;
-
-      // this.$axios.post('/apis/search/getupdatebyfilename',
-      // {
-      //     administratorid:1,
-      //     filename:"author",
-      //     pagenum:2
-      // }).then(res => {
-      //   //接收数据
-
-      //   console.log(res);
-      //   this.tableData.push(data.record_list);
-      // })
+      console.log(this.tableData)
     }),
     this.$axios.post('/apis/search/getupdatebyfilename',
     {
-        // administratorid:1,
         filename:"paper",
         pagenumber:1
     }).then(res => {
       //接收数据
       console.log(res);
+      for(var i=0,len = res.data.length; i<len;i++){
+        res.data[i].updatetime = this.formatDate(res.data[i].updatetime)
+      }
       this.tableData2 = res.data;
-
-      // this.$axios.post('/apis/search/getupdatebyfilename',
-      // {
-      //     administratorid:1,
-      //     filename:"paper",
-      //     pagenum:2
-      // }).then(res => {
-      //   //接收数据
-      //   console.log(res);
-      //   this.tableData2.push(data.record_list);
-      // })
+      console.log(this.tableData)
+      // this.tableData2 = res.data;
     })
   },
+  methods:{
+    formatDate (date) {
+      Date.prototype.format = function(fmt) {
+        var o = {
+          "M+" : this.getMonth()+1,                 //月份
+          "d+" : this.getDate(),                    //日
+          "h+" : this.getHours(),                   //小时
+          "m+" : this.getMinutes(),                 //分
+          "s+" : this.getSeconds(),                 //秒
+          "q+" : Math.floor((this.getMonth()+3)/3), //季度
+          "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+          fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+          if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+          }
+        }
+        return fmt;
+      }
+      //假设输入的时间格式为YYYY-MM-DDTHH-mm-SS.sss
+      const s = String(date)
+      s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
+      return new Date(s).format('yyyy-MM-dd hh:mm:ss')
+    
+    }
+  }
 };
 </script>
 

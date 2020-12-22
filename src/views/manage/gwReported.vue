@@ -100,52 +100,7 @@ export default {
         search:"搜索内容",
         count:0,
         activeindex:0,
-        list:[{id:0,
-              author_name:"门户1",
-              orgs:"北京航空航天大学",
-              reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-              user_name:"王小牛",
-              user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-              user_name:"王小牛",
-              user_name_r:"张小牛",
-              time:"2020-11-20"},
-        
-        {id:1,
-        author_name:"门户2",
-        orgs:"北京航空航天大学",
-        reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-        user_name:"王小牛",
-        user_icon:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-        user_name_r:"张小牛",
-        time:"2020-11-20"},
-        
-        {id:2,
-        author_name:"门户3",
-        orgs:"北京航空航天大学",
-        reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-        user_name:"王小牛",
-        user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        user_name_r:"张小牛",
-        time:"2020-11-20"},
-        
-        {id:3,
-        author_name:"门户4",
-        orgs:"北京航空航天大学",
-        reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-        user_name:"王小牛",
-        user_icon:'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-        user_name_r:"张小牛",
-        time:"2020-11-20"},
-
-        {id:4,
-        author_name:"门户5",
-        orgs:"北京航空航天大学",
-        reason:"这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由这是一条五十个字的举报理由",
-        user_name:"王小牛",
-        user_icon:'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        user_name_r:"张小牛",
-        time:"2020-11-20"},
-        ],
+        list:[],
         item:{},
         flag:0,
         name:"",
@@ -172,8 +127,11 @@ export default {
         }).then(res => {
           //接收数据
           console.log(res);
-          this.name = res.data.res.name
-          this.orgs = res.data.res.orgs[0]
+          this.name = res.data.res.name;
+          if (res.data.res.orgs[0]=="")
+            this.orgs = "暂无数据";
+          else
+            this.orgs = res.data.res.orgs[0]
         })
     })
   },
