@@ -24,7 +24,11 @@ li.el-select-dropdown__item.selected{
 .el-select-dropdown__item:hover{
     color:#ce3524;
   }
-
+#dd .el-input-group__prepend{
+  
+ 
+    border-radius: 42px 0 0 42px;
+}
 .resizeNone{
     .el-textarea__inner{ 
           resize: none;  

@@ -8,14 +8,7 @@
       <el-row :gutter="20">
         <el-col :span="4"><div class="grid-content"></div></el-col>
         <el-col :span="16">
-          <div class="grid-content">
-            <div class="flex6">
-              <el-button v-for="(item,index) in chose" :type="item.type==type?'primary':'default'"  :key="index" style="margin:10px">
-                <p @click="choseType(item.type)">{{ item.name }}</p>
-              </el-button>
-            </div>
-
-            <div>
+              <div>
               <p style="color:gray;font-size:8px;margin-bottom:20px;margin-left:20px">总共{{ list.length }}条搜索记录</p>
               <ul v-for="(item,index) in list" :key="index">
                 <li style="margin-bottom:10px">
@@ -50,7 +43,7 @@
                 </li>
               </ul>
             </div>
-          </div></el-col>
+        </el-col>
         <el-col :span="4"><div class="grid-content"></div></el-col>
       </el-row>
     </div>
@@ -81,7 +74,8 @@ export default {
       }
   },
   mounted(){
-  this.search()
+    this.type=parseInt(this.$route.params.type)
+  this.search(this.type)
   },
   methods:{
      formatDate (date) {
@@ -110,17 +104,17 @@ export default {
   s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
   return new Date(s).format('yyyy-MM-dd hh:mm:ss')
 },
-    search(){
+    search(type){
       this.search1=this.$route.params.search;
         //搜索博客
      this.$axios.post('/apis/blog/searchblog',
              {
                 text:this.search1,
-                type:0
+                type:type
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-//console.log(res);
+                console.log(res);
                 this.list=res.data.data.list
                 this.type=0
             })

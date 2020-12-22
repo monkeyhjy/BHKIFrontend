@@ -11,7 +11,7 @@
                 <div class="flex6" >
                   <span style="font-size:12px;color:gray;margin-right:15px">{{ item.date }}</span>
                   <span style="fonr-size:13px;margin-right:15px">评论了</span>
-                  <el-link class="blog-title" :underline="false" :href="'/BlogItem'+item.userid+'/'+item.blogid" style="font-size:16px">{{item.blogname }}</el-link>
+                  <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="font-size:16px">{{item.blogname }}</el-link>
                 </div>
                 <p>{{ item.content }}</p>
                 <div class="flex6" style="margin-top:20px">

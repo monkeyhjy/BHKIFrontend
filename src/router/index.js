@@ -156,7 +156,7 @@ const routes = [
     ]
   },
   {
-    path: "/BlogSearchItems/:search",
+    path: "/BlogSearchItems/:type/:search",
     name: "BlogSearchItems",
     component: () => import("../views/blog/blogSearchItems.vue")
   },

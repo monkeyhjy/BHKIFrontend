@@ -11,9 +11,9 @@ div.search {padding: 30px 0}
   height: 42px;
   padding-left: 10px;
   border: 2px solid #ce3524;
-  border-radius: 5px;
+  border-radius:0 42px 42px 0;
   outline: none;
-  background: #f8f6f1;
+  background: #ffffff;
   color:#ce3524;
 }
 .d1 button {

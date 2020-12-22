@@ -291,7 +291,25 @@ export default {
                 this.like=res.data.data.is_like;
                 this.tiplist=res.data.data.tiplist;
                 this.type=res.data.data.type,
+              //  alert(this)
                 this.star=res.data.data.is_collect
+                 //获取相关帖子信息
+     this.$axios.post('/apis/blog/gethotblogs',
+              {
+                type:this.type
+              },
+              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+              .then(res => {
+           
+            //    console.log(res);
+          //     alert(res.data.data.list.length)
+             //   alert(res.data.data.list)
+                if(res.data.data.list.length>4)
+                this.hotbloglist=res.data.data.list.splice(0,5)
+                else
+                this.hotbloglist=res.data.data.list
+
+            })
             })
 
     //获取博客主信息
@@ -329,16 +347,7 @@ export default {
                 this.userhotlist=res.data.data.list
             })
     
-            //获取相关帖子信息
-     this.$axios.post('/apis/blog/gethotblogs',
-              {
-                type:this.type
-              },
-              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-              .then(res => {
-          //      console.log(res);
-                this.hotbloglist=res.data.data.list.splice(0,5)
-            })
+           
   },
   methods:{
       checklike(type){
