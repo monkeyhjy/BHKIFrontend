@@ -12,6 +12,26 @@ a{
 .iconmargin{
   
 }
+.el-input__inner{
+    color: #000;
+}
+.el-select-dropdown__item{
+    color: #000;
+}
+li.el-select-dropdown__item.selected{
+    color:#ce3524;
+  }
+.el-select-dropdown__item:hover{
+    color:#ce3524;
+  }
+
+.resizeNone{
+    .el-textarea__inner{ 
+          resize: none;  
+      }
+      
+  }
+ 
 .icon {
     width: 1em;
     height: 1em;

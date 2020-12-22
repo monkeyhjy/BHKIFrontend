@@ -10,7 +10,7 @@
         <el-col :span="16">
           <div class="grid-content">
             <div class="flex6">
-              <el-button v-for="(item,index) in chose" :type="item.type==type?'primary':''" :key="index" style="margin:10px">
+              <el-button v-for="(item,index) in chose" :type="item.type==type?'primary':'default'"  :key="index" style="margin:10px">
                 <p @click="choseType(item.type)">{{ item.name }}</p>
               </el-button>
             </div>
@@ -71,12 +71,12 @@ export default {
   data(){
       return{
         search1:"",
-        list:[
-          {blogname:"冲啊博客",blogid:12,textcontent:"内容",date:"2020年1月1日",username:"hazhfudi",userid:123,readnum:231,tipnum:342,likenum:34}
-        ],
-        chose:[
-          {name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2}
-        ],
+        list:[ ],
+        chose:[{name:"全部",type:0},{name:"Python",type:1},{name:"Java",type:2},
+          {name:"前端",type:3},{name:"架构",type:4},{name:"区块链",type:5},
+          {name:"数据库",type:6},{name:"5G",type:7},{name:"游戏开发",type:8},
+          {name:"移动开发",type:9},{name:"运维",type:10},{name:"安全",type:11},
+          {name:"研发管理",type:12},{name:"物联网",type:13},{name:"其他",type:14},],
         type:1,
       }
   },
@@ -120,7 +120,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+//console.log(res);
                 this.list=res.data.data.list
                 this.type=0
             })
@@ -134,7 +134,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+        //        console.log(res);
                 this.list=res.data.data.list,
                 this.type=type
             })

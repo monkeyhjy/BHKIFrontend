@@ -58,9 +58,7 @@ export default {
   },
   data(){
       return{
-          list:[
-            {date:"2020年1月1日",blogid:12,blogname:"JAVA",content:"XXXX",img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"Anna",userid:213,readnum:12,likenum:342,tipnum:2341}
-          ]
+          list:[]
 
       }
   },

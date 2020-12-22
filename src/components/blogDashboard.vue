@@ -63,17 +63,17 @@ export default {
   },
   data(){
       return{
-        img:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        name:"是哈哈呀",
+          img:"",
+        name:"",
         activeIndex: this.$route.path,
-        list:[{num:123,tip:"贴子"},{num:123,tip:"获赞"},{num:123,tip:"评论"},],
+        list:[],
         id:0,
       }
   },
   mounted(){
 	  	   this.$axios.post('/apis/user/getstatus', {
           }).then(res => {
-                console.log(res);
+         //       console.log(res);
 			 this.id=res.data.userid
 			
 	  })
@@ -82,7 +82,7 @@ export default {
             id:this.id
           })
               .then(res => {
-                console.log(res);
+            //    console.log(res);
                 this.img=res.data.avatar;
                 this.name=res.data.username;
                 this.list=[{num:res.data.blogNum,tip:"贴子"},{num:res.data.likeNum,tip:"获赞"},{num:res.data.tipNum,tip:"评论"},]
@@ -103,7 +103,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+        //        console.log(res);
                  this.$router.push({path:"/BlogEdit/"+this.id+"/"+res.data.blogid})
               })
     }

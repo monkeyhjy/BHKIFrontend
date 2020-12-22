@@ -61,9 +61,7 @@ export default {
   },
   data(){
       return{
-          list:[
-            {blogid:123,title:"标题",textcontent:"content",date:"2020年1月1日",readnum:12,likenum:12,tipnum:12}
-          ],
+          list:[],
           id:1,
       }
   },
@@ -79,7 +77,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res)
+  //              console.log(res)
                 this.list=res.data.data.list
               })
 	  })

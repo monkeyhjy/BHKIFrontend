@@ -28,9 +28,10 @@
               center>
         <el-input
                 type="textarea"
-                :autosize="{ minRows: 1, maxRows: 4}"
+                :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入内容"
-                v-model="jubaotip">
+                v-model="jubaotip"
+                 class="resizeNone">
         </el-input>
         <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible2 = false;jubaotip=''">取 消</el-button>
@@ -248,28 +249,26 @@ export default {
           textarea1:"",
           tipid:23,
           follow:1,
-        userimg:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-        username:"是哈哈呀",
-        userlist:[{blogid:2,readnum:123,blogname:"贴子"},],
+        userimg:"",
+        username:"",
+        userlist:[],
         userid:0,
-        userhotlist:[
-            {name:"sda",id:212,readnum:12}
-        ],
+        userhotlist:[ ],
         blogid:2,
         type:1,
-        blogname:"努力写编译无所畏惧",
-        htmlcontent:"<h2>富文本编辑器还没弄</h2>",
+        blogname:"",
+        htmlcontent:"",
         readnum:23,
         tipnum:23,
         likenum:123,
         like:0,
-        tiplist:[{user_id:213,comment_id:123,name:"423",img:"213",textcontent:"324"}],
-        hotbloglist:[
-            {blogname:"java冲啊",blogid:231,textcontent:"内容",userid:123,readnum:1,likenum:34,tipnum:34,}
-        ],
-        chose:[
-          {name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2}
-        ],
+        tiplist:[],
+        hotbloglist:[],
+        chose:[{name:"全部",type:0},{name:"Python",type:1},{name:"Java",type:2},
+          {name:"前端",type:3},{name:"架构",type:4},{name:"区块链",type:5},
+          {name:"数据库",type:6},{name:"5G",type:7},{name:"游戏开发",type:8},
+          {name:"移动开发",type:9},{name:"运维",type:10},{name:"安全",type:11},
+          {name:"研发管理",type:12},{name:"物联网",type:13},{name:"其他",type:14},],
         star:1
       }
   }, mounted(){
@@ -303,7 +302,7 @@ export default {
               // {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
               )
               .then(res => {
-                console.log(res);
+       //         console.log(res);
        
                 this.userimg=res.data.avatar;
                 that.username=res.data.username;
@@ -316,7 +315,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+        //        console.log(res);
                 this.follow=res.data.is_follow
                 })
        //获取博客主热门帖子信息
@@ -326,7 +325,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+      //          console.log(res);
                 this.userhotlist=res.data.data.list
             })
     
@@ -337,7 +336,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+          //      console.log(res);
                 this.hotbloglist=res.data.data.list.splice(0,5)
             })
   },
@@ -362,6 +361,11 @@ export default {
                       this.likenum=this.likenum+1
                       this.like=0
                     }
+                }else{
+                     this.$message({
+          message: '点赞或者取消点赞失败',
+          type: 'warning'
+        });
                 }
             })  
       },
@@ -374,11 +378,18 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+     //           console.log(res);
                 if(res.data.status==0){
                     this.star=type
                 }
-            })  
+                else{
+                     this.$message({
+          message: '收藏或者取消收藏失败',
+          type: 'warning'
+        });
+                }
+                }
+            )  
       },
       ju(text){
           //举报
@@ -389,7 +400,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+      //          console.log(res);
                 if(res.data.data.status==0){
             this.$message({
           message: '举报成功',
@@ -415,7 +426,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+     //           console.log(res);
                 if(res.data.data.status==0){
               this.$message({
           message: '举报成功',
@@ -442,7 +453,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+        //        console.log(res);
                 if(res.data.data.status==0){
                      this.$message({
           message: '发送私信成功',
@@ -469,7 +480,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+      //          console.log(res);
                 if(res.data.data.status==0){
               this.$message({
           message: '评论成功',
@@ -496,7 +507,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+   //             console.log(res);
                if(res.data.status==0){
                  this.follow=type
                }

@@ -56,7 +56,7 @@
   <h3 style="margin-bottom:30px;color:#ce3524">类别</h3>
   <div class="card card__one flex6" v-for="(item,index) in types" :key="index" style="width:100px;margin-right:0px">
     <div class="card-text">
-      <el-button :type="item.type==type?'primary':''" >
+      <el-button :type="item.type==type?'primary':'default'" >
               <span style="padding-top:-10px;font-size:13px" @click="changeType(item)"> {{ item.name }}</span>
         </el-button>
     </div>
@@ -83,10 +83,12 @@ export default {
   },
   data(){
       return{
-         list:[
-            {blogname:"博客名字",avatar:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",username:"用户名字",readnum:12,likenum:12,tipnum:12,blogid:12,userid:12,textcontent:"内容"},
-          ], 
-          types:[{name:"全部",type:0},{name:"计算机",type:1},{name:"生物",type:2},],
+          list:[], 
+          types:[{name:"全部",type:0},{name:"Python",type:1},{name:"Java",type:2},
+          {name:"前端",type:3},{name:"架构",type:4},{name:"区块链",type:5},
+          {name:"数据库",type:6},{name:"5G",type:7},{name:"游戏开发",type:8},
+          {name:"移动开发",type:9},{name:"运维",type:10},{name:"安全",type:11},
+          {name:"研发管理",type:12},{name:"物联网",type:13},{name:"其他",type:14},],
           id:0,
           type:0
       }
@@ -122,7 +124,7 @@ document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.
   timeout = window.requestAnimationFrame(function () {
     var yValue = calcValue(y, window.innerHeight);
     var xValue = calcValue(x, window.innerWidth);
-    console.log(xValue, yValue);
+ //   console.log(xValue, yValue);
     cards.style.transform = "rotateX(" + yValue + "deg) rotateY(" + xValue + "deg)";
 
     [].forEach.call(images, function (image) {
@@ -169,7 +171,7 @@ document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res)
+          //      console.log(res)
                 this.list=res.data.data.list
                 this.type=item.type
                 

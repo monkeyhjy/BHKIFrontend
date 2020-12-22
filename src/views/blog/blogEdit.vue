@@ -57,12 +57,16 @@ export default {
   data(){
       return{
         text:"",
-          name:"博客名字",
-          content:"博客内容",
+          name:"",
+          content:"",
           type:1,
-          chose:[
-          {name:"计算机",type:1}, {name:"生物",type:2}
-        ],
+          chose:
+          [{name:"全部",type:0},{name:"Python",type:1},{name:"Java",type:2},
+          {name:"前端",type:3},{name:"架构",type:4},{name:"区块链",type:5},
+          {name:"数据库",type:6},{name:"5G",type:7},{name:"游戏开发",type:8},
+          {name:"移动开发",type:9},{name:"运维",type:10},{name:"安全",type:11},
+          {name:"研发管理",type:12},{name:"物联网",type:13},{name:"其他",type:14},]
+        ,
 
       }
   },
@@ -73,7 +77,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+       //        console.log(res);
                 this.name=res.data.data.title;
                 this.content=res.data.data.htmlcontent
                 this.type=res.data.data.type
@@ -92,7 +96,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+      //          console.log(res);
                 this.$router.push({path:"/BlogItem/"+this.$route.params.userid+"/"+this.$route.params.blogid})
               })
       }
