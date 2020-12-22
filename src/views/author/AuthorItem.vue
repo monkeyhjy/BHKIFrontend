@@ -20,7 +20,7 @@
 												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
 									<el-col :span="24">
-										<el-col :span="12"><span style="font-size: 2rem;">{{item.name}}</span></el-col>
+										<el-col :span="12"><el-link style="font-size: 2rem;" @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
 										<el-col :span="2" :offset="4" style="right: 2rem;">
 											<el-button style="vertical-align: middle; margin-left: 5rem"
 																 type="danger"
@@ -221,6 +221,14 @@
 							type: 'danger',
 							message: '认领失败',
 						})
+					}
+				})
+			},
+			jumpToPortal(author_id) {
+				this.$router.push({
+					path: '/author',
+					query: {
+						author_id: author_id,
 					}
 				})
 			},
