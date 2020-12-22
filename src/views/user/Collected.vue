@@ -8,13 +8,18 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="学术成果" name="paper">
             <div v-show="!paperValid">您还没有收藏学术成果……</div>
+            <div v-show="!paperValid">(开发中)</div>
             <div v-show="paperValid" class="collected-main" v-for="item in p_collected" :key="item.paper_id">
               <div class="collected-block">
                 <el-row>
                   <el-col :span="21">
                     <div class="following-content">
                       <el-link class="blog-title" :underline="false" @click="jump_to_paper(item.paper_id)"><h2>{{item.title}}</h2></el-link>
-                      <p class="limit-text-length blog-info-p"><el-link :underline="false" :href="'/userinfo/'+item.author[0].id">{{item.author[0].name}}</el-link>, <el-link :underline="false" :href="'/userinfo/'+item.author[1].id">{{item.author[1].name}}</el-link> | {{item.source}}</p>
+                      <p class="limit-text-length blog-info-p">
+                        <el-link v-if="item.author1" :underline="false" :href="'/userinfo/'+item.author1.id">{{item.author1.name}}</el-link>
+                        <span v-if="item.author2">,</span> 
+                        <el-link v-if="item.author2" :underline="false" :href="'/userinfo/'+item.author2.id">{{item.author2.name}}</el-link> | {{item.source}}
+                      </p>
                     </div>
                   </el-col>
                   <el-col :span="3" style="padding-top:20px">
@@ -45,8 +50,8 @@
                     </div>
                   </el-col>
                   <el-col :span="3" style="padding-top:20px">
-                    <el-button v-show="item.collected" @click="unfavBlog(item.blogid)">取消收藏</el-button>
-                    <el-button v-show="!item.collected" type="primary" @click="favBlog(item.blogid)">收藏</el-button>
+                    <el-button v-if="item.collectStatus == true" @click="unfavBlog(item.blogid)">取消收藏</el-button>
+                    <el-button v-else type="primary" @click="favBlog(item.blogid)">收藏</el-button>
                   </el-col>
                 </el-row>
               </div>
@@ -102,12 +107,6 @@ export default {
   },
   mounted() {
     this.init()
-    // "53e997fcb7602d970200604d"
-    this.$axios.post('/apis/search/getpaperbyid',{
-      paperid:"53e997fcb7602d970200604d"
-    }).then(res => {
-      console.log(res)
-    })
   },
   methods: {
     handleClick(tab, event) {
@@ -158,10 +157,10 @@ export default {
           blogItem.blogid = result[i].blogid
           blogItem.title = result[i].title
           blogItem.author = result[i].author
-          blogItem.authorid = result[i].authorid
+          blogItem.authorid = result[i].userid
           blogItem.content = result[i].content
           blogItem.created = result[i].created
-          blogItem.collected = true
+          blogItem.collectStatus = true
           // this.$axios.post('/apis/personality/get_other',{
           //   userid : result[i].authorid
           // }).then(res => {
@@ -171,8 +170,8 @@ export default {
           blogList[i]=blogItem
         }
         that.b_collected = blogList
-        console.log("that.b_collected")
-        console.log(that.b_collected)
+        // console.log("that.b_collected")
+        // console.log(that.b_collected)
       });
     },
 
@@ -181,7 +180,7 @@ export default {
       this.$axios.post('/apis/user/get_star_paper_by_userid',{
         userid:userID
       }).then(paperIdRes => {
-        console.log(paperIdRes)
+        // console.log(paperIdRes)
         var result = paperIdRes.data.paper_id_list
         var paperList = new Array()
         for(var i=0,len=result.length; i<len; i++){
@@ -196,16 +195,29 @@ export default {
           }).then(res => {
             // console.log(res)
             var authorList = new Array()
+            var authorRes = res.data.authors
 
             paperItem.title = res.data.title
             paperItem.source = res.data.venue.raw
-            for(var j=0, alen = res.data.authors.length; j<alen; j++){
-              var authorItem = new Object()
-              authorItem.id = res.data.authors[j].id
-              authorItem.name = res.data.authors[j].name
-              authorList[j] = authorItem
-            }
-            paperItem.author = authorList
+            paperItem.authorCount = 0
+            if(authorRes.length < 1){
+            }else{
+              paperItem.author1 = new Object()
+              paperItem.author1.id = authorRes[0].id
+              paperItem.author1.name = authorRes[0].name
+              if(authorRes.length == 1){
+                paperItem.authorCount == 1
+              }else{
+                paperItem.author2 = new Object()
+                paperItem.author2.id = authorRes[1].id
+                paperItem.author2.name = authorRes[1].name
+                if(authorRes.length == 2){
+                  paperItem.authorCount == 2
+                }else{
+                  paperItem.authorCount == 3
+                }
+              } 
+            } 
           })
           paperList[i]=paperItem
           // paper_id:2,
@@ -265,14 +277,14 @@ export default {
       this.switchPaperFav(id)
     },
     
-    unfavBlog(id) {
+    unfavBlog(blogid) {
       this.b_collected.forEach(item =>{
-        if(item.blogid == id)
-          this.$set(item, 'collected', false)
+        if(item.blogid == blogid)
+          this.$set(item, 'collectStatus', false)
+          console.log(item)
       })
-      console.log(this.b_collected)
       this.$axios.post('/apis/blog/setblogcollect',{
-        id: id,
+        id: blogid,
         type: 1
       }).then(res => {
         // console.log(res)
@@ -282,13 +294,13 @@ export default {
         }
       });
     },
-    favBlog(id) {
+    favBlog(blogid) {
       this.b_collected.forEach(item =>{
-        if(item.blogid == id)
-          this.$set(item, 'collected', true)
+        if(item.blogid == blogid)
+          this.$set(item, 'collectStatus', true)
       })
       this.$axios.post('/apis/blog/setblogcollect',{
-        id: id,
+        id: blogid,
         type: 0
       }).then(res => {
         // console.log(res)

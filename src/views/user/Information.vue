@@ -1,7 +1,9 @@
+
+                              
 <template>
     <div>
 <!--        <div>-->
-<!--            <new-navigation></new-navigation>-->
+<!--            // <new-navigation></new-navigation>-->
 <!--        </div>-->
         <div class="information">
             <el-card class="info" style="padding-top:20px; text-align:center">
@@ -10,12 +12,13 @@
                         <el-row>
                             <!-- <img v-show="hasAvatar" class="avatar-img" :src="formLabelAlign.avatar"> -->
                             <el-upload
-                              class="avatar-uploader avatar-img"
                               action="/apis/personality/change_avatar"
+                              class="avatar-uploader avatar-img"
                               :show-file-list="false"
                               :on-success="handleAvatarSuccess"
-                              :before-upload="beforeAvatarUpload">
-                              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                              :before-upload="beforeAvatarUpload"
+                              :http-request="uploadAvatar">
+                              <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="fail to load">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
                         </el-row>
@@ -237,10 +240,10 @@ export default {
     },
     updateInfo() {
       let result
-      console.log(this.formLabelAlign)
+      // console.log(this.formLabelAlign)
       this.$axios.post('/apis/user/getstatus',{
       }).then(res => {
-        console.log(res)
+        // console.log(res)
       });
       this.$axios.post('/apis/personality/change', {
         phone: this.formLabelAlign.phone,
@@ -255,9 +258,9 @@ export default {
         is_associated: this.is_associated,
         author_id: this.author_id
       }).then(res => {
-        console.log(this.formLabelAlign)
+        // console.log(this.formLabelAlign)
         result = res.data.status
-        console.log(res)
+        // console.log(res)
         if(result !== 0){
           this.$alert('网络请求错误', '更新失败', {
             confirmButtonText: '确定',
@@ -271,6 +274,30 @@ export default {
           });
         }
       })
+    },
+    uploadAvatar(params) {
+      var fileObj = params.file
+      var formData = new FormData()
+      formData.append('avatar', fileObj)
+      this.$axios.post('/apis/personality/change_avatar',
+        formData
+      ).then(res => {
+        // console.log(res)
+        if(res.data.status != 0){
+          this.$notify.error({
+            title: '提示',
+            message: '上传头像失败',
+          });
+        }else{
+          this.$notify({
+            title: '提示',
+            message: '上传头像成功',
+            type: 'success'
+          });
+        }
+        
+      })
+      this.imageUrl = window.URL.createObjectURL(params.file)
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -311,7 +338,7 @@ export default {
     handleClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
-          this.$router.push('/authoritem');
+          done();
         })
         .catch(_ => {
 

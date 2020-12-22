@@ -117,55 +117,7 @@ export default {
     this.init()
   },
   methods: {
-    init() {
-      var that = this
-      this.user_id=this.$route.params.userId
-      this.$axios.post('/apis/user/getstatus').then(res => {
-        // console.log(res)
-        if(res.data.status !=0 ){
-          console.log('登录状态请求失败')
-          return
-        }
-        if(this.user_id == res.data.userid){
-          this.is_currentUser=true
-          this.user_name = res.data.username
-          this.user_email=res.data.email
-          if(res.data.avatar != ""){
-            this.user_avatar=res.data.avatar
-          }
-        }
-      });
-
-      this.$axios.post('/apis/personality/get_other',{
-        userid:this.user_id
-      }).then(res => {
-        console.log(res)
-        if(res.data.status != 0){
-          console.log('获取用户信息失败')
-          return
-        }
-        if(!this.is_currentUser){
-          this.user_name = res.data.username
-          this.user_email=res.data.email
-          if(res.data.avatar != ""){
-            this.user_avatar=res.data.avatar
-          }
-        }
-        this.user_institution=res.data.org
-        this.user_title=res.data.position
-      })
-
-      this.$axios.post('/apis/user/get_follow_state',{
-        userid:this.user_id
-      }).then(res => {
-        // console.log(res)
-        if(res.data.status !=0 ){
-          console.log('关注状态请求失败')
-          return
-        }
-        this.followed=res.data.is_follow
-      });
-
+    getPublishedBlog() {
       this.$axios.post('/apis/blog/getuserblogs',{
         id:this.user_id
       }).then(res => {
@@ -202,11 +154,13 @@ export default {
           );
         }
       })
-
+    },
+    getCollectedBlog() {
+      var that = this
       this.$axios.post('/apis/blog/collectbloglist', {
         userid:this.user_id
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         // console.log(res.data.status)
         if(res.data.status !== 0 ){
           console.log("请求收藏帖子列表失败");
@@ -243,11 +197,11 @@ export default {
           blogItem.authorid = result[i].authorid
           blogItem.content = result[i].content
           blogItem.date = result[i].created
-          this.$axios.post('/apis/personality/get_other',{
-            userid : result[i].authorid
-          }).then(res => {
-            avatarItem = res.data.avatar
-          })
+          // this.$axios.post('/apis/personality/get_other',{
+          //   userid : result[i].authorid
+          // }).then(res => {
+          //   avatarItem = res.data.avatar
+          // })
           this.$axios.post('/apis/blog/getbloginfo',{
             id:result[i].blogid
           }).then(blogRes => {
@@ -263,67 +217,59 @@ export default {
         }
         that.collected = blogList
       });
+    },
+    init() {
+      var that = this
+      this.user_id=this.$route.params.userId
+      this.$axios.post('/apis/user/getstatus').then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('登录状态请求失败')
+          return
+        }
+        if(this.user_id == res.data.userid){
+          this.is_currentUser=true
+          this.user_name = res.data.username
+          this.user_email=res.data.email
+          if(res.data.avatar != ""){
+            this.user_avatar=res.data.avatar
+          }
+        }
+      });
 
-      // this.$axios.post('/apis/blog/collectbloglist', {
-      //   userid:this.user_id
-      // }).then(res => {
-      //   // console.log(res)
-      //   // console.log(res.data.status)
-      //   if(res.data.status !== 0 ){
-      //     console.log("请求收藏帖子列表失败");
-      //     return
-      //   }
-      //   var i;
-      //   var result = res.data.data.list;
-      //   var avatarItem='';
-      //   var read=0, like=0, tip=0;
-      //   for(i=0;i<result.length;i++){
-      //     this.collectValid=true;
-      //     // TODO: 查询所有用户头像
-      //     this.$axios.post('/apis/personality/get_other',{
-      //       userid:result[i].authorid
-      //     }).then(res => {
-      //       if(res.data.status !== 0 ){
-      //         console.log("请求头像失败");
-      //         return
-      //       }
-      //       avatarItem = res.data.avatar
-      //     })
-      //     this.$axios.post('/apis/blog/getbloginfo',{
-      //       id:result[i].blogid
-      //     }).then(res => {
-      //       if(res.data.status !== 0 ){
-      //         console.log("请求帖子数据失败");
-      //         return
-      //       }
-      //       read=res.data.data.readnum
-      //       like=res.data.data.likenum
-      //       tip=res.data.data.tipnum
-      //     })
-      //     this.collected.push(
-      //       {
-      //     //     id:123,
-      //     // name:"A blog published by whatever",
-      //     // author:"Zhang Manwei",
-      //     // avatar:"https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      //     // content:"A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever A blog published by whatever ",
-      //     // date:"2020年1月1日",
-      //     // readnum:12,
-      //     // likenum:12,
-      //     // tipnum:12
-      //         id: result[i].blogid,
-      //         name: result[i].title,
-      //         author: result[i].author,
-      //         avatar:avatarItem,
-      //         content: result[i].content,
-      //         date: result[i].created,
-      //         readnum: read,
-      //         likenum: like,
-      //         tipnum: tip
-      //       }
-      //     );
-      //   }
-      // });
+      this.$axios.post('/apis/personality/get_other',{
+        userid:this.user_id
+      }).then(res => {
+        // console.log(res)
+        if(res.data.status != 0){
+          console.log('获取用户信息失败')
+          return
+        }
+        if(!this.is_currentUser){
+          this.user_name = res.data.username
+          this.user_email=res.data.email
+          if(res.data.avatar != ""){
+            this.user_avatar=res.data.avatar
+          }
+        }
+        this.user_institution=res.data.org
+        this.user_title=res.data.position
+      })
+
+      this.$axios.post('/apis/user/get_follow_state',{
+        userid:this.user_id
+      }).then(res => {
+        // console.log(res)
+        if(res.data.status !=0 ){
+          console.log('关注状态请求失败')
+          return
+        }
+        this.followed=res.data.is_follow
+      });
+
+      this.getPublishedBlog()
+      this.getCollectedBlog()
+
     },
 
     handleClick(tab, event) {
