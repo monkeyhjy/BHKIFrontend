@@ -33,20 +33,18 @@
                     style="width: 100%">
                     <el-table-column
                     prop="filename"
-                    label="文件名"
-                    width="180">
+                    label="文件名"z>
                     </el-table-column>
                     <el-table-column
                     prop="startlinenum"
-                    label="开始行数"
-                    width="180">
+                    label="开始行数">
                     </el-table-column>
                     <el-table-column
-                    prop="endlinenum"
+                    prop="finishlinenum"
                     label="结束行数">
                     </el-table-column>
                     <el-table-column
-                    prop="updateadministatorname"
+                    prop="updateadministrator"
                     label="管理员">
                     </el-table-column>
                     <el-table-column
@@ -61,20 +59,18 @@
                     style="width: 100%">
                     <el-table-column
                     prop="filename"
-                    label="文件名"
-                    width="180">
+                    label="文件名">
                     </el-table-column>
                     <el-table-column
                     prop="startlinenum"
-                    label="开始行数"
-                    width="180">
+                    label="开始行数">
                     </el-table-column>
                     <el-table-column
-                    prop="endlinenum"
+                    prop="finishlinenum"
                     label="结束行数">
                     </el-table-column>
                     <el-table-column
-                    prop="updateadministatorname"
+                    prop="updateadministrator"
                     label="管理员">
                     </el-table-column>
                     <el-table-column
@@ -119,6 +115,7 @@ export default {
         res.data[i].updatetime = this.formatDate(res.data[i].updatetime)
       }
       this.tableData = res.data;
+      // alert(this.res.data)
       console.log(this.tableData)
     }),
     this.$axios.post('/apis/search/getupdatebyfilename',
@@ -127,12 +124,12 @@ export default {
         pagenumber:1
     }).then(res => {
       //接收数据
-      console.log(res);
+      console.log(res.data);
       for(var i=0,len = res.data.length; i<len;i++){
         res.data[i].updatetime = this.formatDate(res.data[i].updatetime)
       }
       this.tableData2 = res.data;
-      console.log(this.tableData)
+      console.log(this.tableData2)
       // this.tableData2 = res.data;
     })
   },
