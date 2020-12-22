@@ -14,7 +14,7 @@
 									<strong style="font-size: 2rem">请选择您要认领的门户。</strong>
 									<el-button style="vertical-align: top; margin-left: 1rem"
 													type="danger"
-													@click="nameVisible = true">没有我想要的门户？重新搜索</el-button>
+													@click="nameVisible = true">输入姓名，认领您的门户</el-button>
 								</div>
 								<el-card
 												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
@@ -136,10 +136,7 @@
 			is_associate_author() {
 					this.$axios.post('/apis/personality/get')
 							.then(res => {
-								if(!res.data.is_associated) {
-									this.nameVisible = true
-								}
-								else {
+								if(res.data.is_associated) {
 									this.$router.push({
 										path: '/author',
 										query: {
@@ -167,7 +164,6 @@
 			},
 			nameClose(done) {
 				this.nameVisible = false;
-				this.$router.push('/search')
 			},
 			submitName(text) {
 				if(text === '')

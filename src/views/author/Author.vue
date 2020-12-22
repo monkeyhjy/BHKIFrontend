@@ -153,9 +153,9 @@
 											</el-link>
 										</el-col>
 										<el-col :span="12" style="text-align: right">
-											<el-button v-if="!item.is_display&&author.is_claimed===2"
+											<el-button v-if="item.is_display===1&&author.is_claimed===2"
 																 @click="pub_display(index, 1)">当前状态：展示给他人</el-button>
-											<el-button v-if="item.is_display&&author.is_claimed===2"
+											<el-button v-if="item.is_display===0&&author.is_claimed===2"
 																 @click="pub_display(index, 0)">当前状态：不展示给他人</el-button>
 										</el-col>
 										<el-col :span="24"
@@ -383,6 +383,7 @@
 							pagenumber: 1,
 						})
 						.then(res => {
+							console.log(res)
 							if(res.status === 200){
 								this.author.author_id = res.data.res.id
 								this.author.name = res.data.res.name
@@ -390,7 +391,8 @@
 								this.author.n_pubs = res.data.res.n_pubs
 								this.author.tags = res.data.res.tags
 								this.author.n_citation = res.data.res.n_citation
-								this.author.orgs = res.data.res.orgs
+								if(typeof(res.data.res.orgs) !== "undefined")
+									this.author.orgs = res.data.res.orgs
 								for(let i = 0; i < res.data.res.pubs.length; i++) {
 									// this.author.pubs[i].paper_id = res.data.res.pubs[i].i;
 									// this.author.pubs[i].is_display = res.data.res.pubs[i].is_display;
@@ -399,7 +401,6 @@
 											{
 												paperid: res.data.res.pubs[i].i
 											}).then(res2 => {
-										console.log(res2)
 										let obj = {
 											paper_id: res.data.res.pubs[i].i,
 											is_display: res.data.res.pubs[i].is_display,
@@ -417,22 +418,12 @@
 											doi: res2.data.doi,
 											abstract: res2.data.abstract,
 										}
+										if(typeof(res.data.res.pubs[i].is_display) == "undefined"){
+											obj.is_display = 1
+										}
 										this.author.pubs.push(obj)
-										// this.author.pubs[i].title = res2.data.title
-										// this.author.pubs[i].author = res2.data.authors
-										// this.author.pubs[i].venue_raw = res2.data.venue_raw
-										// this.author.pubs[i].year = res2.data.year;
-										// this.author.pubs[i].keywords = res2.data.keywords
-										// this.author.pubs[i].n_citation = res2.data.n_citation
-										// this.author.pubs[i].page_start = res2.data.page_start
-										// this.author.pubs[i].page_end = res2.data.page_end
-										// this.author.pubs[i].volumn = res2.data.volume
-										// this.author.pubs[i].issue = res2.data.issue
-										// this.author.pubs[i].isbn = res2.data.isbn
-										// this.author.pubs[i].doi = res2.data.doi
-										// this.author.pubs[i].abstract = res2.data.abstract
 									})
-
+									console.log(JSON.parse(JSON.stringify(this.author.pubs)))
 								}
 								//相关专家
 								this.$axios.post('/apis/search/getrelatedauthor',
@@ -446,15 +437,10 @@
 												name: res3.data.res[i].name,
 												author_id: res3.data.res[i].id,
 												graph_id: i + 1,
-												symbolSize: res3.data.res[i].account_cooperation * 0.3 + 40,
+												symbolSize: res3.data.res[i].account_cooperation * 0.3 + 30,
 												org: res3.data.res[i].org
 											}
 											this.author.relative_author.push(obj)
-											// this.author.relative_author[i].name = res3.data[i].name
-											// this.author.relative_author[i].author_id = res3.data[i].id
-											// this.author.relative_author[i].graph_id = i+1
-											// this.author.relative_author[i].
-											// this.author.relative_author[i].org = res3.data[i].org
 										}
 									}
 								})
@@ -471,17 +457,10 @@
 														name: res4.data.res[j].name,
 														author_id: res4.data.res[j].id,
 														graph_id: j+tmp_len + 1,
-														symbolSize: 60,
+														symbolSize: 40,
 														org: res4.data.res[j].org
 													}
 													this.author.relative_author.push(obj)
-													// this.author.relative_author[j+tmp_len].name = res4.data[j].name
-													// this.author.relative_author[j+tmp_len].author_id = res4.data[j].id
-													// this.author.relative_author[j+tmp_len].graph_id = j+tmp_len+1
-													// this.author.relative_author[j+tmp_len].symbolSize = 60
-													// this.author.relative_author[j+tmp_len].org = res4.data[j].org
-													// this.author.relative_author[j+tmp_len] = res4.data[j]
-													// JSON.parse(JSON.stringify(this.author.relative_author))
 												}
 												let q = JSON.parse(JSON.stringify(this.author.relative_author))
 												this.graph(q);
@@ -521,7 +500,7 @@
 							},
 							edgeSymbol:'circle',
 							force:{
-								repulsion: 1300,
+								repulsion: 1200,
 								//edgeLength: 50,
 								layoutAnimation: true,
 							},

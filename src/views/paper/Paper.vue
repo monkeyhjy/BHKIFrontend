@@ -83,6 +83,19 @@
 									<strong>doi：</strong>
 									<span>{{paper.doi}}</span>
 								</el-col>
+
+								<el-col :span="24" style="text-align: left; margin-top: 1rem">
+									<el-col :span="2">
+										<strong>相关链接：</strong>
+									</el-col>
+									<el-col :span="22">
+										<el-col :span="24" v-for="(item, index) in paper.url" :key="index">
+											<el-link :href="item">{{item}}</el-link>
+										</el-col>
+
+									</el-col>
+
+								</el-col>
 							</div>
 
 						</div>
@@ -110,37 +123,34 @@
 			return {
 				paper: {
 					paper_id: 0,
-					title: '软件系统分析与设计',
+					title: '',
 					authors: [
-						{
-							id: 1,
-							name: '111',
-						},
-						{
-							id: 2,
-							name: '222',
-						},
-						{
-							id: 3,
-							name: '333',
-						},
+						// {
+						// 	id: 1,
+						// 	name: '111',
+						// },
+						// {
+						// 	id: 2,
+						// 	name: '222',
+						// },
+						// {
+						// 	id: 3,
+						// 	name: '333',
+						// },
 					],
-					venue_raw: '北京航空航天大学学报',
-					year: 2018,
-					keywords: [
-						'22',
-						'33',
-						'44',
-					],
-					n_citation: 200,
-					page_start: '84',
-					page_end: '90',
-					volumn: '60',
-					issue: '25',
+					venue_raw: '',
+					year: '',
+					keywords: [],
+					n_citation: '',
+					page_start: '',
+					page_end: '',
+					volumn: '',
+					issue: '',
 					isbn: '',
 					doi: '',
-					abstract: '这是一篇文章的摘要',
+					abstract: '',
 					is_star: 0,
+					url: [],
 				},
 				user_id: -1,
 				imgUrl_left: require('../../assets/image/paper/flower-left.jpg'),
@@ -176,6 +186,7 @@
 											this.paper.isbn = res.data.isbn
 											this.paper.doi = res.data.doi
 											this.paper.abstract = res.data.abstract
+											this.paper.url = res.data.url
 											this.get_star_status()
 										}
 										else {
