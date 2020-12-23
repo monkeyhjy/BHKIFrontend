@@ -85,6 +85,10 @@
                                         <el-button  @click="search3()">h指数</el-button>
                                         <el-button  @click="search4()">被引用数</el-button>
                                     </el-col>
+                                    <el-col>
+                                        <span v-if="totalnum!==10000">共找到{{totalnum}}条结果   当前{{current_page}}/{{totalpage}}</span>
+                                        <span v-else>共找到超过10000条结果</span>
+                                    </el-col>
                                     <el-col :span="24" style="margin-top: 1rem; text-align: left"
                                             v-for="(item, index) in Author_information"
                                             :key="index">
@@ -190,6 +194,10 @@
                                              <el-button @click="search8()">按发表年限筛选</el-button>
                                         </div> -->
                                     </el-col>
+                                    <el-col>
+                                        <span v-if="totalnum!==10000">共找到{{totalnum}}条结果   当前{{current_page}}/{{totalpage}}</span>
+                                        <span v-else>共找到超过10000条结果</span>
+                                    </el-col>
                                     <el-col :span="24" style="margin-top: 1rem; text-align: left"
                                             v-for="(item, index) in papers_information"
                                             :key="index">
@@ -282,7 +290,7 @@
 
                 collapse: false,
                 pageSize: 10,
-                currentPage: 1,
+                current_page: 1,
                 pagenum: 10,
                 totalnum: 10,
                 Author_information: [
@@ -350,6 +358,7 @@
                 e_year:2020,
                 is_range:0,
                 boolop:'and',
+                totalpage:1
             };
         },
         components: {
@@ -484,6 +493,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -550,6 +560,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -616,6 +627,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -682,6 +694,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -754,6 +767,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -826,6 +840,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -898,6 +913,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -970,6 +986,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -1042,6 +1059,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -1114,6 +1132,7 @@
                             this.papers_information=res.data.res
                             this.Author_information=res.data.res
                             this.totalnum=res.data.total
+                            this.totalpage = Math.ceil( this.totalnum / 10)
                             loading.close()
 
                         }),
@@ -1174,6 +1193,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1215,6 +1235,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1255,6 +1276,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1296,6 +1318,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1337,6 +1360,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1378,6 +1402,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1419,6 +1444,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
 
                     }
@@ -1470,6 +1496,7 @@
                         this.papers_information=res.data.res
                         this.Author_information=res.data.res
                         this.totalnum=res.data.total
+                        this.totalpage = Math.ceil( this.totalnum / 10)
                         loading.close()
                     })
                 }
@@ -1503,6 +1530,7 @@
                     this.papers_information=res.data.res
                     this.Author_information=res.data.res
                     this.totalnum=res.data.total
+                    this.totalpage = Math.ceil( this.totalnum / 10)
                     loading.close()
 
                 })
