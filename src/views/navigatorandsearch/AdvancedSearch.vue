@@ -60,13 +60,13 @@
                     <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
                 </el-row>
 
-                <el-row>
+                <el-row  v-if="author_boolen">
                     <el-col :span="4"><div style="height: 40px"></div></el-col>
                     <el-col :span="16">
                         <div class="search_result" >
                             <!-- #fabca2 -->
                             <el-tabs type="border-card" style="background-color: rgba(240,241,244);  border-radius: 10px margin-top: 20%">
-                                <el-tab-pane label="专家" v-if="author_boolen">
+                                <el-tab-pane label="专家">
                                     <el-col style="margin-top: 1rem; text-align: left">
                                         <el-button  @click="search1()">综合</el-button>
                                         <el-button  @click="search2()">发表论文数</el-button>
