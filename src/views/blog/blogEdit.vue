@@ -85,7 +85,10 @@ export default {
   },
   methods:{
       submit(){
-          this.text=this.$refs.child.gettxt();
+        if(this.name=="")
+        alert("博客名字不可为空")
+        else{
+            this.text=this.$refs.child.gettxt();
            this.$axios.post('/apis/blog/editblog',
               {
                 id:this.$route.params.blogid,
@@ -99,6 +102,8 @@ export default {
       //          console.log(res);
                 this.$router.push({path:"/BlogItem/"+this.$route.params.userid+"/"+this.$route.params.blogid})
               })
+        }
+        
       }
   }
 }

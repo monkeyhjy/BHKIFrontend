@@ -67,9 +67,9 @@
                 <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
               </div>
             </div>
-            <el-button type="primary" v-show="follow==0" @click="changeFollow(1)">关注</el-button>
-            <el-button type="primary" v-show="follow==1" @click="changeFollow(0)">取消关注</el-button>
-            <el-button type="primary" @click="dialogVisible3=true">私信</el-button>
+          <el-button type="primary" v-show="own!=userid&&follow==0" @click="changeFollow(1)">关注</el-button>
+            <el-button type="primary" v-show="own!=userid&&follow==1" @click="changeFollow(0)">取消关注</el-button>
+            <el-button type="primary" v-show="own!=userid" @click="dialogVisible3=true">私信</el-button>
  
           </el-card>
           <el-card shadow="never" style="margin-top:30px">
@@ -240,6 +240,7 @@ export default {
   },
   data(){
       return{
+           owner:"",
         sixin:"",
           dialogVisible: false,
           dialogVisible2:false,
@@ -275,6 +276,12 @@ export default {
         var that = this;
         this.userid=this.$route.params.userid;
         this.blogid=this.$route.params.blogid;
+            this.$axios.post('/apis/user/getstatus', {
+          }).then(res => {
+         //       console.log(res);
+			 this.own=res.data.userid
+  //  alert(this.own==this.userid)
+	  })
          //获取博客信息
      this.$axios.post('/apis/blog/getbloginfo',
               {
