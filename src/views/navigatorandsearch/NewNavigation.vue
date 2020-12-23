@@ -161,7 +161,7 @@
                 delPerson:'',
                 activeName: 'second',
                 admin: '',
-                keepLogin: true,
+                keepLogin: false,
                 keepLogout: false,
                 activeIndex2: '1',
                 personName: '',
@@ -184,6 +184,7 @@
                 formLabelWidth_2: '80px',
                 userId: '',
                 totalMsgNum: '',
+                status:""
             };
         },
         mounted() {
@@ -320,15 +321,20 @@
                     url: '/apis/personality/get',
                     method: "post",
                 }).then(res => {
-                    that.personName = res.data.username
                     console.log(res);
-                    if (this.personName !== "") {
+                    that.status = res.data.status
+                    if (that.status === 0) {
                         this.keepLogin = false;
                         this.keepLogout = true;
+                        that.personName = res.data.username
+                        that.picture = res.data.avatar
+                        that.admin = res.data.is_admin
+                        that.userId = res.data.userid
                     }
-                    that.picture = res.data.avatar
-                    that.admin = res.data.is_admin
-                    that.userId = res.data.userid
+                    else if(that.status === 2){
+                        this.keepLogin = true;
+                        this.keepLogout = false;
+                    }
                 })
             }
         }
