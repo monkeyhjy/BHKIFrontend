@@ -232,10 +232,9 @@ body{
 }
 .login-card{
   display: block;
-  width:40%px;
-  margin-top:9%;
-  margin-left:55%;
-  margin-right:10%;
+  width:700px;
+  margin: 0 auto;
+  margin-top: 8%;
   padding-left:1%;
   padding-right:1%;
   padding-top:1%
