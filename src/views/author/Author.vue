@@ -13,16 +13,19 @@
 						</div>
 					</el-col>
 
-					<el-col :span="16" style=" background-color: rgba(240,241,244);">
+					<el-col :span="16" >
 						<div style="margin: 0 1rem;">
 							<el-col :span="24">
-								<div style="font-weight: 700;
+								<!-- <div style="font-weight: 700;
 								font-size: 1.5rem;
-								text-align: center; margin: 1rem 0">基本信息</div>
+								text-align: center; margin: 1rem 0">基本信息</div> -->
 								<div style="height: 25rem">
 									<el-col :span="24">
 										<el-col :span="24" style="margin-bottom: 1rem;">
 											<el-card class="is-always-shadow is-hover-shadow" style="background:#ffffff; border-radius: 10px;">
+												<div style="font-weight: 700;
+								font-size: 1.5rem;
+								text-align: center; margin: 1rem 0">基本信息</div>
 												<el-popover
 																placement="top-start"
 																width="240"
@@ -148,13 +151,14 @@
 
 							<!--					学术成果展示-->
 							<el-col :span="24">
-								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
+								<!-- <div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div> -->
 							</el-col>
 							<el-col :span="24"
 											style="margin: 1rem 0; text-align: left"
 											v-for="(item, index) in author.pubs"
 											:key="index">
 								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px">
+									<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
 									<div class="text item">
 										<el-col :span="18" style="margin-bottom: 1rem">
 											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
@@ -867,10 +871,9 @@
 </style>
 
 <style scoped>
-	.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
-		  box-shadow: 1px 1px 0 0 rgba(0,0,0,.1);
-	}
-
+.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover{
+	box-shadow:1px 1px 0 0 rgba(0,0,0,.1)
+}
 	.el-row {
 		margin-bottom: 20px;
 	&:last-child {
