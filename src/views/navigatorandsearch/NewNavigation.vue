@@ -24,6 +24,7 @@
                 <template slot="title" style="font-size: large">后台管理</template>
                 <el-menu-item index="5-1" @click="gotoReported">处理举报</el-menu-item>
                 <el-menu-item index="5-2" @click="gotoLog">查看日志</el-menu-item>
+                <el-menu-item index="5-3" @click="manage=true">权限管理</el-menu-item>
             </el-submenu>
             <el-submenu index="6" style="margin-left: 2rem;font-size: large" v-show="admin">
                 <template slot="title" style="font-size: large">更新数据</template>
@@ -74,6 +75,33 @@
             <el-menu-item style="float: right" @click="gotoLogin" v-show="keepLogin">
                 <span style="font-size: large">登录</span>
             </el-menu-item>
+
+            <el-dialog  :visible.sync="manage">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="新增" name="first">
+                        <el-form style="margin-top: 40px">
+                            <el-form-item label="邮箱" :label-width="addAndDelWidth">
+                                <el-input v-model="addPerson" autocomplete="off" style="width: 600px" placeholder="请输入待添加用户的邮箱">
+                                </el-input>
+                            </el-form-item>
+                        </el-form>
+                    </el-tab-pane>
+                    <el-tab-pane label="删除" name="second" >
+                        <el-form style="margin-top: 40px">
+                            <el-form-item label="邮箱" :label-width="addAndDelWidth">
+                                <el-input v-model="delPerson" autocomplete="off" style="width: 600px" placeholder="请输入待删除用户的邮箱">
+                                </el-input>
+                            </el-form-item>
+                        </el-form>
+                    </el-tab-pane>
+                </el-tabs>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="manage = false">取 消</el-button>
+                    <el-button type="primary"
+                               @click="manage = false">确 定
+                    </el-button>
+                </div>
+            </el-dialog>
 
             <el-dialog title="更新作者信息" :visible.sync="dialogFormVisible_author">
                 <el-form :model="form">
@@ -129,12 +157,16 @@
         },
         data() {
             return {
+                addPerson:'',
+                delPerson:'',
+                activeName: 'second',
                 admin: '',
                 keepLogin: true,
                 keepLogout: false,
                 activeIndex2: '1',
                 personName: '',
                 picture: "",
+                manage: false,
                 dialogFormVisible_author: false,
                 dialogFormVisible_paper: false,
                 form: {
@@ -147,6 +179,7 @@
                     end: '',
                     delivery: false,
                 },
+                addAndDelWidth:'100px',
                 formLabelWidth: '80px',
                 formLabelWidth_2: '80px',
                 userId: '',
@@ -154,10 +187,12 @@
             };
         },
         mounted() {
-            // alert(this.ac)
             this.getData()
         },
         methods: {
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
             updateAuthor(start, end) {
                 var that = this
                 this.$axios.post('/apis/search/updateacademicdb',
@@ -169,6 +204,7 @@
                     })
                     .then(res => {
                         console.log(res);
+                        that.$router.go(0)
                         this.$message({
                             type: 'success',
                             message: '更新成功!'
@@ -191,6 +227,7 @@
                     })
                     .then(res => {
                         console.log(res);
+                        that.$router.go(0)
                         this.$message({
                             type: 'success',
                             message: '更新成功!'
@@ -307,6 +344,17 @@ li{
     .navigationlogo {
         height: 60px;
     }
+.text {
+    font-size: 14px;
+}
+
+.item {
+    padding: 18px 0;
+}
+
+.box-card {
+    width: 480px;
+}
 
     body {
         background-image: url('../../assets/image/user/image/login-back.png');

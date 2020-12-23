@@ -58,7 +58,6 @@
         data(){
             return{
                 a:"4",
-                privacyMsgNum:'',
                 activeIndex: this.$route.path,
             }
         },
