@@ -19,8 +19,8 @@
                   <el-image
                           style="width: 30px; height: 30px;border-radius:30px"
                           :src='item.img'
-                          fit="fill"></el-image>
-                  <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" style="font-size:14px;font-weight:900;margin-right:20px">{{ item.username }}</el-link>
+                          fit="cover"></el-image>
+                  <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" style="font-size:14px;font-weight:900;margin-right:20px;margin-left:10px">{{ item.username }}</el-link>
                   <span class="flex6 iconsize">
                                 <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-yueduliang" ></use>

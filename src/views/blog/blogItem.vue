@@ -58,7 +58,7 @@
         <el-col :span="5">
           <el-card shadow="never">
             <div class="flex6">
-              <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="fill"></el-image>
+              <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="cover"></el-image>
               <el-link class="blog-title" :underline="false" :href="'/userinfo/'+userid" style="margin-left:10px">{{ username }}</el-link>
             </div>
             <div class="flex6" style="margin-top:15px;margin-bottom:15px">
@@ -168,7 +168,7 @@
                 <li style="margin-top:5px;margin-left:10px;margin-bottom:10px">
                   <div class="flex6" >
                     <div class="flex6">
-                      <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="fill"></el-image>
+                      <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="cover"></el-image>
                       <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px">{{ item.name }} :</el-link>
                     </div>
                     <p style="width:80%;margin-left:15px">{{ item.textcontent }}</p>

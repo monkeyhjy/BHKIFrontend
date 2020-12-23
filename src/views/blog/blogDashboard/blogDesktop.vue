@@ -20,7 +20,7 @@
                     <el-col :span="14">
                       <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid" >
                         <div class="flex6">
-                          <el-image style="width:30px;height:30px;border-radius:30px" :src="item.avatar" fit="fill"></el-image>
+                          <el-image style="width:30px;height:30px;border-radius:30px" :src="item.avatar" fit="cover"></el-image>
                           <el-link class="blog-title " :underline="false"  style="padding-left:15px">{{ item.username }}</el-link>
                         </div>
                       </el-link>

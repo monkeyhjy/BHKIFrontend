@@ -9,7 +9,7 @@
 				<el-col :span="4">
 					<el-card shadow="never">
 						<div class="flex6">
-							<el-image style="width:40px;height:40px;border-radius:40px" :src="img" fit="fill"></el-image>
+							<el-image style="width:40px;height:40px;border-radius:40px" :src="img" fit="cover"></el-image>
 							<p style="margin-left:10px">{{name}}</p>
 						</div>
 						<div class="flex6" style="margin-top:15px">
