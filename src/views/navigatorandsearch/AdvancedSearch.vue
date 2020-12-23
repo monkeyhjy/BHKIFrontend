@@ -60,7 +60,7 @@
                     <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
                 </el-row>
 
-                <el-row v-if="paper_boolen">
+                <el-row v-if="paper_boolen || author_boolen">
                     <el-col :span="4"><div style="height: 40px"></div></el-col>
                     <el-col :span="16">
                         <div class="search_result" >

@@ -25,7 +25,7 @@
         <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
     </el-row>
 
-        <el-row v-if="paper_boolen">
+        <el-row v-if="paper_boolen || author_boolen">
             <el-col :span="4"><div style="height: 40px"></div></el-col>
             <el-col :span="16">
             <div class="search_result" >
@@ -440,13 +440,19 @@ export default {
         });
           }
           else{
+              this.$router.push({
+                  path:'/Searching',
+                  query: {
+                      input: this.input,
+                      type: this.output_label
+                  }
+              })
               const loading = this.$loading({
                 lock: true,
                 text: 'Loading',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
-
               if(this.output_label=='ISBN'){
                   this.label_type=9
                   this.author_boolen=false
