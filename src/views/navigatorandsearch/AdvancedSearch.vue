@@ -7,6 +7,7 @@
                 <div style="margin-top: 20px">
                     <dl>
                         <dd>
+
                         <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 60% ">
                             <el-select v-model="select" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
                                 <el-option v-for="item in subject" :key="item.value" :label="item.label" :value="item.value" >
@@ -15,16 +16,21 @@
                                 </el-option>
                             </el-select>
                         </el-input>
-                            <el-select v-model="select2" slot="prepend" placeholder="请选择" class="object_select"  style="width: 88px;">
-                                <el-option v-for="item2 in subject2" :key="item2.value2" :label="item2.label2" :value="item2.value2" >
-                                    <div @click="search_op(item2.label2)">{{ item2.label2 }}</div>
-                                    <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
-                                </el-option>
-                            </el-select>
+
+                        <el-select v-model="select3" slot="prepend" placeholder="请选择" class="object_select"  style="width: 88px;">
+                            <el-option v-for="item3 in subject_i1" :key="item3.value3" :label="item3.label3" :value="item3.value3" >
+                                <div @click="search_acc1(item3.label3)">{{ item3.label3 }}</div>
+                                <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
+                            </el-option>
+                        </el-select>
                         </dd>
-
                     <dd>
-
+                        <el-select v-model="select2" slot="prepend" placeholder="请选择" class="object_select"  style="width: 88px;">
+                            <el-option v-for="item2 in subject2" :key="item2.value2" :label="item2.label2" :value="item2.value2" >
+                                <div @click="search_op(item2.label2)">{{ item2.label2 }}</div>
+                                <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
+                            </el-option>
+                        </el-select>
 
                         <el-input placeholder="请输入关键词" v-model="input1" style="width: 60% ">
                             <el-select v-model="select1" slot="prepend" placeholder="请选择" class="object_select"  style="width: 140px;">
@@ -34,10 +40,17 @@
                                 </el-option>
                             </el-select>
                         </el-input>
-                        <el-button slot="append" icon="el-icon-search" @click="search_click()" v-loading.fullscreen.lock="fullscreenLoading">检索</el-button>
+                        <el-select v-model="select4" slot="prepend" placeholder="请选择" class="object_select"  style="width: 88px;">
+                            <el-option v-for="item4 in subject_i2" :key="item4.value4" :label="item4.label4" :value="item4.value4" >
+                                <div @click="search_acc2(item4.label4)">{{ item4.label4 }}</div>
+                                <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span> -->
+                            </el-option>
+                        </el-select>
                     </dd>
 
-                        </dl>
+                        <el-button slot="append" icon="el-icon-search" @click="search_click()" v-loading.fullscreen.lock="fullscreenLoading">检索</el-button>
+
+                    </dl>
 
 
 <!--                    <el-input placeholder="请输入关键词" v-model="input" class="input-with-select" style="width: 66.6% ">-->
@@ -306,16 +319,28 @@
                 }, {value2:'选项2', label2: 'or'
                 }, {value2:'选项3', label2: 'not'
                 }],
+                subject_i1: [{value3:'选项1', label3: '精确'
+                }, {value3:'选项2', label3: '模糊'
+                }],
+                subject_i2: [{value4:'选项1', label4: '精确'
+                }, {value4:'选项2', label4: '模糊'
+                }],
                 value: '关键词',//this.$route.params.type
                 value1: '关键词',//this.$route.params.type
                 value2: 'and',//this.$route.params.type
+                value3: '精确',//this.$route.params.type
+                value4: '精确',//this.$route.params.type
                 input:'',//this.$route.params.input
                 input1:'',
                 select: '关键词',//this.$route.params.type
                 select1: '关键词',//this.$route.params.type
                 select2: 'and',//this.$route.params.type
+                select3: '精确',//this.$route.params.type
+                select4: '精确',//this.$route.params.type
                 output_label:'关键词',//this.$route.params.type
                 output_label1:'关键词',//this.$route.params.type
+                output_acc1:1,
+                output_acc2:1,
                 label_type:1,
                 label_type1:1,
                 author_boolen:false,
@@ -334,6 +359,22 @@
         //     this.search_click();
         // },
         methods: {
+            search_acc1(label){
+                if(label==='精确'){
+                    this.output_acc1=1
+                }
+                else{
+                    this.output_acc1=0
+                }
+            },
+            search_acc2(label){
+                if(label==='精确'){
+                    this.output_acc1=1
+                }
+                else{
+                    this.output_acc1=0
+                }
+            },
             search_start(label){
                 this.s_year=label
                 console.log(label)
@@ -431,6 +472,8 @@
                                 type1:this.label_type1,
                                 content: this.input,
                                 content1: this.input1,
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 boolop:this.boolop,
                                 order: this.order,
                                 isasc: 0,
@@ -491,6 +534,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -555,6 +600,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -619,6 +666,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -689,6 +738,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -759,6 +810,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -829,6 +882,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -899,6 +954,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -969,6 +1026,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -1039,6 +1098,8 @@
                         this.order=1
                         this.$axios.post('/apis/search/multisearch',
                             {
+                                is_acc: this.output_acc1,
+                                is_acc1: this.output_acc2,
                                 type: this.label_type,
                                 type1:this.label_type1,
                                 content: this.input,
@@ -1095,6 +1156,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1133,6 +1196,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1171,6 +1236,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1210,6 +1277,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1249,6 +1318,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1288,6 +1359,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1327,6 +1400,8 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
@@ -1377,13 +1452,15 @@
                     this.is_range=1
                     this.$axios.post('/apis/search/multisearch',
                         {
+                            is_acc: this.output_acc1,
+                            is_acc1: this.output_acc2,
                             type: this.label_type,
                             type1:this.label_type1,
                             content: this.input,
                             content1: this.input1,
                             boolop:this.boolop,
                             order: this.order,
-                            isasc: 1,
+                            isasc: 0,
                             isrange:this.is_range,
                             lowrange:this.start_year,
                             highrange:this.end_year,
@@ -1407,13 +1484,15 @@
                 })
                 this.$axios.post('/apis/search/multisearch',
                     {
+                        is_acc: this.output_acc1,
+                        is_acc1: this.output_acc2,
                         type: this.label_type,
                         type1:this.label_type1,
                         content: this.input,
                         content1: this.input1,
                         boolop:this.boolop,
                         order: this.order,
-                        isasc: 1,
+                        isasc: 0,
                         isrange:this.is_range,
                         lowrange:this.start_year,
                         highrange:this.end_year,
