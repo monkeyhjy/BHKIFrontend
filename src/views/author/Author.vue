@@ -153,50 +153,54 @@
 							<el-col :span="24">
 								<!-- <div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div> -->
 							</el-col>
-							<el-col :span="24"
-											style="margin: 1rem 0; text-align: left"
-											v-for="(item, index) in author.pubs"
-											:key="index">
-								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px">
-									<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
-									<div class="text item">
-										<el-col :span="18" style="margin-bottom: 1rem">
-											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
-												<i class="el-icon-document"></i>
-												{{item.title}}
-											</el-link>
-										</el-col>
-										<el-col :span="6" style="text-align: right">
-											<el-button v-if="item.is_display===1&&author.is_claimed===2"
-																 @click="pub_display(index, 1)">当前状态：展示给他人</el-button>
-											<el-button v-if="item.is_display===0&&author.is_claimed===2"
-																 @click="pub_display(index, 0)">当前状态：不展示给他人</el-button>
-										</el-col>
-										<el-col :span="24"
-														style="margin-bottom: 1rem">
-											<el-link v-for="(author, index2) in item.author"
-															 :key="index2"
-															 style="margin-right: 0.5rem; font-size: 16px"
-															 @click="jumpToPortal(author.id)">
-												{{author.name}}
-												<span v-if="index2!==item.author.length-1">,</span>
-											</el-link>
-										</el-col>
-										<el-col :span="24" style="margin-bottom: 1rem"
-														v-if="(typeof(item.venue_raw)!=='undefined'&&item.venue_raw!=='')
-																	&&(typeof(item.year)!=='undefined'&&item.year!=='')">
-											{{item.venue_raw}}({{item.year}})
-										</el-col>
-										<el-col :span="24" style="margin-bottom: 1rem">
-											<span>被引量：</span>
-											<span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">
-												{{item.n_citation}}
-											</span>
-											<span v-else>0</span>
-										</el-col>
-									</div>
+
+							<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
+
+								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px; margin: 1rem 0;">
+									<el-col :span="24"
+													style="text-align: left"
+													v-for="(item, index) in author.pubs"
+													:key="index">
+										<div class="text item" v-if="typeof(item.title)!=='undefined'&&item.title!==''">
+											<el-divider></el-divider>
+											<el-col :span="18" style="margin-bottom: 1rem">
+												<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
+													<i class="el-icon-document"></i>
+													{{item.title}}
+												</el-link>
+											</el-col>
+											<el-col :span="6" style="text-align: right">
+												<el-button v-if="item.is_display===1&&author.is_claimed===2"
+																	 @click="pub_display(index, 1)">当前状态：展示给他人</el-button>
+												<el-button v-if="item.is_display===0&&author.is_claimed===2"
+																	 @click="pub_display(index, 0)">当前状态：不展示给他人</el-button>
+											</el-col>
+											<el-col :span="24"
+															style="margin-bottom: 1rem">
+												<el-link v-for="(author, index2) in item.author"
+																 :key="index2"
+																 style="margin-right: 0.5rem; font-size: 16px"
+																 @click="jumpToPortal(author.id)">
+													{{author.name}}
+													<span v-if="index2!==item.author.length-1">,</span>
+												</el-link>
+											</el-col>
+											<el-col :span="24" style="margin-bottom: 1rem"
+															v-if="(typeof(item.venue_raw)!=='undefined'&&item.venue_raw!=='')
+																		&&(typeof(item.year)!=='undefined'&&item.year!=='')">
+												{{item.venue_raw}}({{item.year}})
+											</el-col>
+											<el-col :span="24" style="margin-bottom: 1rem">
+												<span>被引量：</span>
+												<span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">
+													{{item.n_citation}}
+												</span>
+												<span v-else>0</span>
+											</el-col>
+										</div>
+									</el-col>
 								</el-card>
-							</el-col>
+
 						</div>
 
 					</el-col>
@@ -214,7 +218,7 @@
 							<el-pagination
 											background
 											layout="prev, pager, next"
-											:total="author.n_pubs"
+											:total="author.total"
 											:page-size="author.page_size"
 											:current-page="author.current_page"
 											@current-change="handleCurrentChange">
@@ -277,6 +281,7 @@
 		name: "Author",
 		data() {
 			return {
+				a:"2",
 				/*按钮的逻辑：
 				1.认领：is_claimed
 					0 -> 未被认领
@@ -303,27 +308,13 @@
 					is_claimed: 0,
 					is_reported: 0,
 					is_followed: false,
-					relative_author: [
-						// {
-						// 	name: 'jinyun Hou',
-						// 	author_id: 1,
-						// 	graph_id: 1,
-						// 	symbolSize: 70,
-						// 	org: '',
-						// },
-						// {
-						// 	name: '222',
-						// 	author_id: 2,
-						// 	graph_id: 2,
-						// 	symbolSize: 60,
-						// 	org: '',
-						// },
-					],
+					relative_author: [],
 					pubs: [],
 					page_num: 2,
 					page_size: 3,
 					current_page: 1,
 					status: 0,
+					total: 0,
 				},
 				permit_claim: false,
 				searchInput: '',
@@ -405,6 +396,7 @@
 						.then(res => {
 							console.log(res)
 							if(res.status === 200){
+								this.author.total = res.data.res.total
 								this.author.author_id = res.data.res.id
 								this.author.name = res.data.res.name
 								this.author.h_index = res.data.res.h_index
@@ -443,7 +435,6 @@
 										}
 										this.author.pubs.push(obj)
 									})
-									console.log(JSON.parse(JSON.stringify(this.author.pubs)))
 								}
 								//相关专家
 								this.$axios.post('/apis/search/getrelatedauthor',
@@ -504,7 +495,6 @@
 				this.myChart = echarts.init(dom);
 				this.chartData = this.dataEChart(q);
 				this.chartLink = this.linkEChart(this.chartData);
-				console.log(this.chartLink)
 				let option = {
 					tooltip:{
 						show: false,
@@ -846,6 +836,7 @@
 							pagenumber: val
 						})
 						.then(res => {
+							console.log(res)
 							this.author.pubs = res.data.pubs
 							if(res.data.status === 0){
 								console.log('切换到第' + val + '页成功')

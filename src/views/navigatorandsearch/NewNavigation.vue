@@ -10,7 +10,7 @@
                 active-text-color="#f9ae8f"
         >
             <div style="float: left">
-                <img class="navigationlogo" src="../../assets/logoT02-white.png" height="60" width="160"/>
+                <img @click="gotoMain" class="navigationlogo" src="../../assets/logoT02-white.png" height="60" width="160"/>
             </div>
             <el-menu-item index="1" style="margin-left: 6rem; font-size: large" @click="gotoMain">首页</el-menu-item>
             <el-menu-item index="2" style="margin-left: 2rem; font-size: large" @click="gotoDoor">查看门户</el-menu-item>
@@ -48,8 +48,8 @@
                                         </div>
                                     </div>
                                 </el-col>
-                                <el-col :span="8" :offset="1">
-                                    <h2 style="margin-top: 20px">{{personName}}</h2>
+                                <el-col :span="8" :offset="1" >
+                                    <h2 style="margin-top: 15px;margin-bottom: 10px">{{personName}}</h2>
                                 </el-col>
                             </el-row>
                         </div>
@@ -280,18 +280,15 @@
             },
             gotoLog() {
                 this.$router.push('/log')
-                // this.changeActiveIndex(3)
             },
             gotoReported() {
                 this.$router.push('/blogreported')
             },
             gotoDoor() {
                 this.$router.push('/authoritem')
-                // this.activeIndex2 = 2
             },
             gotoMsgCollection() {
-                this.$router.push('/messageNav/likeMsg')
-                // this.changeActiveIndex(4)
+                this.$router.push('/messageNav/privacyMsg')
             },
             gotoMyinfo() {
                 this.$router.push('/personinfo/information')
@@ -307,7 +304,6 @@
             },
             gotoMain() {
                 this.$router.push('/Search')
-                // this.changeActiveIndex(1)
             },
             gotoBlog() {
                 this.$router.push('/BlogDashboard/BlogDesktop')

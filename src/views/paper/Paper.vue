@@ -14,7 +14,7 @@
 					<el-col :span="16" style="background-color: #ffffff; padding-bottom: 5rem">
 						<!--					标题-->
 						<div>
-							<el-col :span="24" style="text-align: center; background-color: #ffffff; padding-bottom: 3rem">
+							<el-col :span="24" style="text-align: center; background-color: #ffffff;">
 								<div>
 									<div style="text-align: right">
 										<el-button
@@ -52,7 +52,8 @@
 							</el-col>
 							<div style="margin: 0 1rem">
 								<!--						摘要-->
-								<el-col :span="24" style="text-align: left; margin-top: 3rem">
+								<el-col :span="24" style="text-align: left;">
+									<el-divider></el-divider>
 									<strong style="font-size: 1rem">摘要：</strong>
 									<p v-if="typeof(paper.abstract)!=='undefined'&&paper.abstract!==''"
 										 style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
@@ -212,7 +213,6 @@
 							paperid: this.paper.paper_id
 						}
 				).then(res => {
-					console.log(res)
 							if(res.data.status === 0){
 								this.$message({
 									type: "success",
@@ -235,7 +235,6 @@
 							userid: this.user_id,
 							paperid: this.paper.paper_id
 						}).then(res => {
-							console.log(res)
 							this.paper.is_star = res.data.is_star
 				})
 			}

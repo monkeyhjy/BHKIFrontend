@@ -57,11 +57,11 @@
       <el-row style="margin-left:30px;margin-right:10px" :gutter="20">
         <el-col :span="5">
           <el-card shadow="never">
-            <div class="flex6">
+            <div class="flex6" style="margin-left:16px">
               <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="cover"></el-image>
               <el-link class="blog-title" :underline="false" :href="'/userinfo/'+userid" style="margin-left:10px">{{ username }}</el-link>
             </div>
-            <div class="flex6" style="margin-top:15px;margin-bottom:15px">
+            <div class="flex6" style="margin-top:15px;margin-bottom:15px;margin-left:16px">
               <div v-for="(item,index) in userlist" :key="index" style="margin-right:13px">
                 <p style="font-size:14px;text-align:center">{{ item.num }}</p>
                 <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
@@ -91,7 +91,7 @@
         <!-- <el-col :span="1" class="grid-content"></el-col> -->
         <el-col :span="18">
           <div style="background:white;padding:20px">
-            <h1>{{ blogname }}</h1>
+            <h2 style="font-size:2em">{{ blogname }}</h2>
             <div class="flex6">
               <el-button style="margin-right:30px">{{ chose[type].name }} </el-button>
               <span class="flex6 iconsize">
@@ -164,21 +164,38 @@
               </el-button>
             </div>
             <div style="margin-top:20px">
-              <ul v-for="(item,index) in tiplist" :key="index">
-                <li style="margin-top:5px;margin-left:10px;margin-bottom:10px">
-                  <div class="flex6" >
-                    <div class="flex6">
+              <div v-show="tiplist.length==0&&get" style="color:gray" class="flex6">
+                目前还没有看官发表任何观点
+                <svg class="icon" aria-hidden="true" style="font-size:30px;color:#ce3524;margin-left:10px"> 
+  <use xlink:href="#icon-kelian"></use>
+</svg>
+                 ，真的不准备来说点什么嘛
+              </div>
+              <ul v-for="(item,index) in tiplist" :key="index" >
+                <li style="margin-top:5px;margin-left:10px;margin-bottom:0px">
+                  <div style="margin-bottom:40px">
+                  <div style="margin-bottom:0px">
+                    <div>
+                      <div class="flex7" >
                       <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="cover"></el-image>
-                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px">{{ item.name }} :</el-link>
-                    </div>
-                    <p style="width:80%;margin-left:15px">{{ item.textcontent }}</p>
-                    <el-button type=text @click="tipid=item.comment_id;dialogVisible2 = true">
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px;align-items:top !important">{{ item.name }} :</el-link>
+                   
+                    </div> 
+                    <el-button type="text" style="float:right;margin-top:-40px" @click="tipid=item.comment_id;dialogVisible2 = true">
                       <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                         <use xlink:href="#icon-report" ></use>
                       </svg>
                     </el-button>
+                    </div>
+                    <p style=";margin-left:15px;margin-top:10px">{{ item.textcontent }}</p>
+                  
                   </div>
-                  <el-divider></el-divider>
+                   
+                  </div>
+                    <div >
+<el-divider></el-divider>
+                    </div>
+                 
                 </li>
               </ul>
             </div>
@@ -192,7 +209,7 @@
                   <div>
                     <div class="flex6">
                       <el-link class="blog-title" :underline="false"  :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content:left">
-                        <h1 style="font-size:20px;justify-content:left">{{ item.blogname}}</h1>
+                        <h2 style="font-size:20px;justify-content:left">{{ item.blogname}}</h2>
                       </el-link>
                       <div class="flex6">
                               <span class="flex6 iconsize">
@@ -242,6 +259,7 @@ export default {
   },
   data(){
       return{
+        get:false,
         owner:"",
         sixin:"",
           dialogVisible: false,
@@ -308,6 +326,7 @@ export default {
                 this.likenum=res.data.data.likenum;
                 this.like=res.data.data.is_like;
                 this.tiplist=res.data.data.tiplist;
+                this.get=true;
                 this.type=res.data.data.type,
               //  alert(this)
                 this.star=res.data.data.is_collect
@@ -567,7 +586,18 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.el-link {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: top ;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+    text-decoration: none;
+    outline: 0;
+    padding: 0;
+}
   body{
           background-image: url('../../assets/image/user/image/login-back.png');
     }

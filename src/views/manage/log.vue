@@ -5,7 +5,7 @@
     </div>
         <div class="flex antialiased min-h-screen">
             <aside class="flex flex-col text-indigo-100 bg-opacity-50" style="width:100px">
-                <div class="text-sm md:text-xs">
+                <div class="text-sm md:text-xs img-25">
                     <a href="./blogreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider left-nav" style="width:100px; color: white">
                     <img src="../../assets/image/manage/document.png" style="margin:10px">
                     违规帖子
@@ -167,9 +167,11 @@ export default {
 };
 </script>
 
-<style>
-  img{
-    height: 25px;
+<style lang="scss" scoped>
+  .img-25{
+    /deep/ img{
+      height: 25px;
+    }
   }
   .grey-bgcolor {
      background-color:#f0f1f4;

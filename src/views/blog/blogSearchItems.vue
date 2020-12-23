@@ -9,20 +9,30 @@
         <el-col :span="4"><div class="grid-content"></div></el-col>
         <el-col :span="16">
               <div>
-              <p style="color:gray;font-size:8px;margin-bottom:20px;margin-left:20px">总共{{ list.length }}条搜索记录</p>
-              <ul v-for="(item,index) in list" :key="index">
+              <p style="color:gray;font-size:8px;margin-bottom:20px;margin-left:20px" v-show="get&&list.length>0">总共{{ list.length }}条搜索记录</p>
+              
+              <el-card v-show="list.length==0&&get">
+                <div style="color:gray;margin-top:0px" class="flex6">
+                查询不到任何结果呢
+                    <svg class="icon" aria-hidden="true" style="font-size:30px;margin-left:10px;margin-right:10px">
+  <use xlink:href="#icon-lab-kuqi-copy"></use>
+</svg>
+                快试试看别的关键词呢
+             </div>
+                </el-card>
+  <ul v-for="(item,index) in list" :key="index">
                 <li style="margin-bottom:10px">
                   <el-card class="box-card">
                     <div slot="header" >
                       <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content:left">
-                        <h1 style="font-size:20px;margin-top:-6px;;margin-bottom:-6px;justify-content:left">{{ item.blogname }}</h1>
+                        <h2 style="font-size:20px;margin-top:-6px;;margin-bottom:-6px;justify-content:left">{{ item.blogname }}</h2>
                       </el-link>
                       <p style="margin-top:10px;font-size:15px;width:90%;padding-left:15px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">{{ item.textcontent }}</p>
                     </div>
                     <div class="flex6" style="font-size:12px;color:gray">
                       <span style="margin-right:20px">{{ formatDate(item.date) }}</span>
                       <span style="margin-right:20px;color:gray">作者
-                          <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid"  style="font-size:15px;color:gray;margin-top:-5px">{{ item.username}}</el-link></span>
+                          <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.userid"  style="font-size:15px;margin-top:-3px">{{ item.username}}</el-link></span>
                       <span class="flex6 iconsize">
                                 <svg class="icon color_deep iconmargin" aria-hidden="true">
                                  <use xlink:href="#icon-yueduliang" ></use>
@@ -78,6 +88,7 @@ export default {
           {name:"体育",type:29},{name:"电子",type:30},{name:"创业",type:31},
           {name:"其他",type:32},],
         type:1,
+        get:false
       }
   },
   mounted(){
@@ -124,6 +135,7 @@ export default {
      //           console.log(res);
                 this.list=res.data.data.list
                 this.type=0
+                this.get=true
             })
     },
     choseType(type){

@@ -81,7 +81,7 @@
 
 <!--		姓名输入框-->
 		<el-dialog
-						title="请填写您的真实姓名，如输入中文无结果，请输入姓名的拼音，格式如“Zhang sansi”"
+						title="请填写您的真实姓名，如输入中文无结果，请输入姓名的拼音，格式如“Sansi Zhang”"
 						:visible.sync="nameVisible"
 						center
 						:append-to-body='true'

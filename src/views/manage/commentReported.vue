@@ -63,11 +63,12 @@
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-              <!-- <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a> -->
+              <el-link :underline="false" :href="'/userinfo/'+item.user_id">
               <el-image style="height:48px;width:48px;border-radius:50%" :src="item.user_icon" fit="cover"></el-image>
+              </el-link>
             </div>
-            <div class=" font-semibold" style="font-size:30px">
-              <a :href="'/BlogItem/'+item.user_id+'/'+item.blog_id">{{item.title}}</a>
+            <div >
+              <el-link :underline="false" :href="'/BlogItem/'+item.user_id+'/'+item.blog_id" class=" font-semibold" style="font-size:30px">{{item.title}}</el-link>
             </div>
           </div>
           <div class="space-y-4">
@@ -163,17 +164,18 @@ export default {
           id: this.list[index].report_id,
           type:i,
       }).then(res => {
+        console.log(res)
       if (res.data.status === 0) {
-        this.$message.error("删除评论失败！")
-        alert('删除评论失败！')
-      } else {
-        this.$router.go(0);
+        this.$message({ message: '删除评论失败', type: 'warning' });
+      } else {  
+        // this.$message({ message: '处理举报成功', type: 'success' });
+       this.$router.go(0);
         // this.list.splice(this.activeindex,1)
         // this.activeindex=0
         // if(this.list.length==0)
         //   this.flag=1;
         // else this.item=this.list[0]
-        alert('处理举报成功！')
+      
       }
       })
     }
