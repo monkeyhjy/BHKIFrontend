@@ -11,9 +11,9 @@
 <!--							<img :src="imgUrl_footer" alt="" style="width: 100%; height: 100%">-->
 						</div>
 					</el-col>
-					<el-col :span="16" style="background-color: #fbede4; padding-bottom: 5rem">
+					<el-col :span="16" style="background-color: #ffffff; padding-bottom: 5rem">
 						<!--					标题-->
-						<div >
+						<div>
 							<el-col :span="24" style="text-align: center; background-color: #ffffff; padding-bottom: 3rem">
 								<div>
 									<div style="text-align: right">
@@ -56,14 +56,15 @@
 									<strong style="font-size: 1rem">摘要：</strong>
 									<p v-if="typeof(paper.abstract)!=='undefined'&&paper.abstract!==''"
 										 style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
-									<p v-else style="margin: 0.5rem 0 0.5rem 1rem">未知</p>
+									<span v-else style="margin: 0.5rem 0 0.5rem 1rem">未知</span>
 								</el-col>
 								<!--						关键词-->
 								<el-col :span="24" style="text-align: left; font-size: 1rem; margin-top: 3rem">
 									<strong>关键词：</strong>
-									<span v-if="typeof(paper.keywords)!=='undefined'&&paper.keywords.length!==0"
-													v-for="(item, index) in paper.keywords" :key="index">
-								{{item}};</span>
+									<span v-if="typeof(paper.keywords)!=='undefined'&&paper.keywords.length!==0">
+										<span v-for="(item, index) in paper.keywords" :key="index">
+										{{item}};</span>
+									</span>
 									<span v-else>未知</span>
 								</el-col>
 								<!--						被引量-->
@@ -88,7 +89,7 @@
 										{{paper.doi}}</span>
 									<span v-else>未知</span>
 								</el-col>
-
+<!--相关链接-->
 								<el-col :span="24" style="text-align: left; margin-top: 1rem">
 									<el-col :span="3">
 										<strong>相关链接：</strong>

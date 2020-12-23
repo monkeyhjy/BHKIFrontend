@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<new-navigation></new-navigation>
+			<new-navigation :ac="a"></new-navigation>
 		</div>
 		<el-container>
 			<el-main style="padding-left: 0; padding-right: 0">
@@ -13,16 +13,16 @@
 						</div>
 					</el-col>
 
-					<el-col :span="16">
-						<div style="margin: 0 1rem">
+					<el-col :span="16" style=" background-color: rgba(240,241,244);">
+						<div style="margin: 0 1rem;">
 							<el-col :span="24">
 								<div style="font-weight: 700;
 								font-size: 1.5rem;
-								text-align: center; margin-bottom: 1rem">基本信息</div>
+								text-align: center; margin: 1rem 0">基本信息</div>
 								<div style="height: 25rem">
 									<el-col :span="24">
 										<el-col :span="24" style="margin-bottom: 1rem;">
-											<el-card style="background:rgba(240,241,244); border-radius: 10px">
+											<el-card class="is-always-shadow is-hover-shadow" style="background:#ffffff; border-radius: 10px;">
 												<el-popover
 																placement="top-start"
 																width="240"
@@ -82,53 +82,50 @@
 									<el-col :span="24" style="margin-left: 0">
 										<el-col :span="12">
 											<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
-												<el-card style="background:rgba(240,241,244);  border-radius: 10px">
+												<el-card style="background:#ffffff;  border-radius: 10px">
 													<div>
-														<i class="el-icon-s-opportunity" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
+														<i class="el-icon-s-opportunity" style="margin-right: 0.5rem"></i>
 														<strong>相关领域：</strong>
 														<span v-if="typeof(author.tags)==='undefined'||author.tags.length===0">未知</span>
 													</div>
 													<div v-if="typeof(author.tags)!=='undefined'&&author.tags.length!==0">
-														<el-col :span="24" style="margin-bottom: 0.5rem;"
+														<el-col :span="24" style="margin-top: 0.5rem;"
 																		v-for="(item, index) in author.tags" :key="index">
 															{{item.t}}
 														</el-col>
 													</div>
-
-												</el-card>
-											</el-col>
-											<el-col :span="24">
-												<el-card style="margin-bottom: 1rem; background:rgba(240,241,244);  border-radius: 10px">
-													<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
-													<strong>工作单位：</strong>
-													<span v-if="typeof(author.orgs)!=='undefined'&&author.orgs.length!==0">
+													<el-col :span="24">
+														<el-divider></el-divider>
+														<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
+														<strong>工作单位：</strong>
+														<span v-if="typeof(author.orgs)!=='undefined'&&author.orgs.length!==0">
 														{{author.orgs[0]}}
 													</span>
-													<span v-else>未知</span>
-												</el-card>
-											</el-col>
-											<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem">
-												<el-card style="background:rgba(240,241,244);  border-radius: 10px">
-													<el-col :span="8" style="margin-bottom: 1rem">
-														<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
-														<el-col :span="24"
-																		v-if="typeof(author.n_pubs)!=='undefined'&&author.n_pubs!==''">
-															{{author.n_pubs}}</el-col>
-														<el-col :span="24" v-else>0</el-col>
+														<span v-else>未知</span>
 													</el-col>
-													<el-col :span="8" style="margin-bottom: 1rem">
-														<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
-														<el-col :span="24"
-																		v-if="typeof(author.h_index)!=='undefined'&&author.h_index!==''">
-															{{author.h_index}}</el-col>
-														<el-col :span="24" v-else>0</el-col>
-													</el-col>
-													<el-col :span="8" style="margin-bottom: 1rem">
-														<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
-														<el-col :span="24"
-																		v-if="typeof(author.n_citation)!=='undefined'&&author.n_citation!==''">
-															{{author.n_citation}}</el-col>
-														<el-col :span="24" v-else>0</el-col>
+													<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 2rem">
+														<el-divider></el-divider>
+														<el-col :span="8" style="margin-bottom: 1rem">
+															<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
+															<el-col :span="24"
+																			v-if="typeof(author.n_pubs)!=='undefined'&&author.n_pubs!==''">
+																{{author.n_pubs}}</el-col>
+															<el-col :span="24" v-else>0</el-col>
+														</el-col>
+														<el-col :span="8" style="margin-bottom: 1rem">
+															<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
+															<el-col :span="24"
+																			v-if="typeof(author.h_index)!=='undefined'&&author.h_index!==''">
+																{{author.h_index}}</el-col>
+															<el-col :span="24" v-else>0</el-col>
+														</el-col>
+														<el-col :span="8" style="margin-bottom: 1rem">
+															<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
+															<el-col :span="24"
+																			v-if="typeof(author.n_citation)!=='undefined'&&author.n_citation!==''">
+																{{author.n_citation}}</el-col>
+															<el-col :span="24" v-else>0</el-col>
+														</el-col>
 													</el-col>
 												</el-card>
 											</el-col>
@@ -145,18 +142,19 @@
 								</div>
 							</el-col>
 
+							<el-col :span="24">
+								<el-divider></el-divider>
+							</el-col>
 
 							<!--					学术成果展示-->
 							<el-col :span="24">
 								<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
-								<el-divider></el-divider>
 							</el-col>
-
 							<el-col :span="24"
-											style="margin-top: 1rem; text-align: left"
+											style="margin: 1rem 0; text-align: left"
 											v-for="(item, index) in author.pubs"
 											:key="index">
-								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px" shadow="hover">
+								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px">
 									<div class="text item">
 										<el-col :span="18" style="margin-bottom: 1rem">
 											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
@@ -869,6 +867,10 @@
 </style>
 
 <style scoped>
+	.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+		  box-shadow: 1px 1px 0 0 rgba(0,0,0,.1);
+	}
+
 	.el-row {
 		margin-bottom: 20px;
 	&:last-child {
@@ -938,4 +940,5 @@
 	.input-with-select .el-input-group__prepend {
 		background-color: #fff;
 	}
+
 </style>
