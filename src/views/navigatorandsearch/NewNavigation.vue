@@ -342,6 +342,11 @@
 </script>
 
 <style lang="scss" scoped>
+div{
+    /deep/ .el-menu-demo{
+        border-bottom:0
+    }
+}
 li{
     /deep/ .el-submenu__title{
         font-size:18px

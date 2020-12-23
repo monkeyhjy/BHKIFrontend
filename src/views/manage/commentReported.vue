@@ -5,7 +5,7 @@
     </div>
     <div class="flex antialiased min-h-screen">
       <aside class="flex flex-col text-indigo-100 bg-opacity-50" style="width:100px">
-        <div class="text-sm md:text-xs">
+        <div class="text-sm md:text-xs img-25">
           <a href="./blogreported" class="flex flex-col items-center p-4 md:p-6 font-medium tracking-wider left-nav" style="width:100px; color: white">
             <img src="../../assets/image/manage/document.png" style="margin:10px">
             违规帖子
@@ -63,7 +63,8 @@
         <div class="px-6 py-5 bg-white shadow rounded-lg mb-4 md:mb-8" style="background:white">
           <div class="flex mb-4">
             <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
-              <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a>
+              <!-- <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a> -->
+              <el-image style="height:48px;width:48px;border-radius:50%" :src="item.user_icon" fit="cover"></el-image>
             </div>
             <div class=" font-semibold" style="font-size:30px">
               <a :href="'/BlogItem/'+item.user_id+'/'+item.blog_id">{{item.title}}</a>
@@ -180,9 +181,11 @@ export default {
 }
 </script>
 
-<style type="text/css">
-  img{
-    height: 25px;
+<style lang="scss" scoped>
+  .img-25{
+    /deep/ img{
+      height: 25px;
+    }
   }
   .grey-bgcolor {
     background-color:#f0f1f4;
@@ -205,10 +208,4 @@ export default {
   .left-nav:hover{
     background-color:#dc4a3a;
   }
-</style>
-<style>
-    body {
-        background-image: url('../../assets/image/user/image/login-back.png');
-        background-attachment: fixed;
-    }
 </style>
