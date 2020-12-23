@@ -67,7 +67,7 @@
                 <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
               </div>
             </div>
-          <el-button type="primary" v-show="own!=userid&&follow==0" @click="changeFollow(1)">关注</el-button>
+            <el-button type="primary" v-show="own!=userid&&follow==0" @click="changeFollow(1)">关注</el-button>
             <el-button type="primary" v-show="own!=userid&&follow==1" @click="changeFollow(0)">取消关注</el-button>
             <el-button type="primary" v-show="own!=userid" @click="dialogVisible3=true">私信</el-button>
  
@@ -109,7 +109,7 @@
                                  <use xlink:href="#icon-buoumaotubiao15" ></use>
                               </svg>
                            <span class="iconcolor"> 点赞量{{ likenum }} </span></span>
-              <el-button type="text" @click="checkstar(1)" v-show="star==0" >
+              <el-button type="text" @click="checkstar(1)" v-show="star==0&&own!=userid" >
                   <span class="flex6">
                 <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                   <use xlink:href="#icon-shoucang"></use>
@@ -117,7 +117,7 @@
                 <span style="color:gray;margin-left:10px">已收藏</span>
                   </span>
               </el-button>
-              <el-button type="text" @click="checkstar(0)" v-show="star==1">
+              <el-button  type="text" @click="checkstar(0)" v-show="star==1&&own!=userid">
                          <span class="flex6">
                           <svg class="icon color_middle iconmargin" aria-hidden="true" style="font-size:20px">
                                  <use xlink:href="#icon-shoucang"></use>
@@ -125,7 +125,7 @@
                           <span style="color:gray;margin-left:10px">  收藏</span>
                          </span>
               </el-button>
-              <el-button type="text" @click="checklike(0)" v-show="like==1">
+              <el-button  type="text" @click="checklike(0)" v-show="like==1&&own!=userid">
                          <span class="flex6">
                           <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                                  <use xlink:href="#icon-buoumaotubiao15"></use>
@@ -133,7 +133,7 @@
                           <span style="color:gray;margin-left:10px">  点赞</span>
                          </span>
               </el-button>
-              <el-button type="text" @click="checklike(1)" v-show="like==0">
+              <el-button type="text" @click="checklike(1)" v-show="like==0&&own!=userid">
                          <span class="flex6">
                           <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                                  <use xlink:href="#icon-xihuan"></use>
@@ -141,7 +141,7 @@
                           <span style="color:gray;margin-left:10px">  已点赞</span>
                          </span>
               </el-button>
-              <el-button type="text" @click="dialogVisible = true" >
+              <el-button v-show="own!=userid" type="text" @click="dialogVisible = true" >
                          <span class="flex6">
                           <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                                  <use xlink:href="#icon-report"></use>
@@ -149,7 +149,9 @@
                           <span style="color:gray;margin-left:10px">  举报</span>
                          </span>
               </el-button>
+              <el-button type="primary" v-show="own==userid" @click="dele()">删帖</el-button>
             </div>
+        
             <p v-html="htmlcontent"></p>
           </div>
           <div style="background:white;padding:20px;margin-top:10px">
@@ -240,7 +242,7 @@ export default {
   },
   data(){
       return{
-           owner:"",
+        owner:"",
         sixin:"",
           dialogVisible: false,
           dialogVisible2:false,
@@ -273,10 +275,12 @@ export default {
         star:1
       }
   }, mounted(){
+     	 
         var that = this;
         this.userid=this.$route.params.userid;
-        this.blogid=this.$route.params.blogid;
-            this.$axios.post('/apis/user/getstatus', {
+           
+        this.blogid=this.$route.params.blogid;  
+        this.$axios.post('/apis/user/getstatus', {
           }).then(res => {
          //       console.log(res);
 			 this.own=res.data.userid
@@ -528,6 +532,29 @@ export default {
                  this.follow=type
                }
             })  
+      },
+      dele(){
+           //删帖
+     this.$axios.post('/apis/report/reportcomment',
+              {
+                id:this.blogid,
+              },
+              {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+              .then(res => {
+                console.log(res);
+                if(res.data.data.status==0){
+              this.$message({
+          message: '删帖成功',
+          type: 'success'
+        });
+                }  else{
+              this.$message({
+          message: '删帖失败',
+          type: 'warning'
+        });
+                }
+              
+                })
       }
   }
 }
