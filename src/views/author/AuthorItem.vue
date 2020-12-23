@@ -14,10 +14,10 @@
 									<strong style="font-size: 2rem">请选择您要认领的门户。</strong>
 									<el-button style="vertical-align: top; margin-left: 1rem"
 													type="danger"
-													@click="nameVisible = true">输入姓名，认领您的门户</el-button>
+													@click="nameVisible = true">没有我想要的门户？重新搜索</el-button>
 								</div>
 								<el-card
-												style="background-color: #fabca2; border-radius: 10px; margin-top: 1rem"
+												style="background-color: white; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
 									<el-col :span="24">
 										<el-col :span="12"><el-link style="font-size: 2rem;" @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
@@ -136,7 +136,10 @@
 			is_associate_author() {
 					this.$axios.post('/apis/personality/get')
 							.then(res => {
-								if(res.data.is_associated) {
+								if(!res.data.is_associated) {
+									this.nameVisible = true
+								}
+								else {
 									this.$router.push({
 										path: '/author',
 										query: {
@@ -164,6 +167,7 @@
 			},
 			nameClose(done) {
 				this.nameVisible = false;
+				this.$router.push('/search')
 			},
 			submitName(text) {
 				if(text === '')
@@ -240,4 +244,9 @@
 		border-radius: 4px;
 		min-height: 36px;
 	}
+</style>
+<style>
+    body {
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
 </style>

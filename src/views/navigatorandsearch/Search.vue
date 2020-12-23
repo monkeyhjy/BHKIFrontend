@@ -6,7 +6,7 @@
             <el-main style="text-align: center;">
                 <div style="height: 280px;">
                     <img src="../../assets/logoT.png" height="320" width="350"/></div>
-                <div style="margin-top: 15px; margin-bottom: 90px;">
+                <div style="margin-top: 15px; margin-bottom: 90px;" id="searchInput">
                     <el-input placeholder="请输入内容" v-model="input3" style="width: 900px;">
                         <el-select v-model="value" slot="prepend" placeholder="标题" style="width: 140px;">
                             <el-option
@@ -240,7 +240,27 @@
         background-image: url('../../assets/image/user/image/login-back.png');
     }
 </style>
-<style scoped>
+<style lang="scss" scoped>
+#searchInput{
+    /deep/ .el-input-group__prepend{
+        background-color:#FFF;
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-right-width: 0;
+    }
+    /deep/ .el-input-group>.el-input__inner{
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-right-width: 0;
+        border-left-width: 0;
+    }
+    /deep/ .el-input-group__append{
+        background-color:#FFF;
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-left-width: 0;
+    }
+}
 
     /deep/ .el-carousel__item[data-v-1a1d373c]:nth-child(2n+1) {
         background-color: #df5747;

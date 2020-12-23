@@ -54,8 +54,8 @@
     <el-button type="primary" @click="sendsixin(sixin)">确 定</el-button>
   </span>
       </el-dialog>
-      <el-row style="left:30px">
-        <el-col :span="4">
+      <el-row style="margin-left:30px;margin-right:10px" :gutter="20">
+        <el-col :span="5">
           <el-card shadow="never">
             <div class="flex6">
               <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="fill"></el-image>
@@ -88,8 +88,8 @@
             </ul>
           </el-card>
         </el-col>
-        <el-col :span="1" class="grid-content"></el-col>
-        <el-col :span="17">
+        <!-- <el-col :span="1" class="grid-content"></el-col> -->
+        <el-col :span="18">
           <div style="background:white;padding:20px">
             <h1>{{ blogname }}</h1>
             <div class="flex6">

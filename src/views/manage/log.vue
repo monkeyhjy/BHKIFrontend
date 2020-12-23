@@ -25,7 +25,8 @@
                 </div>
             </aside>
             <!-- padding:2% 6%; -->
-            <main style="background:rgba(240,241,244);width:100%">
+            <!-- background:rgba(240,241,244); -->
+            <main style="width:100%">
                 <div style="margin-top: 2%;margin-left: 8%;margin-right: 8%">
                   <el-table
                     :data="tableData"
@@ -190,4 +191,9 @@ export default {
   .left-nav:hover{
     background-color:#dc4a3a;
   }
+</style>
+<style>
+    body {
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
 </style>

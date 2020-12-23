@@ -3,7 +3,7 @@
         <div class="search d1">
 	<div class="c" id="dd">
        
-		  <el-input type="text"  v-model="search"  placeholder="搜索从这里开始..." style="border-radius:0 42px 42px 0">
+		  <el-input type="text"  v-model="search"  placeholder="搜索从这里开始..." style="border-radius:0 42px 42px 0" id="searchInput1">
       
      <el-select v-model="value" slot="prepend" placeholder="请选择" style="width: 140px;" @change="ch">
                             <el-option
@@ -11,7 +11,7 @@
                                     :key="item"
                                     :label="item.name"
                                     :value="item.type">
-                                <div @click="this.type=item.type">{{item.name}}</div>
+                                {{item.name}}
                             </el-option>
      </el-select>
 		
@@ -61,7 +61,27 @@ export default {
   }
 }
 </script>
-<style >
+<style lang="scss" scoped>
+#dd{
+    /deep/ .el-input-group__prepend{
+        background-color:#FFF;
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-right-width: 0;
+    }
+    /deep/ .el-input-group>.el-input__inner{
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-right-width: 0;
+        border-left-width: 0;
+    }
+    /deep/ .el-input-group__append{
+        background-color:#FFF;
+        border:2px solid #df5747;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.2);
+        border-left-width: 0;
+    }
+}
   body{
           background-image: url('../assets/image/user/image/login-back.png');
     }

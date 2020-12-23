@@ -52,8 +52,7 @@
           </ul>
         </el-col>
         <el-col :span="6">
-<div class="cards">
-  <h3 style="margin-bottom:30px;color:#ce3524">类别</h3>
+<div class="cards" style="margin-top:40px">
   <div class="card card__one flex6" v-for="(item,index) in types" :key="index" style="width:100px;margin-right:0px">
     <div class="card-text">
       <el-button :type="item.type==type?'primary':'default'" >
@@ -196,6 +195,8 @@ document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.
   }
 }
 </script>
+
+
 <style>
 body{
     background-color: rgb(240, 241, 244,100);

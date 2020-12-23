@@ -206,3 +206,8 @@ export default {
     background-color:#dc4a3a;
   }
 </style>
+<style>
+    body {
+        background-image: url('../../assets/image/user/image/login-back.png');
+    }
+</style>
