@@ -25,29 +25,14 @@
         },
         data(){
             return{
-                privacyMsgNum:'',
                 msgCollection:[
-                    {
-                        user:'',
-                        message:'',
-                        message_id:'',
-                    },
                 ]
             }
         },
         mounted() {
-            // alert( activeIndex),
             this.getPrivacyMsg()
         },
         methods: {
-            sendPrivacyMsg(){
-                this.$router.push({
-                    path: '/messageNav/privacyMsg',
-                    query: {
-                        privacyMsgNum: this.privacyMsgNum
-                    }
-                })
-            },
             getPrivacyMsg() {
                 var that=this
                 this.$axios({
@@ -59,14 +44,6 @@
                     that.privacyMsgNum = res.data.data.msgCollection.length
                 })
             },
-            del(id){
-                var index=this.msgCollection.findIndex(item => {
-                    if(item.id==id) {
-                        return true;
-                    }
-                })
-                this.msgCollection.splice(index,1)
-            },
             dele(id){
                 var that = this
                 this.$axios.post('/apis/message/readimessage',
@@ -74,7 +51,6 @@
                         message_id: id
                     },).then(res=>{
                     console.log(res);
-                    // that.del(id)
                     that.$router.go(0)
                 })
             }

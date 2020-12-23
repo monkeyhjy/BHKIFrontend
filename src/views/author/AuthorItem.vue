@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<new-navigation></new-navigation>
+			<new-navigation :ac="a"></new-navigation>
 		</div>
 		<div>
 			<el-container>
@@ -101,6 +101,7 @@
 		name: "AuthorItem",
 		data() {
 			return {
+				a:"2",
 				author_item: [],
 				user_id: -1,
 				page_size: 10,

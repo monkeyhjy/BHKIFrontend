@@ -25,19 +25,12 @@
         },
         data(){
             return{
-                commentMsgNum:'',
                 blank: false,
                 msgCollection:[
-                    {
-                        name: '',
-                        blog_title: '',
-                        message_id: '',
-                    }
                 ],
             }
         },
         mounted() {
-            // alert( activeIndex),
             this.getCommentMsg()
         },
         methods: {
@@ -52,14 +45,6 @@
                     that.commentMsgNum = res.data.data.msgCollection.length
                 })
             },
-            del(id){
-                var index=this.msgCollection.findIndex(item => {
-                    if(item.id==id) {
-                        return true;
-                    }
-                })
-                this.msgCollection.splice(index,1)
-            },
             dele(id){
                 var that = this
                 this.$axios.post('/apis/message/readcommentmessage',
@@ -67,7 +52,6 @@
                         message_id: id
                     },).then(res=>{
                     console.log(res);
-                    // that.del(id)
                     that.$router.go(0)
                 })
             }

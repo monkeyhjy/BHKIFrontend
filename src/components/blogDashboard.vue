@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div>
-			<new-navigation></new-navigation>
+			<new-navigation :ac="a"></new-navigation>
 		</div>
 		<div class="router" style="left:30px">
 			<blog-search></blog-search>
@@ -63,7 +63,8 @@ export default {
   },
   data(){
       return{
-          img:"",
+      	a:"3",
+		  img:"",
         name:"",
         activeIndex: this.$route.path,
         list:[],

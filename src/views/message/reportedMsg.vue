@@ -25,18 +25,11 @@
         },
         data(){
             return{
-                reportedMsgNum:'',
                 msgCollection:[
-                    {
-                        type:'',
-                        message: '',
-                        message_id:'',
-                    }
                 ]
             }
         },
         mounted() {
-            // alert( activeIndex),
             this.getReportedMsg()
         },
         methods: {
@@ -51,14 +44,6 @@
                     that.reportedMsgNum = res.data.data.msgCollection.length
                 })
             },
-            del(id){
-                var index=this.msgCollection.findIndex(item => {
-                    if(item.id==id) {
-                        return true;
-                    }
-                })
-                this.msgCollection.splice(index,1)
-            },
             dele(id){
                 var that = this
                 this.$axios.post('/apis/message/readreportmessage',
@@ -66,7 +51,6 @@
                         message_id: id
                     },).then(res=>{
                     console.log(res);
-                    // that.del(id);
                     that.$router.go(0)
                 })
             }

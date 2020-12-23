@@ -1,7 +1,7 @@
 <template>
     <div class="back">
     <div>
-        <new-navigation></new-navigation>
+        <new-navigation :ac="a"></new-navigation>
     </div>
         <div class="flex antialiased min-h-screen">
             <aside class="flex flex-col text-indigo-100 bg-opacity-50" style="width:100px">
@@ -97,6 +97,7 @@ export default {
   data(){
       // let flag
       return{
+          a:"5-2",
         search:"搜索内容",
         count:0,
         tableData2: [],

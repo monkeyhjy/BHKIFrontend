@@ -24,18 +24,11 @@
         },
         data(){
             return{
-                likeMsgNum:'',
                 msgCollection:[
-                    {
-                        name: '',
-                        blog_title: '',
-                        message_id: '',
-                    }
                 ]
             }
         },
         mounted() {
-            // alert( activeIndex),
             this.getLikeMsg()
         },
         methods: {
@@ -50,14 +43,6 @@
                     that.likeMsgNum = res.data.data.msgCollection.length
                 })
             },
-            del(id){
-                var index=this.msgCollection.findIndex(item => {
-                    if(item.id==id) {
-                        return true;
-                    }
-                })
-                this.msgCollection.splice(index,1)
-            },
             dele(id){
                 var that = this
                 this.$axios.post('/apis/message/readstarmessage',
@@ -65,7 +50,6 @@
                         message_id: id
                     },).then(res=>{
                     console.log(res);
-                    // that.del(id)
                     that.$router.go(0)
                 })
             }

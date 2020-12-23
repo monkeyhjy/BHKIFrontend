@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <new-navigation></new-navigation>
+            <new-navigation :ac="a"></new-navigation>
         </div>
         <div class="personInfo">
             <el-row class="main" :gutter="20" style="text-align:center;">
@@ -47,25 +47,17 @@
 
 <script>
     import NewNavigation from "../navigatorandsearch/NewNavigation";
-    // import commentMsg from "./commentMsg";
-    // import reportedMsg from "./reportedMsg";
-    // import likeMsg from "./likeMsg";
     import privacyMsg from "./privacyMsg";
 
     export default {
         name: "massageNav",
         components: {
             NewNavigation,
-            // likeMsg,
-            // commentMsg,
-            // reportedMsg,
             privacyMsg,
         },
         data(){
             return{
-                // likeMsgNum:this.$refs.likeMsg.likeMsgNum,
-                // commentMsgNum:this.$refs.commentMsg.commentMsgNum,
-                // reportedMsgNum:this.$refs.reportedMsg.reportedMsgNum,
+                a:"4",
                 privacyMsgNum:'',
                 activeIndex: this.$route.path,
             }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-menu
-                :default-active="activeIndex2"
+                :default-active="ac"
                 class="el-menu-demo"
                 mode="horizontal"
                 @select="handleSelect"
@@ -121,12 +121,17 @@
 <script>
     export default {
         name: "NewNavigation",
+        props:{
+            ac:{
+                type:String,
+                default:"1"
+            }
+        },
         data() {
             return {
                 admin: '',
                 keepLogin: true,
                 keepLogout: false,
-                activeIndex: '1',
                 activeIndex2: '1',
                 personName: '',
                 picture: "",
@@ -149,6 +154,7 @@
             };
         },
         mounted() {
+            // alert(this.ac)
             this.getData()
         },
         methods: {
@@ -236,15 +242,18 @@
             },
             gotoLog() {
                 this.$router.push('/log')
+                // this.changeActiveIndex(3)
             },
             gotoReported() {
                 this.$router.push('/blogreported')
             },
             gotoDoor() {
                 this.$router.push('/authoritem')
+                // this.activeIndex2 = 2
             },
             gotoMsgCollection() {
                 this.$router.push('/messageNav/likeMsg')
+                // this.changeActiveIndex(4)
             },
             gotoMyinfo() {
                 this.$router.push('/personinfo/information')
@@ -260,6 +269,7 @@
             },
             gotoMain() {
                 this.$router.push('/Search')
+                // this.changeActiveIndex(1)
             },
             gotoBlog() {
                 this.$router.push('/BlogDashboard/BlogDesktop')
