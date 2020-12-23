@@ -19,9 +19,9 @@
               <el-button type="primary" @click="loginSubmitForm('loginRuleForm')">登录</el-button>
               <el-button @click="resetForm('loginRuleForm')">重置</el-button>
             </el-form-item>
-            <div style="text-align:right">
-              <el-link :underline="false" @click="findPW()">忘记密码？</el-link>
-            </div>
+<!--            <div style="text-align:right">-->
+<!--              <el-link :underline="false" @click="findPW()">忘记密码？</el-link>-->
+<!--            </div>-->
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="注册" name="signup">
