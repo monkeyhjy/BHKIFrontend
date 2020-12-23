@@ -6,6 +6,22 @@
         <el-card class="user-blogs">
           <el-row :gutter="40">
             <el-col :span="4" style="text-align: center;">
+              <el-dialog
+                title="私信"
+                :visible.sync="dialogVisible3"
+                width="30%"
+                center>
+                <el-input
+                        type="textarea"
+                        :autosize="{ minRows: 1, maxRows: 4}"
+                        placeholder="请输入内容"
+                        v-model="sixin">
+                </el-input>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible3= false;sixin=''">取 消</el-button>
+                  <el-button type="primary" @click="sendsixin(sixin)">确 定</el-button>
+                </span>
+              </el-dialog>
               <el-image class="avatar-img" :src="user_avatar" fit="cover"></el-image><br/>
               <h2 class="profile-username">{{user_name}}</h2>
               <el-divider class="black-divider"></el-divider>
@@ -13,6 +29,7 @@
               <p>{{user_title}}<span v-show="user_title && user_institution"> | </span>{{user_institution}}</p>
               <p><el-button type="primary" v-show="!is_currentUser & !followed" @click="follow()">关注</el-button></p>
               <p><el-button v-show="!is_currentUser & followed" @click="unfollow()">取消关注</el-button></p>
+              <p><el-button type="primary" v-show="!is_currentUser" @click="dialogVisible3=true">私信</el-button></p>
             </el-col>
             <el-col :span="20">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -77,6 +94,8 @@ export default {
   data() {
     return {
       publishValid:false,
+      dialogVisible3:false,
+      sixin:'',
       collectValid:false,
       followed:false,
       is_currentUser:false,
@@ -332,6 +351,30 @@ export default {
       s.replace(/(\+d{2})(\d{2})$/, "$1:$2")
       return new Date(s).format('yyyy-MM-dd hh:mm:ss')
     },
+    sendsixin(text){
+      this.$axios.post('/apis/message/sendimessage',{
+        id:this.user_id,
+        message:text
+      },
+      {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+      .then(res => {
+//        console.log(res);
+        if(res.data.data.status==0){
+          this.$message({
+            message: '发送私信成功',
+            type: 'success'
+          });
+        }
+        else{
+          this.$message({
+            message: '发送私信失败',
+            type: 'warning'
+          });
+        }
+      })  
+      this.sixin="";
+      this.dialogVisible3 = false;
+      },
   }
 }
 </script>
