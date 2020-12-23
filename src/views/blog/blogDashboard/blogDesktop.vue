@@ -19,7 +19,7 @@
                 <div v-for="(item,index) in list" :key="index" v-show="list.length>0">
                   <div class="flex6" style="margin:left:0">
                     <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content: left">
-                      <h2  style="font-size:20px;margin:left:0">{{ item.blogname }}</h2>
+                      <h2  style="font-size:20px;margin:left:0;font-size:20px">{{ item.blogname }}</h2>
                     </el-link>
                   </div>
                   <div style=";justify-content: left">

@@ -91,7 +91,7 @@
         <!-- <el-col :span="1" class="grid-content"></el-col> -->
         <el-col :span="18">
           <div style="background:white;padding:20px">
-            <h2>{{ blogname }}</h2>
+            <h2 style="font-size:2em">{{ blogname }}</h2>
             <div class="flex6">
               <el-button style="margin-right:30px">{{ chose[type].name }} </el-button>
               <span class="flex6 iconsize">
@@ -199,7 +199,7 @@
                   <div>
                     <div class="flex6">
                       <el-link class="blog-title" :underline="false"  :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content:left">
-                        <h1 style="font-size:20px;justify-content:left">{{ item.blogname}}</h1>
+                        <h2 style="font-size:20px;justify-content:left">{{ item.blogname}}</h2>
                       </el-link>
                       <div class="flex6">
                               <span class="flex6 iconsize">
