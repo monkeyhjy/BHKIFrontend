@@ -171,21 +171,31 @@
 </svg>
                  ，真的不准备来说点什么嘛
               </div>
-              <ul v-for="(item,index) in tiplist" :key="index">
-                <li style="margin-top:5px;margin-left:10px;margin-bottom:10px">
-                  <div class="flex6" >
-                    <div class="flex6">
+              <ul v-for="(item,index) in tiplist" :key="index" >
+                <li style="margin-top:5px;margin-left:10px;margin-bottom:0px">
+                  <div style="margin-bottom:40px">
+                  <div style="margin-bottom:0px">
+                    <div>
+                      <div class="flex7" >
                       <el-image style="width:40px;height:40px;border-radius:40px" :src="item.img" fit="cover"></el-image>
-                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px">{{ item.name }} :</el-link>
-                    </div>
-                    <p style="width:80%;margin-left:15px">{{ item.textcontent }}</p>
-                    <el-button type=text @click="tipid=item.comment_id;dialogVisible2 = true">
+                      <el-link class="blog-title" :underline="false" :href="'/userinfo/'+item.user_id" style="margin-left:10px;align-items:top !important">{{ item.name }} :</el-link>
+                   
+                    </div> 
+                    <el-button type="text" style="float:right;margin-top:-40px" @click="tipid=item.comment_id;dialogVisible2 = true">
                       <svg class="icon color_deep iconmargin" aria-hidden="true" style="font-size:20px">
                         <use xlink:href="#icon-report" ></use>
                       </svg>
                     </el-button>
+                    </div>
+                    <p style=";margin-left:15px;margin-top:10px">{{ item.textcontent }}</p>
+                  
                   </div>
-                  <el-divider></el-divider>
+                   
+                  </div>
+                    <div >
+<el-divider></el-divider>
+                    </div>
+                 
                 </li>
               </ul>
             </div>
@@ -576,7 +586,18 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.el-link {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: top ;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+    text-decoration: none;
+    outline: 0;
+    padding: 0;
+}
   body{
           background-image: url('../../assets/image/user/image/login-back.png');
     }
