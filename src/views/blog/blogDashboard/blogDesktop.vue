@@ -87,7 +87,14 @@ export default {
           {name:"前端",type:3},{name:"架构",type:4},{name:"区块链",type:5},
           {name:"数据库",type:6},{name:"5G",type:7},{name:"游戏开发",type:8},
           {name:"移动开发",type:9},{name:"运维",type:10},{name:"安全",type:11},
-          {name:"研发管理",type:12},{name:"物联网",type:13},{name:"其他",type:14},],
+          {name:"研发管理",type:12},{name:"物联网",type:13},
+          {name:"生物",type:14},{name:"物理",type:15},{name:"党政",type:16},
+          {name:"农林",type:17},{name:"建筑",type:18},{name:"制造",type:19},
+          {name:"教育",type:20},{name:"党政",type:21},{name:"能源",type:22},
+          {name:"卫生",type:23},{name:"航空",type:24},{name:"金融",type:25},
+          {name:"商贸",type:26},{name:"会计",type:27},{name:"国防",type:28},
+          {name:"体育",type:29},{name:"电子",type:30},{name:"创业",type:31},
+          {name:"其他",type:32},],
           id:0,
           type:0
       }
