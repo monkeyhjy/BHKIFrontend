@@ -29,7 +29,7 @@
             <el-col :span="4"><div style="height: 40px"></div></el-col>
             <el-col :span="16">
             <div class="search_result" >
-            <el-tabs type="border-card" style="background-color: rgba(240,241,244);  border-radius: 10px margin-top: 20%">
+            <el-tabs type="border-card" style="background-color: #fabca2;  border-radius: 10px margin-top: 20%">
                 <el-tab-pane label="专家" v-if="author_boolen">
                     <el-col style="margin-top: 1rem; text-align: left">
                         <el-button  @click="search1()">综合</el-button>
@@ -62,7 +62,7 @@
                                 </el-col>
                                 <el-col :span="24" style="margin-bottom: 1rem">
                                 <span>相关领域：
-                                    <span  v-for="(item2, index2) in item.tags.slice(0,10)" :key="index2" >{{item2.t}}({{item2.w}});</span>
+                                    <span  v-for="(item2, index2) in (item.tags || '').slice(0,10)" :key="index2" >{{item2.t}}({{item2.w}});</span>
                                 </span>
                                 </el-col>
                             </div>
@@ -169,12 +169,13 @@
                                     <span>被引量：{{item.n_citation}}</span>
                                 </el-col>
                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                    <span>相关链接：
-                                        <span  v-for="(item2, index2) in item.url"
-                                        :key="index2" >
-                                        <el-link :href= "item2.url_n" color = "blue">{{item2.url_n}}</el-link>
-                                        </span>
-                                    </span>
+                                    <el-col :span="3">相关链接：</el-col>
+                                    <el-col :span="21">
+                                        <el-col :span="24"  v-for="(item2, index2) in item.url"
+                                                :key="index2" >
+                                            <el-link :href= "item2" color = "blue">{{item2}}</el-link>
+                                        </el-col>
+                                    </el-col>
                                 </el-col>
                             </div>
                         </el-card>
@@ -445,6 +446,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
+
               if(this.output_label=='ISBN'){
                   this.label_type=9
                   this.author_boolen=false
@@ -501,7 +503,7 @@ export default {
                   type: this.label_type,
                   content: this.input,
                   order: this.order,
-                  isasc: 1,
+                  isasc: 0,
                   pagenumber:1
               }).then(res => {
                   console.log(res)
@@ -876,10 +878,4 @@ export default {
         min-height: 36px;
     }
     
-</style>
-<style>
-    body {
-        background-image: url('../../assets/image/user/image/login-back.png');
-        background-attachment: fixed;
-    }
 </style>
