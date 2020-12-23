@@ -209,5 +209,6 @@ export default {
 <style>
     body {
         background-image: url('../../assets/image/user/image/login-back.png');
+        background-attachment: fixed;
     }
 </style>
