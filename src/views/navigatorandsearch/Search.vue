@@ -19,7 +19,7 @@
                         </el-select>
                         <el-button slot="append" icon="el-icon-search" @click="sendSearch(input3, type)"></el-button>
                     </el-input>
-                    <el-link type="warning" :underline="false" style="margin-left: 10px; font-size: 16px"
+                    <el-link type="danger" :underline="false" style="margin-left: 10px; font-size: 16px"
                              @click="gotoCompSearch()">高级检索
                     </el-link>
                 </div>
