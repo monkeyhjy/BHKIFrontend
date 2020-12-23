@@ -11,40 +11,48 @@
 							<el-col :span="4"><div class="grid-content"></div></el-col>
 							<el-col :span="16">
 								<div style="text-align: center; margin: 3rem 0">
-									<strong style="font-size: 2rem">请选择您要认领的门户。</strong>
-									<el-button style="vertical-align: top; margin-left: 1rem"
-													type="danger"
-													@click="nameVisible = true">没有我想要的门户？重新搜索</el-button>
+									<strong style="font-size: 1.5rem">请选择您要认领的门户。</strong>
+									<el-button 
+													style="vertical-align: top;
+													margin-left: 1rem;
+													background-color: #df5747;
+													color: white"
+													@click="nameVisible = true">输入姓名，认领您的门户</el-button>
 								</div>
 								<el-card
 												style="background-color: white; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
 									<el-col :span="24">
-										<el-col :span="12"><el-link style="font-size: 2rem;" @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
+										<el-col :span="12"><el-link style="font-size: 1.5rem;" @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
 										<el-col :span="2" :offset="4" style="right: 2rem;">
-											<el-button style="vertical-align: middle; margin-left: 5rem"
-																 type="danger"
+											<el-button style="vertical-align: middle; margin-left: 5rem; background-color:#fbede4;"
 																 @click="submitClaim(user_id, item.id)">认领门户</el-button>
 										</el-col>
 
 									</el-col>
 									<el-col :span="24" style="margin-top: 1rem">
-										<span style="font-size: 1.4rem;">
-											<i class="el-icon-office-building"></i>
-											<span v-if="item.hasOwnProperty('orgs')" >   {{item.orgs[0]}}</span>
+										<span style="font-size: 1rem;">
+											<i class="el-icon-office-building">   工作单位：</i>
+											<span v-if="typeof(item.orgs)!=='undefined'&&item.orgs.length!==0">{{item.orgs[0]}}</span>
+											<span v-else>未知</span>
 										</span>
 									</el-col>
 									<el-col :span="24" style="margin-top: 1rem">
-										<span style="font-size: 1.4rem">
-											<i class="el-icon-s-grid"></i>
-											相关领域：</span>
-										<span style="font-size: 1.4rem;" v-for="(item2, index2) in item.tags" :key="index2">
-											{{item2.t}}；</span>
+										<span style="font-size: 1rem">
+											<i class="el-icon-s-grid"></i>   相关领域：</span>
+										<span v-if="typeof(item.tags)!=='undefined'&&item.tags.length!==0">
+											<span style="font-size: 1rem;"
+														v-for="(item2, index2) in item.tags" :key="index2">{{item2.t}}；</span>
+										</span>
+										<span v-else>未知</span>
 									</el-col>
 									<el-col :span="24" style="margin-top: 1rem; margin-bottom: 1rem">
-										<span style="font-size: 1.4rem;">
-											<i class="el-icon-s-opportunity"></i>
-											发表论文数：{{item.n_pubs}}</span>
+										<span style="font-size: 1rem;">
+											<i class="el-icon-s-opportunity">   发表论文数：</i>
+											<span v-if="typeof(item.n_pubs)!=='undefined'&&item.n_pubs!==''">
+												{{item.n_pubs}}</span>
+											<span v-else>0</span>
+										</span>
 									</el-col>
 								</el-card>
 							</el-col>
@@ -137,10 +145,7 @@
 			is_associate_author() {
 					this.$axios.post('/apis/personality/get')
 							.then(res => {
-								if(!res.data.is_associated) {
-									this.nameVisible = true
-								}
-								else {
+								if(res.data.is_associated) {
 									this.$router.push({
 										path: '/author',
 										query: {
@@ -148,10 +153,32 @@
 										},
 									})
 								}
+								else{
+									if(typeof(this.$route.query.nametext) !== 'undefined'
+									&& this.$route.query.nametext !== ''){
+										const loading = this.$loading({
+											lock: true,
+											text: 'Loading',
+											spinner: 'el-icon-loading',
+											background: 'rgba(0, 0, 0, 0.7)'
+										})
+										this.$axios.post('/apis/search/getassAuthor',
+												{
+													name: this.$route.query.nametext,
+													pagenumber: 1,
+												})
+												.then(res => {
+													this.nameText = this.$route.query.nametext
+													this.total = res.data.total
+													this.author_item = res.data.res
+													this.nameVisible = false;
+													loading.close()
+												})
+									}
+								}
 							})
 			},
-			//认领门户
-
+			//分页
 			handleCurrentChange(val) {
 				this.$axios.post('/apis/search/getassAuthor',
 						{
@@ -159,6 +186,7 @@
 							pagenumber: val
 						})
 						.then(res => {
+							console.log(res)
 							this.author_item = res.data.res
 							if(res.data.status === 0){
 								console.log('切换到第' + val + '页成功')
@@ -168,7 +196,6 @@
 			},
 			nameClose(done) {
 				this.nameVisible = false;
-				this.$router.push('/search')
 			},
 			submitName(text) {
 				if(text === '')
@@ -176,24 +203,24 @@
 						confirmButtonText: '确定',
 					})
 				else{
-					this.$axios.post('/apis/search/getassAuthor',
-							{
-								name: text,
-								pagenumber: 1,
-							})
-							.then(res => {
-								console.log(res)
-								this.total = res.data.total
-								this.author_item = res.data.res
-								// for(let i = 0; i < res.data.length; i++){
-								// 	this.author_item[i].id = res.data[i].id
-								// 	this.author_item[i].name = res.data[i].name
-								// 	this.author_item[i].orgs = res.data[i].orgs
-								// 	this.author_item[i].tags = res.data[i].tags
-								// 	this.author_item[i].n_pubs = res.data[i].n_pubs
-								// }
-								this.nameVisible = false;
-							})
+					// this.$axios.post('/apis/search/getassAuthor',
+					// 		{
+					// 			name: text,
+					// 			pagenumber: 1,
+					// 		})
+					// 		.then(res => {
+					// 			this.total = res.data.total
+					// 			this.author_item = res.data.res
+					// 			this.nameVisible = false;
+					// 		})
+					this.nameVisible = false;
+					this.$router.push({
+						path: '/authoritem',
+						query: {
+							nametext: text
+						}
+					})
+					this.$router.go(0)
 				}
 			},
 
@@ -240,6 +267,7 @@
 <style scoped>
 	body{
 		background-image: url('../../assets/image/user/image/login-back.png');
+		background-attachment: fixed;
 	}
 	.grid-content {
 		border-radius: 4px;

@@ -14,7 +14,7 @@
 					<el-col :span="16" style="background-color: #fbede4; padding-bottom: 5rem">
 						<!--					标题-->
 						<div >
-							<el-col :span="24" style="text-align: center; background-color: #fdc6d9; padding-bottom: 3rem">
+							<el-col :span="24" style="text-align: center; background-color: #ffffff; padding-bottom: 3rem">
 								<div>
 									<div style="text-align: right">
 										<el-button
@@ -53,48 +53,52 @@
 							<div style="margin: 0 1rem">
 								<!--						摘要-->
 								<el-col :span="24" style="text-align: left; margin-top: 3rem">
-									<strong style="font-size: 1.5rem">摘要：</strong>
-									<p style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
+									<strong style="font-size: 1rem">摘要：</strong>
+									<p v-if="typeof(paper.abstract)!=='undefined'&&paper.abstract!==''"
+										 style="margin: 0.5rem 0 0.5rem 1rem">{{paper.abstract}}</p>
+									<p v-else style="margin: 0.5rem 0 0.5rem 1rem">未知</p>
 								</el-col>
 								<!--						关键词-->
-								<el-col :span="24" style="text-align: left; font-size: 1.5rem; margin-top: 3rem">
+								<el-col :span="24" style="text-align: left; font-size: 1rem; margin-top: 3rem">
 									<strong>关键词：</strong>
-									<span v-for="(item, index) in paper.keywords" :key="index">
-								{{item}};
-							</span>
+									<span v-if="typeof(paper.keywords)!=='undefined'&&paper.keywords.length!==0"
+													v-for="(item, index) in paper.keywords" :key="index">
+								{{item}};</span>
+									<span v-else>未知</span>
 								</el-col>
-								<!--						原文链接-->
-<!--								<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">-->
-<!--									<strong>原文链接：</strong>-->
-<!--									<el-link :href="paper.url" target="_blank" style="font-size: 1.5rem">{{paper.url}}</el-link>-->
-<!--								</el-col>-->
 								<!--						被引量-->
-								<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1.5rem">
+								<el-col :span="24" style="text-align: left; margin-top: 3rem; font-size: 1rem">
 									<strong>被引量：</strong>
-									{{paper.n_citation}}
+									<span v-if="typeof(paper.n_citation)!=='undefined'&&paper.n_citation!==''">
+										{{paper.n_citation}}
+									</span>
+									<span v-else>0</span>
 								</el-col>
 								<!--						isbn-->
 								<el-col :span="24" style="text-align: left; margin-top: 1rem">
 									<strong>ISBN：</strong>
-									<span>{{paper.isbn}}</span>
+									<span v-if="typeof(paper.isbn)!=='undefined'&&paper.isbn!==''" >
+										{{paper.isbn}}</span>
+									<span v-else>未知</span>
 								</el-col>
 								<!--							doi-->
 								<el-col :span="24" style="text-align: left; margin-top: 1rem">
 									<strong>doi：</strong>
-									<span>{{paper.doi}}</span>
+									<span v-if="typeof(paper.doi)!=='undefined'&&paper.doi!==''">
+										{{paper.doi}}</span>
+									<span v-else>未知</span>
 								</el-col>
 
 								<el-col :span="24" style="text-align: left; margin-top: 1rem">
-									<el-col :span="2">
+									<el-col :span="3">
 										<strong>相关链接：</strong>
 									</el-col>
-									<el-col :span="22">
+									<el-col :span="21" v-if="typeof(paper.url)!=='undefined'&&paper.url.length!==0">
 										<el-col :span="24" v-for="(item, index) in paper.url" :key="index">
 											<el-link :href="item">{{item}}</el-link>
 										</el-col>
-
 									</el-col>
-
+									<span v-else>未知</span>
 								</el-col>
 							</div>
 
@@ -241,6 +245,7 @@
 <style>
 	body{
 		background-image: url('../../assets/image/user/image/login-back.png');
+		background-attachment: fixed;
 	}
 </style>
 

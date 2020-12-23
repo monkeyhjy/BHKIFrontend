@@ -1,4 +1,4 @@
-<template xmlns:el-col="http://www.w3.org/1999/html">
+<template>
 	<div>
 		<div>
 			<new-navigation></new-navigation>
@@ -22,7 +22,7 @@
 								<div style="height: 25rem">
 									<el-col :span="24">
 										<el-col :span="24" style="margin-bottom: 1rem;">
-											<el-card style="background-color: #fabca2; border-radius: 10px">
+											<el-card style="background:rgba(240,241,244); border-radius: 10px">
 												<el-popover
 																placement="top-start"
 																width="240"
@@ -58,11 +58,6 @@
 																	 v-if="author.is_claimed===1"
 																	 type="danger"
 																	 @click="reportDisplay">举报冒领门户</el-button>
-<!--												<el-button size="mini"-->
-<!--																	 style="vertical-align: center; margin-left: 0.5rem"-->
-<!--																	 v-if="author.is_claimed===1&&author.is_reported===1"-->
-<!--																	 type="danger"-->
-<!--																	 disabled>冒领门户已被举报</el-button>-->
 												<el-button size="mini"
 																	 style="vertical-align: center; margin-left: 0.5rem"
 																	 v-if="!author.is_followed&&author.is_claimed!==2"
@@ -87,35 +82,53 @@
 									<el-col :span="24" style="margin-left: 0">
 										<el-col :span="12">
 											<el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
-												<el-card style="background-color: #fabca2;  border-radius: 10px">
+												<el-card style="background:rgba(240,241,244);  border-radius: 10px">
 													<div>
 														<i class="el-icon-s-opportunity" style="margin-right: 0.5rem; margin-bottom: 0.5rem"></i>
 														<strong>相关领域：</strong>
+														<span v-if="typeof(author.tags)==='undefined'||author.tags.length===0">未知</span>
 													</div>
-													<el-col :span="24" style="margin-bottom: 0.5rem;" v-for="(item, index) in author.tags" :key="index">
-														{{item.t}}
-													</el-col>
+													<div v-if="typeof(author.tags)!=='undefined'&&author.tags.length!==0">
+														<el-col :span="24" style="margin-bottom: 0.5rem;"
+																		v-for="(item, index) in author.tags" :key="index">
+															{{item.t}}
+														</el-col>
+													</div>
+
 												</el-card>
 											</el-col>
 											<el-col :span="24">
-												<el-card style="margin-bottom: 1rem; background-color: #fabca2;  border-radius: 10px">
+												<el-card style="margin-bottom: 1rem; background:rgba(240,241,244);  border-radius: 10px">
 													<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
-													<strong>工作单位：</strong>{{author.orgs[0]}}
+													<strong>工作单位：</strong>
+													<span v-if="typeof(author.orgs)!=='undefined'&&author.orgs.length!==0">
+														{{author.orgs[0]}}
+													</span>
+													<span v-else>未知</span>
 												</el-card>
 											</el-col>
 											<el-col :span="24" style="font-size: 1.2rem; text-align: center; margin-bottom: 1rem">
-												<el-card style="background-color: #fabca2;  border-radius: 10px">
+												<el-card style="background:rgba(240,241,244);  border-radius: 10px">
 													<el-col :span="8" style="margin-bottom: 1rem">
 														<el-col :span="24" style="margin-bottom: 1rem">发表论文数</el-col>
-														<el-col :span="24">{{author.n_pubs}}</el-col>
+														<el-col :span="24"
+																		v-if="typeof(author.n_pubs)!=='undefined'&&author.n_pubs!==''">
+															{{author.n_pubs}}</el-col>
+														<el-col :span="24" v-else>0</el-col>
 													</el-col>
 													<el-col :span="8" style="margin-bottom: 1rem">
 														<el-col :span="24" style="margin-bottom: 1rem">h指数</el-col>
-														<el-col :span="24">{{author.h_index}}</el-col>
+														<el-col :span="24"
+																		v-if="typeof(author.h_index)!=='undefined'&&author.h_index!==''">
+															{{author.h_index}}</el-col>
+														<el-col :span="24" v-else>0</el-col>
 													</el-col>
 													<el-col :span="8" style="margin-bottom: 1rem">
 														<el-col :span="24" style="margin-bottom: 1rem">被引量</el-col>
-														<el-col :span="24">{{author.n_citation}}</el-col>
+														<el-col :span="24"
+																		v-if="typeof(author.n_citation)!=='undefined'&&author.n_citation!==''">
+															{{author.n_citation}}</el-col>
+														<el-col :span="24" v-else>0</el-col>
 													</el-col>
 												</el-card>
 											</el-col>
@@ -124,8 +137,7 @@
 											<div class="grid-content" style="text-align: center">
 												<span style="font-weight: 700; font-size: 1.5rem; margin-bottom: 0.5rem">相关专家网络</span>
 												<div id="myNetwork"
-														 style="margin-top: 1rem;
-											 width: 100%; height: 30rem;
+														 style="width: 100%; height: 30rem;
 											 overflow: hidden; text-align: center"/>
 											</div>
 										</el-col>
@@ -144,15 +156,15 @@
 											style="margin-top: 1rem; text-align: left"
 											v-for="(item, index) in author.pubs"
 											:key="index">
-								<el-card class="box-card" style="background-color: #f9aebf; border-radius: 15px" shadow="hover">
+								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px" shadow="hover">
 									<div class="text item">
-										<el-col :span="12" style="margin-bottom: 1rem">
+										<el-col :span="18" style="margin-bottom: 1rem">
 											<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
 												<i class="el-icon-document"></i>
 												{{item.title}}
 											</el-link>
 										</el-col>
-										<el-col :span="12" style="text-align: right">
+										<el-col :span="6" style="text-align: right">
 											<el-button v-if="item.is_display===1&&author.is_claimed===2"
 																 @click="pub_display(index, 1)">当前状态：展示给他人</el-button>
 											<el-button v-if="item.is_display===0&&author.is_claimed===2"
@@ -168,11 +180,17 @@
 												<span v-if="index2!==item.author.length-1">,</span>
 											</el-link>
 										</el-col>
-										<el-col :span="24" style="margin-bottom: 1rem">
+										<el-col :span="24" style="margin-bottom: 1rem"
+														v-if="(typeof(item.venue_raw)!=='undefined'&&item.venue_raw!=='')
+																	&&(typeof(item.year)!=='undefined'&&item.year!=='')">
 											{{item.venue_raw}}({{item.year}})
 										</el-col>
 										<el-col :span="24" style="margin-bottom: 1rem">
-											<span>被引量：{{item.n_citation}}</span>
+											<span>被引量：</span>
+											<span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">
+												{{item.n_citation}}
+											</span>
+											<span v-else>0</span>
 										</el-col>
 									</div>
 								</el-card>
@@ -466,6 +484,10 @@
 												this.graph(q);
 											}
 								})
+								let only = JSON.parse(JSON.stringify(this.author.relative_author))
+									if(only.length === 0){
+										this.graph(only)
+									}
 							}
 							else {
 								alert('抱歉，您所点击的专家还未建立门户')
@@ -480,6 +502,7 @@
 				this.myChart = echarts.init(dom);
 				this.chartData = this.dataEChart(q);
 				this.chartLink = this.linkEChart(this.chartData);
+				console.log(this.chartLink)
 				let option = {
 					tooltip:{
 						show: false,
@@ -841,6 +864,7 @@
 <style>
 	body{
 		background-image: url('../../assets/image/user/image/login-back.png');
+		background-attachment: fixed;
 	}
 </style>
 
