@@ -213,7 +213,6 @@
 							paperid: this.paper.paper_id
 						}
 				).then(res => {
-					console.log(res)
 							if(res.data.status === 0){
 								this.$message({
 									type: "success",
@@ -236,7 +235,6 @@
 							userid: this.user_id,
 							paperid: this.paper.paper_id
 						}).then(res => {
-							console.log(res)
 							this.paper.is_star = res.data.is_star
 				})
 			}
