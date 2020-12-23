@@ -277,6 +277,7 @@
 		name: "Author",
 		data() {
 			return {
+				a:"2",
 				/*按钮的逻辑：
 				1.认领：is_claimed
 					0 -> 未被认领
