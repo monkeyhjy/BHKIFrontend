@@ -44,7 +44,7 @@
                               <el-image :src="user_avatar" class="inline-avatar" fit="cover"></el-image>
                             </el-col>
                             <el-col :span="23" class="bloginfo-block">
-                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false">{{user_name}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"><el-link :underline="false" :href="'/userinfo/'+user_id">{{user_name}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
                               <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
                             </el-col>
                           </el-row>
@@ -58,13 +58,13 @@
                     <div class="collected-blogs" v-for="item in collected" :key="item.id">
                       <div class="collected-block">
                         <div class="following-content" style="text-align: left;">
-                          <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+user_id+'/'+item.id"><h2>{{item.name}}</h2></el-link>
+                          <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.authorid+'/'+item.id"><h2>{{item.name}}</h2></el-link>
                           <el-row>
                             <el-col :span="1">
                               <el-image :src="item.avatar" class="inline-avatar" fit="cover"></el-image>
                             </el-col>
                             <el-col :span="23" class="bloginfo-block">
-                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false">{{item.author}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
+                              <el-col :span="18" style="text-align: left;" class="limit-text-length blog-info-p"> <el-link :underline="false" :href="'/userinfo/'+item.authorid">{{item.author}}</el-link> | {{formatDate(item.date)}} | {{item.content}}</el-col>
                               <el-col :span="6" style="text-align: right;" class="limit-text-length blog-info-p">阅读：{{item.readnum}} | 点赞：{{item.likenum}} | 评论：{{item.tipnum}}</el-col>
                             </el-col>
                           </el-row>
