@@ -34,12 +34,12 @@
                                 <div>
                                 </div>
                                 <div style="width: 380px;height: 200px;">
-                                    <div v-for="rank in ranks" style="width: 380px; height: 50px;margin-top: 0px ">
+                                    <div v-for="rank in ranks" style="width: 380px; height: 50px;margin-bottom: 1px ">
                                         <svg class="icon"
-                                             style=" float: left; width: 40px;height: 30px; margin: 5px 0px 10px 0px;">
+                                             style=" float: left; width: 40px;height: 30px; margin: 5px 0px 15px 0px;">
                                             <use xlink:href="#icon-bingren"></use>
                                         </svg>
-                                        <ul style="width: 300px; height: 50px; margin: 5px 0px 10px -40px; float: right;">
+                                        <ul style="width: 330px; height: 30px; margin: 5px 0px 10px -40px; float: right;">
                                             <el-link v-bind:href="'/paper/?paper_id='+rank.id" style="float: left;">{{rank.title}}
                                             </el-link>
                                         </ul>
@@ -79,7 +79,7 @@
                                 <div v-for="sci in science" class="text item"
                                      style="width: 380px; height: 20px;margin-top: 3% ">
                                     <svg class="icon"
-                                         style="float: left;margin-top: 5px;margin-left: 5px; font-size: 30px">
+                                         style="float: left;width: 40px;height: 35px; margin: -2px 0px 15px 0px;">
                                         <use xlink:href="#icon-tianshi"></use>
                                     </svg>
                                     <div style="float:left; width: 300px;">
