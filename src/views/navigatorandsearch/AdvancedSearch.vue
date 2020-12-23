@@ -101,21 +101,27 @@
                                                     </el-link>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>h指数：{{item.h_index}}</span>
+                                                    <span v-if="typeof(item.h_index)!=='undefined'&&item.h_index!==''">h指数：{{item.h_index}}</span>
+                                                    <span v-else>h指数：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>发表量：{{item.n_pubs}}</span>
+                                                    <span v-if="typeof(item.n_pubs)!=='undefined'&&item.n_pubs!==''">发表量：{{item.n_pubs}}</span>
+                                                    <span v-else>发表量：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>被引量：{{item.n_citation}}</span>
+                                                    <span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">被引量：{{item.n_citation}}</span>
+                                                    <span v-else>被引量：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>工作单位：{{item.orgs}}</span>
+                                                    <span v-if="typeof(item.orgs)!=='undefined'&&item.orgs!==''">工作单位：{{item.orgs}}</span>
+                                                    <span v-else>工作单位：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                <span>相关领域：
-                                    <span  v-for="(item2, index2) in (item.tags || '').slice(0,10)" :key="index2" >{{item2.t}}({{item2.w}});</span>
-                                </span>
+                                                    <span v-if="typeof(item.tags)!=='undefined'&&item.tags!==''">相关领域：
+                                                        <span v-for="(item2, index2) in (item.tags || '').slice(0,10)"
+                                                              :key="index2">{{item2.t}}({{item2.w}});</span>
+                                                    </span>
+                                                    <span v-else>相关领域：未知</span>
                                                 </el-col>
                                             </div>
                                         </el-card>
@@ -216,22 +222,26 @@
                                                              @click="jumpToAouther(author.id)">{{author.name}}</el-link>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>发表刊物：{{item.venue_name}}</span>
+                                                    <span v-if="typeof(item.venue_name)!=='undefined'&&item.venue_name!==''">发表刊物：{{item.venue_name}}</span>
+                                                    <span v-else>发表刊物：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>发表年限：{{item.year}}</span>
+                                                    <span v-if="typeof(item.year)!=='undefined'&&item.year!==''">发表年限：{{item.year}}</span>
+                                                    <span v-else>发表年限：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span>被引量：{{item.n_citation}}</span>
+                                                    <span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">被引量：{{item.n_citation}}</span>
+                                                    <span v-else>被引量：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
                                                     <el-col :span="3">相关链接：</el-col>
-                                                        <el-col :span="21">
-                                                            <el-col :span="24"  v-for="(item2, index2) in item.url"
-                                                                :key="index2" >
-                                                                <el-link :href= "item2" color = "blue">{{item2}}</el-link>
-                                                            </el-col>
+                                                    <el-col :span="21" v-if="typeof(item.url)!=='undefined'&&item.url!==''">
+                                                        <el-col :span="24" v-for="(item2, index2) in item.url"
+                                                                :key="index2">
+                                                            <el-link :href="item2" color="blue">{{item2}}</el-link>
                                                         </el-col>
+                                                    </el-col>
+                                                    <span v-else>未知</span>
                                                 </el-col>
                                             </div>
                                         </el-card>
