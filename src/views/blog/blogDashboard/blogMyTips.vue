@@ -19,7 +19,7 @@
                   <span style="fonr-size:13px;margin-right:15px">评论了</span>
                   <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="font-size:16px">{{item.blogname }}</el-link>
                 </div>
-                <p>{{ item.content }}</p>
+                <p style="margin-top:7px;">{{ item.content }}</p>
                 <div class="flex6" style="margin-top:20px">
                   <span style="font-size:12px;color:gray">来自于</span>
                   <el-image
