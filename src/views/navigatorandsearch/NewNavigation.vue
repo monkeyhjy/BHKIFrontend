@@ -320,15 +320,15 @@
                     url: '/apis/personality/get',
                     method: "post",
                 }).then(res => {
-                    console.log(res);
                     that.personName = res.data.username
-                    that.picture = res.data.avatar
-                    that.admin = res.data.is_admin
-                    that.userId = res.data.userid
+                    console.log(res);
                     if (this.personName !== "") {
                         this.keepLogin = false;
                         this.keepLogout = true;
                     }
+                    that.picture = res.data.avatar
+                    that.admin = res.data.is_admin
+                    that.userId = res.data.userid
                 })
             }
         }
@@ -358,5 +358,6 @@ li{
 
     body {
         background-image: url('../../assets/image/user/image/login-back.png');
+        background-attachment: fixed;
     }
 </style>
