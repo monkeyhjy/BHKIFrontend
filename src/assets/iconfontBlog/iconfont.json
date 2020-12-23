@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18788160",
+      "name": "可怜",
+      "font_class": "kelian",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "1472922",
+      "name": "圣诞快乐圣",
+      "font_class": "shengdankuailesheng",
+      "unicode": "e7bb",
+      "unicode_decimal": 59323
+    },
+    {
+      "icon_id": "1683243",
+      "name": "哭",
+      "font_class": "ku",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "4699462",
+      "name": "哭",
+      "font_class": "ku1",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "7664380",
+      "name": "图标-哭泣",
+      "font_class": "lab-kuqi-copy",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "9197728",
+      "name": "兴奋",
+      "font_class": "xingfen",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
       "icon_id": "13956201",
       "name": "搜索",
       "font_class": "sousuo",

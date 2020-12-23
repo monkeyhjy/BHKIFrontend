@@ -6,8 +6,13 @@
     <div style="width:80%">
       <ul>
         <li style="margin-top:5px;margin-left:10px">
-          <el-card shadow="never">
-            <div  v-for="(item,index) in list" :key="index">
+          <el-card shadow="never" v-show="get">
+            <div v-show="list.length==0" style="color:gray" class="flex6">
+              你还没有发布帖子呦~快来开发你的星球叭
+              <svg class="icon" aria-hidden="true" style="font-size:30px;margin-left:20px">
+  <use xlink:href="#icon-xingfen"></use></svg>
+            </div>
+            <div  v-for="(item,index) in list" :key="index" v-show="list.length>0">
               <div class="flex6">
                 <el-link class="blog-title" :underline="false" :href="'/BlogEdit/'+id+'/'+item.blogid" style="max-width:80%;">
                   <h1 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.title }}</h1>
@@ -63,6 +68,7 @@ export default {
       return{
           list:[],
           id:1,
+          get:false
       }
   },
   mounted(){
@@ -77,6 +83,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
+                this.get=true;
   //              console.log(res)
                 this.list=res.data.data.list
               })

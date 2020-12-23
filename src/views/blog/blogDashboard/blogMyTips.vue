@@ -6,8 +6,14 @@
     <div style="width:80%">
         <ul >
           <li style="margin-top:5px;margin-left:10px">
-            <el-card shadow="never">
-              <div  v-for="(item,index) in list" :key="index">
+            <el-card shadow="never" v-show="get">
+              <div v-show="list.length==0" style="color:gray" class="flex6">
+                您暂未发布任何评论哦~ 快去看看我们的广场逛一逛叭~
+                <svg class="icon" aria-hidden="true" style="font-size:30px;margin-left:20px">
+  <use xlink:href="#icon-lab-kuqi-copy"></use>
+</svg>
+              </div>
+              <div  v-for="(item,index) in list" :key="index" v-show="list.length>0">
                 <div class="flex6" >
                   <span style="font-size:12px;color:gray;margin-right:15px">{{ formatDate(item.date) }}</span>
                   <span style="fonr-size:13px;margin-right:15px">评论了</span>
@@ -58,7 +64,8 @@ export default {
   },
   data(){
       return{
-          list:[]
+          list:[],
+          get:false
 
       }
   },
@@ -71,6 +78,7 @@ export default {
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
          //       console.log(res)
+         this.get=true
                 this.list=res.data.data.list
               })
   },

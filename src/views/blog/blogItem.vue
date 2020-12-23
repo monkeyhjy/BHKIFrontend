@@ -164,6 +164,13 @@
               </el-button>
             </div>
             <div style="margin-top:20px">
+              <div v-show="tiplist.length==0&&get" style="color:gray" class="flex6">
+                目前还没有看官发表任何观点
+                <svg class="icon" aria-hidden="true" style="font-size:30px;color:#ce3524;margin-left:10px"> 
+  <use xlink:href="#icon-kelian"></use>
+</svg>
+                 ，真的不准备来说点什么嘛
+              </div>
               <ul v-for="(item,index) in tiplist" :key="index">
                 <li style="margin-top:5px;margin-left:10px;margin-bottom:10px">
                   <div class="flex6" >
@@ -242,6 +249,7 @@ export default {
   },
   data(){
       return{
+        get:false,
         owner:"",
         sixin:"",
           dialogVisible: false,
@@ -308,6 +316,7 @@ export default {
                 this.likenum=res.data.data.likenum;
                 this.like=res.data.data.is_like;
                 this.tiplist=res.data.data.tiplist;
+                this.get=true;
                 this.type=res.data.data.type,
               //  alert(this)
                 this.star=res.data.data.is_collect

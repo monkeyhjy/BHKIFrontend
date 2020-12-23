@@ -6,8 +6,17 @@
         <el-col :span="18">
           <ul>
             <li style="margin-top:5px;margin-left:10px"  >
-              <el-card shadow="never">
-                <div v-for="(item,index) in list" :key="index">
+              <el-card shadow="never" v-show="get" >
+                <div v-show="get&&list.length==0" style="color:gray">
+                  <p class="flex6"><span>当前类别暂无帖子</span><span> <svg class="icon" aria-hidden="true" style="font-size:30px;color:#ce3524;margin-left:10px">
+ <use xlink:href="#icon-ku"></use>
+</svg></span><span>，快快发布一些来丰富我们的网站叭！！</span></p>
+                   <img src="../../../icons/Santa.png" height="320" width="750" style="margin-left:50px;margin-top:40px"/>
+                   <p ><span style="float:right" class="flex6">平安夜快乐撒~ <svg class="icon" aria-hidden="true">
+  <use xlink:href="#icon-shengdankuailesheng"></use>
+</svg></span></p>
+                </div>
+                <div v-for="(item,index) in list" :key="index" v-show="list.length>0">
                   <div class="flex6" style="margin:left:0">
                     <el-link class="blog-title" :underline="false" :href="'/BlogItem/'+item.userid+'/'+item.blogid" style="width:70%;justify-content: left">
                       <h2  style="font-size:20px;margin:left:0">{{ item.blogname }}</h2>
@@ -96,7 +105,8 @@ export default {
           {name:"体育",type:29},{name:"电子",type:30},{name:"创业",type:31},
           {name:"其他",type:32},],
           id:0,
-          type:0
+          type:0,
+          get:false
       }
   },
     mounted(){
@@ -108,6 +118,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
+                this.get=true
            //     console.log(res)
                 this.list=res.data.data.list
               })

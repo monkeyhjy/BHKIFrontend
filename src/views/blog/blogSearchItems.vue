@@ -9,8 +9,15 @@
         <el-col :span="4"><div class="grid-content"></div></el-col>
         <el-col :span="16">
               <div>
-              <p style="color:gray;font-size:8px;margin-bottom:20px;margin-left:20px">总共{{ list.length }}条搜索记录</p>
-              <ul v-for="(item,index) in list" :key="index">
+              <p style="color:gray;font-size:8px;margin-bottom:20px;margin-left:20px" v-show="get&&list.length>0">总共{{ list.length }}条搜索记录</p>
+              <div v-show="list.length==0&&get" style="color:gray;margin-top:40px" class="flex6">
+                查询不到任何结果呢
+                    <svg class="icon" aria-hidden="true" style="font-size:30px;margin-left:10px;margin-right:10px">
+  <use xlink:href="#icon-lab-kuqi-copy"></use>
+</svg>
+                快试试看别的关键词呢
+             </div>
+  <ul v-for="(item,index) in list" :key="index">
                 <li style="margin-bottom:10px">
                   <el-card class="box-card">
                     <div slot="header" >
@@ -78,6 +85,7 @@ export default {
           {name:"体育",type:29},{name:"电子",type:30},{name:"创业",type:31},
           {name:"其他",type:32},],
         type:1,
+        get:false
       }
   },
   mounted(){
@@ -124,6 +132,7 @@ export default {
      //           console.log(res);
                 this.list=res.data.data.list
                 this.type=0
+                this.get=true
             })
     },
     choseType(type){
