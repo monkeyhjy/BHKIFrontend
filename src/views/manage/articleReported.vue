@@ -54,12 +54,12 @@
         <div class="flex mb-4">
           <div class="flex-shrink-0 h-8 w-8 lg:h-12 lg:w-12 mr-4 bg-gray-300 rounded-full overflow-hidden">
             <!-- <a :href="'/userinfo/'+item.user_id"><img :src="item.user_icon" class="h-full w-full object-cover"></a> -->
-            <a :href="'/userinfo/'+item.user_id">
+            <el-link :underline="false" :href="'/userinfo/'+item.user_id">
             <el-image style="height:48px;width:48px;border-radius:50%" :src="item.user_icon" fit="cover"></el-image>
-            </a>
+            </el-link>
           </div>
-          <div class=" font-semibold" style="font-size:30px">
-            <a :href="'/BlogItem/'+item.user_id+'/'+item.blog_id">{{item.title}}</a>
+          <div >
+            <el-link :underline="false" :href="'/BlogItem/'+item.user_id+'/'+item.blog_id" class=" font-semibold" style="font-size:30px">{{item.title}}</el-link>
           </div>
         </div>
         <div class="space-y-4">
@@ -161,8 +161,7 @@ export default {
       .then(res => {
         console.log(res);
         if (res.data.data.status === 0) {
-          this.$message.error("删除帖子失败！"),
-          alert('删除帖子失败！')
+          this.$message({ message: '删除帖子失败', type: 'warning' });
         } else {
           this.$router.go(0);
           // this.list.splice(this.activeindex,1)
@@ -170,7 +169,7 @@ export default {
           // if(this.list.length==0)
           //   this.flag=1;
           // else this.item=this.list[0]
-          alert('处理举报成功！')
+          // this.$message({ message: '处理举报成功', type: 'success' });
         }
       })
     }
