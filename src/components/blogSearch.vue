@@ -5,7 +5,7 @@
        
 		  <el-input type="text"  v-model="search"  placeholder="搜索从这里开始..." style="border-radius:0 42px 42px 0" id="searchInput1">
       
-     <el-select v-model="value" slot="prepend" placeholder="请选择" style="width: 140px;" @change="ch">
+     <el-select v-model="value" slot="prepend" placeholder="请选择" style="width: 140px" @change="ch">
                             <el-option
                                     v-for="item in chose"
                                     :key="item"

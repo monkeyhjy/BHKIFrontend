@@ -300,7 +300,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+            //    console.log(res);
                 this.blogname=res.data.data.title;
                 this.htmlcontent=res.data.data.htmlcontent;
                 this.readnum=res.data.data.readnum;

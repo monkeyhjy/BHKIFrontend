@@ -177,7 +177,7 @@ document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-          //      console.log(res)
+        //        console.log(res)
                 this.list=res.data.data.list
                 this.type=item.type
                 

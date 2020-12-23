@@ -68,7 +68,7 @@ export default {
   mounted(){
       this.$axios.post('/apis/user/getstatus', {
           }).then(res => {
-                console.log(res);
+         //       console.log(res);
 			 this.id=res.data.userid
 			//获取我的帖子信息
      this.$axios.post('/apis/blog/getuserblogs',

@@ -121,7 +121,7 @@ export default {
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-                console.log(res);
+     //           console.log(res);
                 this.list=res.data.data.list
                 this.type=0
             })
