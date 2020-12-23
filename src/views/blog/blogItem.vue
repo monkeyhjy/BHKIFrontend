@@ -91,7 +91,7 @@
         <!-- <el-col :span="1" class="grid-content"></el-col> -->
         <el-col :span="18">
           <div style="background:white;padding:20px">
-            <h1>{{ blogname }}</h1>
+            <h2>{{ blogname }}</h2>
             <div class="flex6">
               <el-button style="margin-right:30px">{{ chose[type].name }} </el-button>
               <span class="flex6 iconsize">

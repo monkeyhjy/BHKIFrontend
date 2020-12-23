@@ -17,7 +17,7 @@
               </el-col> 
               <el-col :span="1" class="grid-content"></el-col>
                 <el-col :span="12">
-                  <h1>{{ name }}</h1>
+                  <h2>{{ name }}</h2>
                   </el-col> 
               <el-col  :span="24">
              <wang-enduit v-model="content" ref="child"></wang-enduit>
