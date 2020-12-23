@@ -199,6 +199,8 @@ export default {
 
           paperItem.title = res.data.title
           paperItem.source = res.data.venue.raw
+          paperItem.paper_id = item
+          paperItem.collected = true
           paperItem.authorCount = 0
           if(authorRes.length < 1){
           }else{
