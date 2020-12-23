@@ -40,7 +40,7 @@
                                             <use xlink:href="#icon-bingren"></use>
                                         </svg>
                                         <ul style="width: 300px; height: 50px; margin: 5px 0px 10px -40px; float: right;">
-                                            <el-link v-bind:href="rank.url" style="float: left;">{{rank.title}}
+                                            <el-link v-bind:href="'/paper/?paper_id='+rank.id" style="float: left;">{{rank.title}}
                                             </el-link>
                                         </ul>
                                     </div>
@@ -62,7 +62,7 @@
                                             <use xlink:href="#icon-tangguo"></use>
                                         </svg>
                                         <ul style="float:right; width: 300px; margin-top: 7px">
-                                            <el-link v-bind:href="lib.url" style="float: left">{{lib.name}}</el-link>
+                                            <el-link v-bind:href="'/author?author_id='+lib.id" style="float: left">{{lib.name}}</el-link>
                                         </ul>
                                     </div>
                                 </div>
