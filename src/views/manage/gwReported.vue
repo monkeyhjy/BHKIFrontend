@@ -59,13 +59,13 @@
             <el-image style="height:48px;width:48px;border-radius:50%" :src="item.user_icon" fit="cover"></el-image>
             </a>
             </div>
-            <div class=" font-semibold" style="font-size:30px">
-              <a :href="'/userinfo/'+item.user_id">{{item.user_name}}</a>
+            <div>
+              <el-link :underline="false" :href="'/userinfo/'+item.user_id" class=" font-semibold" style="font-size:30px">{{item.user_name}}</el-link>
             </div>
           </div>
           <div class="space-y-4">
             <!-- 跳转到门户主页 -->
-            <a @click="jumpToPortal(item.author_id)" class="cursor-pointer">门户名字：{{name}}</a>
+            <el-link :underline="false" class="cursor-pointer" style="font-size:16px"  @click="jumpToPortal(item.author_id)" >门户名字：{{name}}</el-link>
             <br>
             工作单位：{{orgs}}
           </div>
@@ -186,8 +186,7 @@ export default {
           type:i,
       }).then(res => {
       if (res.data.status === 0) {
-        this.$message.error("门户认领解除绑定失败！")
-        alert("门户认领解除绑定失败！")
+        this.$message({ message: '解除门户绑定失败', type: 'warning' });
       } else {
         this.$router.go(0);
         // this.list.splice(this.activeindex,1)
@@ -195,7 +194,7 @@ export default {
         // if(this.list.length==0)
         //   this.flag=1;
         // else this.item=this.list[0]
-        alert("处理举报成功！")
+        // this.$message({ message: '处理举报成功', type: 'success' });
       }
       })
     }
