@@ -15,7 +15,7 @@
             <div  v-for="(item,index) in list" :key="index" v-show="list.length>0">
               <div class="flex6">
                 <el-link class="blog-title" :underline="false" :href="'/BlogEdit/'+id+'/'+item.blogid" style="max-width:80%;">
-                  <h1 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.title }}</h1>
+                  <h2 style="font-size:20px;white-space:nowrap;overflow: hidden; text-overflow: ellipsis;">{{ item.title }}</h2>
                 </el-link>
                 <el-link class="blog-title" :underline="false" style="margin-left:20px"  :href="'/BlogItem/'+id+'/'+item.blogid">
                   <i class="flex6">
