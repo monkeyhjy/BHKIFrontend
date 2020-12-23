@@ -48,8 +48,8 @@
                                         </div>
                                     </div>
                                 </el-col>
-                                <el-col :span="8" :offset="1">
-                                    <h2 style="margin-top: 20px">{{personName}}</h2>
+                                <el-col :span="8" :offset="1" >
+                                    <h2 style="margin-top: 15px;margin-bottom: 10px">{{personName}}</h2>
                                 </el-col>
                             </el-row>
                         </div>
