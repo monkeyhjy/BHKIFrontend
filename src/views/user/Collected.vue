@@ -80,6 +80,7 @@ export default {
       paperValid:false,
       activeName: 'paper',
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      p_idList:[],
       p_collected:[
         // {
         //   paper_id:2,
@@ -184,13 +185,54 @@ export default {
         // console.log(that.b_collected)
       });
     },
+    getPaperInfo(){
+      var i=0
+      this.p_idList.forEach(item => {
+        var paperItem = new Object()
 
+        this.$axios.post('/apis/search/getpaperbyid',{
+          paperid:item
+        }).then(res => {
+          console.log(res)
+          // var authorList = new Array()
+          var authorRes = res.data.authors
+
+          paperItem.title = res.data.title
+          paperItem.source = res.data.venue.raw
+          paperItem.authorCount = 0
+          if(authorRes.length < 1){
+          }else{
+            paperItem.authorCount += 1
+            paperItem.author1 = new Object()
+            paperItem.author1.id = authorRes[0].id
+            paperItem.author1.name = authorRes[0].name
+            if(authorRes.length == 1){
+            }else{
+              paperItem.authorCount += 1
+              paperItem.author2 = new Object()
+              paperItem.author2.id = authorRes[1].id
+              paperItem.author2.name = authorRes[1].name
+              if(authorRes.length == 2){
+              }else{
+                paperItem.authorCount += 1
+              }
+            } 
+          } 
+        })
+        this.$set(this.p_collected,i,paperItem)
+        i+=1
+      })
+      console.log(this.p_collected)
+    },
     getCollectedPaper(userID) {
       var that = this
       this.$axios.post('/apis/user/get_star_paper_by_userid',{
         userid:userID
       }).then(paperIdRes => {
         // console.log(paperIdRes)
+        this.p_idList = paperIdRes.data.paper_id_list
+        console.log(this.p_idList)
+        this.getPaperInfo()
         var result = paperIdRes.data.paper_id_list
         var paperList = new Array()
         for(var i=0,len=result.length; i<len; i++){
@@ -200,37 +242,37 @@ export default {
           var p_id = result[i]
           paperItem.paper_id = p_id
           paperItem.collected = true
-          this.$axios.post('/apis/search/getpaperbyid',{
-            paperid:p_id
-          }).then(res => {
-            // console.log(res)
-            // var authorList = new Array()
-            var authorRes = res.data.authors
+          // this.$axios.post('/apis/search/getpaperbyid',{
+          //   paperid:p_id
+          // }).then(res => {
+          //   // console.log(res)
+          //   // var authorList = new Array()
+          //   var authorRes = res.data.authors
 
-            paperItem.title = res.data.title
-            paperItem.source = res.data.venue.raw
-            paperItem.authorCount = 0
-            if(authorRes.length < 1){
-            }else{
-              paperItem.authorCount += 1
-              paperItem.author1 = new Object()
-              paperItem.author1.id = authorRes[0].id
-              paperItem.author1.name = authorRes[0].name
-              if(authorRes.length == 1){
-              }else{
-                paperItem.authorCount += 1
-                paperItem.author2 = new Object()
-                paperItem.author2.id = authorRes[1].id
-                paperItem.author2.name = authorRes[1].name
-                if(authorRes.length == 2){
-                }else{
-                  paperItem.authorCount += 1
-                }
-              } 
-            } 
-          })
+          //   paperItem.title = res.data.title
+          //   paperItem.source = res.data.venue.raw
+          //   paperItem.authorCount = 0
+          //   if(authorRes.length < 1){
+          //   }else{
+          //     paperItem.authorCount += 1
+          //     paperItem.author1 = new Object()
+          //     paperItem.author1.id = authorRes[0].id
+          //     paperItem.author1.name = authorRes[0].name
+          //     if(authorRes.length == 1){
+          //     }else{
+          //       paperItem.authorCount += 1
+          //       paperItem.author2 = new Object()
+          //       paperItem.author2.id = authorRes[1].id
+          //       paperItem.author2.name = authorRes[1].name
+          //       if(authorRes.length == 2){
+          //       }else{
+          //         paperItem.authorCount += 1
+          //       }
+          //     } 
+          //   } 
+          // })
           paperList[i]=paperItem
-          this.$set(that.p_collected,i,paperItem)
+          // this.$set(that.p_collected,i,paperItem)
           // paper_id:2,
           //   title:"Paper2",
           //   author:[
@@ -241,10 +283,10 @@ export default {
         }
         // that.p_collected = paperList
         console.log(that.p_collected)
-        that.p_collected.forEach(item => {
-          this.$set(item,'collectedStatus',true)
-          return
-        })
+        // that.p_collected.forEach(item => {
+        //   this.$set(item,'collectedStatus',true)
+        //   return
+        // })
       })
     },
     init() {
