@@ -23,7 +23,7 @@
                     </el-link>
                   </div>
                   <div style=";justify-content: left">
-                    <p style="#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
+                    <p style="margin-top:7px;#app{text-align:left};justify-content: left;width:80%;padding-left:15px;white-space:nowrap;font-size:14px;color:gray;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
                   </div>
                   <el-row :gutter="20" style="margin-top:15px">
                     <el-col :span="14">
@@ -188,7 +188,7 @@ document.addEventListener('mousemove', function (_ref) {var x = _ref.x,y = _ref.
               },
               {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
               .then(res => {
-        //        console.log(res)
+               // console.log(res)
                 this.list=res.data.data.list
                 this.type=item.type
                 

@@ -26,7 +26,7 @@
                 </el-link>
 
               </div>
-              <p style="padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
+              <p style="margin-top:7px;padding-left:15px;white-space:nowrap;font-size:14px;color:black;overflow: hidden; text-overflow: ellipsis;">{{ item.textcontent }}</p>
               <div class="flex6" style="color:gray;font-size:12px">
                 <span style="margin-right:15px">{{ formatDate(item.date) }} |</span>
                 <span class="flex6 iconsize">

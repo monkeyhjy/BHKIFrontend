@@ -57,11 +57,11 @@
       <el-row style="margin-left:30px;margin-right:10px" :gutter="20">
         <el-col :span="5">
           <el-card shadow="never">
-            <div class="flex6">
+            <div class="flex6" style="margin-left:16px">
               <el-image style="width:40px;height:40px;border-radius:40px" :src="userimg" fit="cover"></el-image>
               <el-link class="blog-title" :underline="false" :href="'/userinfo/'+userid" style="margin-left:10px">{{ username }}</el-link>
             </div>
-            <div class="flex6" style="margin-top:15px;margin-bottom:15px">
+            <div class="flex6" style="margin-top:15px;margin-bottom:15px;margin-left:16px">
               <div v-for="(item,index) in userlist" :key="index" style="margin-right:13px">
                 <p style="font-size:14px;text-align:center">{{ item.num }}</p>
                 <p style="font-size:12px;color:grey;text-align:center">{{ item.tip }}</p>
