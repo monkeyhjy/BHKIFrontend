@@ -87,7 +87,7 @@
                       <el-col :span="24" style="font-size: 1rem; margin-bottom: 1rem">
                         <el-card style="background:#ffffff;  border-radius: 10px">
                           <div>
-                            <i class="el-icon-s-opportunity" style="margin-right: 0.5rem"></i>
+                            <i class="el-icon-s-opportunity" style="margin-right: 0.5rem;font-size: 19px;font-weight: bold;color:#f67c54"></i>
                             <strong>相关领域：</strong>
                             <span v-if="typeof(author.tags)==='undefined'||author.tags.length===0">未知</span>
                           </div>
@@ -99,7 +99,7 @@
                           </div>
                           <el-col :span="24">
                             <el-divider></el-divider>
-                            <i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
+                            <i class="el-icon-office-building" style="margin-right: 0.5rem;font-size: 19px;font-weight: bold;color:#f67c54"></i>
                             <strong>工作单位：</strong>
                             <span v-if="typeof(author.orgs)!=='undefined'&&author.orgs.length!==0">
 														{{author.orgs[0]}}
@@ -165,7 +165,7 @@
                     <el-divider></el-divider>
                     <el-col :span="18" style="margin-bottom: 1rem">
                       <el-link :underline="false"  @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
-                        <i class="el-icon-document"></i>
+                        <i class="el-icon-document" style="margin-right: 0.5rem;font-size: 19px;font-weight: bold;color:#f8a21f"></i>
                         <span style="margin-left: 30px;font-size: 24px"v-html="item.title" >{{item.title}}</span>
                       </el-link>
                     </el-col>
@@ -191,7 +191,7 @@
                       {{item.venue_raw}}({{item.year}})
                     </el-col>
                     <el-col :span="24" style="margin-bottom: 1rem">
-                      <span>被引量：</span>
+                      <span style="font-weight: bold;font-size: 16px;color:#df5747">被引量：</span>
                       <span v-if="typeof(item.n_citation)!=='undefined'&&item.n_citation!==''">
 													{{item.n_citation}}
 												</span>
@@ -859,6 +859,10 @@ body{
   background-image: url('../../assets/image/user/image/login-back.png');
   background-attachment: fixed;
 }
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #df5747;
+  color: #FFF;
+}
 </style>
 
 <style scoped>
@@ -934,5 +938,4 @@ body{
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
-
 </style>

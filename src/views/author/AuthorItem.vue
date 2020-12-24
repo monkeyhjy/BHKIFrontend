@@ -10,13 +10,13 @@
             <el-col :span="24">
               <el-col :span="4"><div class="grid-content"></div></el-col>
               <el-col :span="16">
-                <div style="text-align: center; margin: 3rem 0">
-                  <strong style="font-size: 1.5rem">请选择您要认领的门户。</strong>
+                <div style="min-height:340px;text-align: center; margin: 3rem 0;">
+                  <strong style="font-size: 1.5rem;line-height: 340px">请选择您要认领的门户</strong>
                   <el-button
                       style="vertical-align: top;
 													margin-left: 1rem;
 													background-color: #df5747;
-													color: white"
+													color: white; margin-top:150px;margin-left: 20px"
                       @click="nameVisible = true">输入姓名，认领您的门户</el-button>
                 </div>
                 <el-card
@@ -275,7 +275,16 @@ body{
 }
 </style>
 <style>
-body {
-  background-image: url('../../assets/image/user/image/login-back.png');
-}
+  body {
+    background-image: url('../../assets/image/user/image/login-back.png');
+    background-attachment: fixed;
+  }
+  /*.el-pagination.is-background .el-pager li:not(.disabled).active {*/
+  /*  background-color: #FD7A3A;   // 进行修改背景和字体*/
+  /*  color: #fff;*/
+  /*}*/
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #df5747;
+    color: #FFF;
+  }
 </style>

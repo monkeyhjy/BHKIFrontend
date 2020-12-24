@@ -16,7 +16,7 @@
               active-text-color="rgb(255,221,0)"
               style="margin-top: 20px">
             <el-menu-item index="/messageNav/privacyMsg">
-              <i class="el-icon-message-solid nav-icon"></i>
+              <i class="el-icon-message-solid nav-icon" style="color: #fff;font-size: 19px;font-weight: bold"></i>
               <span slot="title">私信消息
                             </span>
               <el-badge :value="privacyMsgNum" >
@@ -24,15 +24,15 @@
             </el-menu-item>
             <el-menu-item index="/messageNav/likeMsg">
               <!-- <img class="nav-icon" src="../icons/attribute.png"/> -->
-              <i class="el-icon-user-solid nav-icon"></i>
+              <i class="el-icon-user-solid nav-icon" style="color: #fff;font-size: 19px;font-weight: bold"></i>
               <span slot="title">收藏消息</span>
             </el-menu-item>
             <el-menu-item index="/messageNav/commentMsg">
-              <i class="el-icon-star-on nav-icon"></i>
+              <i class="el-icon-star-on nav-icon" style="color: #fff;font-size: 19px;font-weight: bold"></i>
               <span slot="title">评论消息</span>
             </el-menu-item>
             <el-menu-item index="/messageNav/reportedMsg">
-              <i class="el-icon-s-management nav-icon"></i>
+              <i class="el-icon-s-management nav-icon" style="color: #fff;font-size: 19px;font-weight: bold"></i>
               <span slot="title">举报消息</span>
             </el-menu-item>
           </el-menu>
