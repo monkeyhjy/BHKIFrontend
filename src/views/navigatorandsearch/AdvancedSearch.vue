@@ -113,7 +113,7 @@
                                                     <span v-else>被引量：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
-                                                    <span v-if="typeof(item.orgs)!=='undefined'&&item.orgs!==''">工作单位：{{item.orgs}}</span>
+                                                    <span v-if="typeof(item.orgs)!=='undefined'&&item.orgs!==''&&item.orgs[0]!==''">工作单位：{{item.orgs[0]}}</span>
                                                     <span v-else>工作单位：未知</span>
                                                 </el-col>
                                                 <el-col :span="24" style="margin-bottom: 1rem">
@@ -136,7 +136,7 @@
                                                         layout="prev, pager, next"
                                                         :total="totalnum"
                                                         :page-size="pageSize"
-                                                        :current-page="currentPage"
+                                                        :current-page="current_page"
                                                         @current-change="handleCurrentChange">
                                                 </el-pagination>
                                             </div>
@@ -255,7 +255,7 @@
                                                         layout="prev, pager, next"
                                                         :total="totalnum"
                                                         :page-size="pageSize"
-                                                        :current-page="currentPage"
+                                                        :current-page="current_page"
                                                         @current-change="handleCurrentChange">
                                                 </el-pagination>
                                                 <!-- 分页器 -->
