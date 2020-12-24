@@ -23,7 +23,7 @@
 												style="background-color: white; border-radius: 10px; margin-top: 1rem"
 												 v-for="(item, index) in author_item" :key="index">
 									<el-col :span="24">
-										<el-col :span="12"><el-link style="font-size: 1.5rem;" @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
+										<el-col :span="12"><el-link style="font-size: 1.5rem;" :underline=false @click="jumpToPortal(item.id)">{{item.name}}</el-link></el-col>
 										<el-col :span="2" :offset="4" style="right: 2rem;">
 											<el-button style="vertical-align: middle; margin-left: 5rem; background-color:#fbede4;"
 																 @click="submitClaim(user_id, item.id)">认领门户</el-button>
@@ -186,10 +186,8 @@
 							pagenumber: val
 						})
 						.then(res => {
-							console.log(res)
 							this.author_item = res.data.res
-							if(res.data.status === 0){
-								console.log('切换到第' + val + '页成功')
+							if(res.status === 200){
 								this.current_page = val
 							}
 						})

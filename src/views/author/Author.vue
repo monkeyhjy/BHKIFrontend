@@ -35,11 +35,13 @@
 																	slot="reference"
 																	v-if="author.author_user_id!==-1"
 																	style="font-size: 2rem"
+																	:underline=false
 																	:href="'/userinfo/'+author.author_user_id">{{author.name}}</el-link>
 													<el-link
 																	slot="reference"
 																	v-else
 																	style="font-size: 2rem"
+																	:underline=false
 																	href="">{{author.name}}</el-link>
 												</el-popover>
 
@@ -63,18 +65,18 @@
 																	 @click="reportDisplay">举报冒领门户</el-button>
 												<el-button size="mini"
 																	 style="vertical-align: center; margin-left: 0.5rem"
-																	 v-if="!author.is_followed&&author.is_claimed!==2"
+																	 v-if="!author.is_followed&&author.is_claimed===1"
 																	 type="primary"
 																	 @click="follow(0)">关注</el-button>
 												<el-button size="mini"
 																	 style="vertical-align: center; margin-left: 0.5rem"
-																	 v-if="author.is_followed&&author.is_claimed!==2"
+																	 v-if="author.is_followed&&author.is_claimed===1"
 																	 type="info"
 																	 @click="follow(1)">取消关注</el-button>
 
 												<el-button size="mini"
 																	 style="vertical-align: center; margin-left: 0.5rem"
-																	 v-if="author.is_claimed!==2"
+																	 v-if="author.is_claimed===1"
 																	 type="warning"
 																	 @click="privateMessageDisplay">私信TA</el-button>
 											</el-card>
@@ -101,7 +103,7 @@
 														<el-divider></el-divider>
 														<i class="el-icon-office-building" style="margin-right: 0.5rem"></i>
 														<strong>工作单位：</strong>
-														<span v-if="typeof(author.orgs)!=='undefined'&&author.orgs.length!==0">
+														<span v-if="typeof(author.orgs)!=='undefined'&&author.orgs[0]!==''">
 														{{author.orgs[0]}}
 													</span>
 														<span v-else>未知</span>
@@ -156,30 +158,35 @@
 
 							<div style="text-align: center; font-size: 1.6rem"><strong>学术成果</strong></div>
 
-								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px; margin: 1rem 0;">
+								<el-card class="box-card" style="background-color: #ffffff; border-radius: 15px; margin: 1rem 0;"
+									v-if="author.pubs.length!==0
+									&&(author.is_claimed===2||author.pubs[0].is_display===1)">
 									<el-col :span="24"
 													style="text-align: left"
 													v-for="(item, index) in author.pubs"
 													:key="index">
-										<div class="text item" v-if="typeof(item.title)!=='undefined'&&item.title!==''">
+										<div class="text item"
+												 v-if="typeof(item.title)!=='undefined'&&item.title!==''
+												 &&(author.is_claimed===2||item.is_display===1)">
 											<el-divider></el-divider>
 											<el-col :span="18" style="margin-bottom: 1rem">
-												<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem">
+												<el-link @click="jump_to_paper(item.paper_id)" style="font-size: 1.2rem" :underline=false>
 													<i class="el-icon-document"></i>
 													{{item.title}}
 												</el-link>
 											</el-col>
 											<el-col :span="6" style="text-align: right">
 												<el-button v-if="item.is_display===1&&author.is_claimed===2"
-																	 @click="pub_display(index, 1)">当前状态：展示给他人</el-button>
+																	 @click="pub_display(index, 0)">当前状态：展示给他人</el-button>
 												<el-button v-if="item.is_display===0&&author.is_claimed===2"
-																	 @click="pub_display(index, 0)">当前状态：不展示给他人</el-button>
+																	 @click="pub_display(index, 1)">当前状态：不展示给他人</el-button>
 											</el-col>
 											<el-col :span="24"
 															style="margin-bottom: 1rem">
 												<el-link v-for="(author, index2) in item.author"
 																 :key="index2"
 																 style="margin-right: 0.5rem; font-size: 16px"
+																 :underline=false
 																 @click="jumpToPortal(author.id)">
 													{{author.name}}
 													<span v-if="index2!==item.author.length-1">,</span>
@@ -198,9 +205,14 @@
 												<span v-else>0</span>
 											</el-col>
 										</div>
+										<div v-if="typeof(item.title)==='undefined'||item.title===''"
+											style="text-align: center;">
+											<el-divider></el-divider>
+											<span>该学术成果还未收录</span>
+										</div>
 									</el-col>
 								</el-card>
-
+								<div v-else style="text-align: center; margin-top: 1rem">该学者的成果还未收录！</div>
 						</div>
 
 					</el-col>
@@ -311,7 +323,7 @@
 					relative_author: [],
 					pubs: [],
 					page_num: 2,
-					page_size: 3,
+					page_size: 10,
 					current_page: 1,
 					status: 0,
 					total: 0,
@@ -334,7 +346,7 @@
 			this.get_user_info();
 			setTimeout(() => {
 				this.get_author_id();
-				this.get_author();
+				this.get_author(1);
 			}, 100)
 		},
 		methods: {
@@ -387,16 +399,16 @@
 				})
 			},
 			//未完成
-			get_author() {
+			get_author(pagenumber) {
 				this.$axios.post('/apis/search/getauthorbyid',
 						{
 							authorid: this.author.author_id,
-							pagenumber: 1,
+							pagenumber: pagenumber,
 						})
 						.then(res => {
 							console.log(res)
 							if(res.status === 200){
-								this.author.total = res.data.res.total
+								this.author.total = res.data.total
 								this.author.author_id = res.data.res.id
 								this.author.name = res.data.res.name
 								this.author.h_index = res.data.res.h_index
@@ -415,7 +427,7 @@
 											}).then(res2 => {
 										let obj = {
 											paper_id: res.data.res.pubs[i].i,
-											is_display: res.data.res.pubs[i].is_display,
+											is_display: res.data.res.pubs[i].isdisplay,
 											title: res2.data.title,
 											author: res2.data.authors,
 											venue_raw: res2.data.venue_raw,
@@ -430,7 +442,7 @@
 											doi: res2.data.doi,
 											abstract: res2.data.abstract,
 										}
-										if(typeof(res.data.res.pubs[i].is_display) == "undefined"){
+										if(typeof(res.data.res.pubs[i].isdisplay) == "undefined"){
 											obj.is_display = 1
 										}
 										this.author.pubs.push(obj)
@@ -592,7 +604,7 @@
 				};
 				this.myChart.setOption(option);
 				this.myChart.on('click', function (params) {
-					//console.log(params.data)//获取点击的头像的数据信息
+
 				});
 			},
 			//完成
@@ -766,13 +778,14 @@
 			pub_display(index, flag) {
 				this.author.pubs[index].is_display = 1-this.author.pubs[index].is_display
 				//展示出来
-				if(flag === 0){
+				if(flag === 1){
 					this.$axios.post('/apis/search/paperdisplay',
 							{
-								user_id: this.user_id,
-								paper_id: this.author.pubs[index].id,
+								userid: this.user_id,
+								paperid: this.author.pubs[index].paper_id,
 							}).then(res => {
-						if(res.status === 0){
+						console.log(res)
+						if(res.data.status === 0){
 							this.$message({
 								type: "success",
 								message: "设置展示成功",
@@ -781,12 +794,14 @@
 					})
 				}
 				else {
+					console.log(this.author.pubs[index].paper_id)
 					this.$axios.post('/apis/search/papernotdisplay',
 							{
-								user_id: this.user_id,
-								paper_id: this.author.pubs[index].id,
+								userid: this.user_id,
+								paperid: this.author.pubs[index].paper_id,
 							}).then(res => {
-						if(res.status === 0){
+						console.log(res)
+						if(res.data.status === 0){
 							this.$message({
 								type: "success",
 								message: "设置隐藏成功",
@@ -837,8 +852,39 @@
 						})
 						.then(res => {
 							console.log(res)
-							this.author.pubs = res.data.pubs
-							if(res.data.status === 0){
+							if(res.status === 200){
+								this.author.pubs = []
+								for(let i = 0; i < res.data.res.pubs.length; i++) {
+									// this.author.pubs[i].paper_id = res.data.res.pubs[i].i;
+									// this.author.pubs[i].is_display = res.data.res.pubs[i].is_display;
+									//学术成果
+									this.$axios.post('/apis/search/getpaperbyid',
+											{
+												paperid: res.data.res.pubs[i].i
+											}).then(res2 => {
+										let obj = {
+											paper_id: res.data.res.pubs[i].i,
+											is_display: res.data.res.pubs[i].isdisplay,
+											title: res2.data.title,
+											author: res2.data.authors,
+											venue_raw: res2.data.venue_raw,
+											year: res2.data.year,
+											keywords: res2.data.keywords,
+											n_citation: res2.data.n_citation,
+											page_start: res2.data.page_start,
+											page_end: res2.data.page_end,
+											volumn: res2.data.volumn,
+											issue: res2.data.issue,
+											isbn: res2.data.isbn,
+											doi: res2.data.doi,
+											abstract: res2.data.abstract,
+										}
+										if(typeof(res.data.res.pubs[i].isdisplay) == "undefined"){
+											obj.is_display = 1
+										}
+										this.author.pubs.push(obj)
+									})
+								}
 								console.log('切换到第' + val + '页成功')
 								this.current_page = val
 							}

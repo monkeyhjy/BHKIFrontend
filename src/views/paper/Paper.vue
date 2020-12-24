@@ -34,7 +34,7 @@
 										<!--						作者，点击可跳转到该学者的门户页面--></div>
 									<div style="margin-top: 1rem" >
 									<span v-for="(item, index) in paper.authors" :key="index">
-										<el-link style="font-size: 1.2rem"  @click="jumpToPortal(item.id)">{{item.name}}</el-link>
+										<el-link style="font-size: 1.2rem" :underline=false @click="jumpToPortal(item.id)">{{item.name}}</el-link>
 										<span style="font-size: 1.2rem"  v-if="index!==paper.authors.length-1">, </span>
 									</span>
 									</div>
@@ -97,7 +97,7 @@
 									</el-col>
 									<el-col :span="21" v-if="typeof(paper.url)!=='undefined'&&paper.url.length!==0">
 										<el-col :span="24" v-for="(item, index) in paper.url" :key="index">
-											<el-link :href="item">{{item}}</el-link>
+											<el-link :href="item" :underline=false>{{item}}</el-link>
 										</el-col>
 									</el-col>
 									<span v-else>未知</span>
